@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ASLAB - TATA LAB</title>
+    <!-- Bootstrap 5 CSS untuk desain responsif -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome untuk ikon-ikon di website -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Desain Sidebar khusus ASLAB dengan warna tema gelap medis */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1040;
+            width: 260px;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            /* Warna slate gelap membedakan dengan mahasiswa */
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.75);
+            padding: 12px 20px;
+            margin: 4px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: #2563eb;
+            /* Warna biru untuk menandakan posisi menu aktif */
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Desain Area Konten Utama */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Top Navbar untuk layar HP */
+        .top-navbar {
+            display: none;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsif Breakpoint: Layar di bawah 992px (HP & Tablet) */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-260px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                padding-top: 80px;
+            }
+
+            .top-navbar {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1030;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1035;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Overlay penutup saat sidebar aktif di layar HP -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Top Navbar Mobile -->
+    <nav class="navbar top-navbar px-3 py-2">
+        <button class="btn btn-light border" type="button" id="hamburgerBtn">
+            <i class="fa-solid fa-bars fs-4 text-secondary"></i>
+        </button>
+        <span class="fw-bold text-dark ms-2">TATA LAB</span>
+        <div class="ms-auto small badge bg-primary">ASLAB</div>
+    </nav>
+
+    <!-- Sidebar Menu Kiri -->
+    <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
+        <div>
+            <!-- Header Logo Sistem -->
+            <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
+                <div>
+                    <h4 class="fw-bold mb-0 text-uppercase tracking-wider">
+                        <i class="fa-solid fa-flask-vial text-info me-2"></i>TATA LAB
+                    </h4>
+                    <small class="text-white-50">Portal Asisten Lab</small>
+                </div>
+                <!-- Tombol silang untuk menutup sidebar khusus di HP -->
+                <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
+                    <i class="fa-solid fa-xmark fs-4"></i>
+                </button>
+            </div>
+            <hr class="text-white-50 mx-3">
+
+            <!-- Daftar Menu Navigasi ASLAB -->
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tombol Keluar Sistem -->
+        <div class="px-3">
+            <hr class="text-white-50 mb-3">
+            <a href="/auth/logout/"
+                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Area (Isi Halaman Utama) -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-slate-800 mb-0">Selamat Datang, ASLAB 👋</h3>
+                <p class="text-muted mb-0">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari
+                    mahasiswa.</p>
+            </div>
+        </div>
+
+        <!-- Baris Kotak Statistik Ringkas -->
+        <div class="row g-3 mb-4">
+            <!-- Statistik Pengajuan Masuk -->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="text-muted fw-medium mb-1">Pengajuan Masuk</h6>
+                            <h3 class="fw-bold text-warning mb-0">{{ total_masuk }}</h3>
+                        </div>
+                        <div class="bg-warning-subtle text-warning p-3 rounded-3">
+                            <i class="fa-solid fa-clock-rotate-left fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Statistik Disetujui -->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="text-muted fw-medium mb-1">Total Disetujui</h6>
+                            <h3 class="fw-bold text-success mb-0">{{ total_disetujui }}</h3>
+                        </div>
+                        <div class="bg-success-subtle text-success p-3 rounded-3">
+                            <i class="fa-solid fa-circle-check fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Statistik Ditolak -->
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="text-muted fw-medium mb-1">Total Ditolak</h6>
+                            <h3 class="fw-bold text-danger mb-0">{{ total_ditolak }}</h3>
+                        </div>
+                        <div class="bg-danger-subtle text-danger p-3 rounded-3">
+                            <i class="fa-solid fa-circle-xmark fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Data Peminjaman -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-primary"></i>Daftar Riwayat &
+                    Aksi</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mahasiswa</th>
+                            <th>Laboratorium</th>
+                            <th>Mata Kuliah / Dosen</th>
+                            <th>Waktu Praktikum</th>
+                            <th>Status</th>
+                            <th>Aksi Pembaruan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop data menggunakan template engine Django untuk memunculkan antrean -->
+                        {% for pinjam in semua_peminjaman %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold">{{ pinjam.mahasiswa.username }}</div>
+                                <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
+                                <small class="text-muted">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
+                            </td>
+                            <td>
+                                <div>{{ pinjam.mata_kuliah }}</div>
+                                <small class="text-muted">Dosen: {{ pinjam.dosen }}</small>
+                            </td>
+                            <td>
+                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
+                                </div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.jam_mulai }}
+                                    - {{ pinjam.jam_selesai }} WIB</small>
+                            </td>
+                            <td>
+                                <!-- Kondisi badge warna sesuai status data -->
+                                {% if pinjam.status == 'pending' or pinjam.status == 'verified' %}
+                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Menunggu</span>
+                                {% elif pinjam.status == 'disetujui' %}
+                                <span class="badge bg-success px-3 py-2 rounded-pill">Disetujui</span>
+                                {% else %}
+                                <span class="badge bg-danger px-3 py-2 rounded-pill">Ditolak</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <!-- Tombol aksi validasi cepat (Akan kita fungsikan selanjutnya) -->
+                                {% if pinjam.status == 'pending' or pinjam.status == 'verified' %}
+                                <button class="btn btn-sm btn-success rounded-3 fw-bold me-1"><i
+                                        class="fa-solid fa-check"></i> Terima</button>
+                                <button class="btn btn-sm btn-danger rounded-3 fw-bold"><i
+                                        class="fa-solid fa-xmark"></i> Tolak</button>
+                                {% else %}
+                                <span class="text-muted small italic">Selesai diproses</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <!-- Ditampilkan jika di database belum ada peminjaman sama sekali -->
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman
+                                laboratorium.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Vanilla Javascript untuk mengendalikan buka-tutup hamburger menu -->
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebarMenu.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        }
+
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        closeSidebarBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+    </script>
+</body>
+
+</html>

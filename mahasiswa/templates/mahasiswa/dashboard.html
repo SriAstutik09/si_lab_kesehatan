@@ -1,0 +1,113 @@
+{% extends 'base/base_mahasiswa.html' %}
+
+{% block title %}Dashboard Mahasiswa - UNUJA Lab{% endblock %}
+
+{% block content %}
+<!-- Ucapan Selamat Datang Dinamis -->
+<div class="mb-4">
+    <h3 class="fw-bold mb-1" style="color: #0f172a;">Halo, {{ request.user.first_name|default:request.user.username }}</h3>
+    <p class="text-muted small">Selamat datang kembali di portal laboratorium kesehatan.</p>
+</div>
+
+<!-- Grid Kartu Status Peminjaman (Dihitung Dinamis dari Database) -->
+<div class="row g-3 mb-4 text-center">
+    <!-- Menunggu (Kombinasi pending + verified sesuai alur berjenjangmu) -->
+    <div class="col-4">
+        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-warning rounded-circle" style="width: 40px; height: 40px; background-color: #fef9c3;">
+                <i class="fa-regular fa-comment-dots fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-warning">{{ total_menunggu|stringformat:"02d" }}</h3>
+            <span class="text-muted" style="font-size: 0.75rem; font-weight: 500;">Menunggu</span>
+        </div>
+    </div>
+    <!-- Disetujui -->
+    <div class="col-4">
+        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-success rounded-circle" style="width: 40px; height: 40px; background-color: #dcfce7;">
+                <i class="fa-regular fa-circle-check fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-success">{{ total_disetujui|stringformat:"02d" }}</h3>
+            <span class="text-muted" style="font-size: 0.75rem; font-weight: 500;">Disetujui</span>
+        </div>
+    </div>
+    <!-- Ditolak -->
+    <div class="col-4">
+        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-danger rounded-circle" style="width: 40px; height: 40px; background-color: #fee2e2;">
+                <i class="fa-regular fa-circle-xmark fs-5"></i>
+            </div>
+            <h3 class="fw-bold mb-0 text-danger">{{ total_ditolak|stringformat:"02d" }}</h3>
+            <span class="text-muted" style="font-size: 0.75rem; font-weight: 500;">Ditolak</span>
+        </div>
+    </div>
+</div>
+
+<!-- Header Jadwal -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0" style="color: #0f172a;">Jadwal Praktikum Anda</h5>
+</div>
+
+<!-- Loop Data Peminjaman Riil dari Database -->
+{% for jadwal in jadwal_mahasiswa %}
+<div class="card border-0 shadow-sm mb-3 p-3" style="border-radius: 16px;">
+    <div class="d-flex align-items-start gap-3">
+        <!-- Jam Widget (Menggunakan field wkt_mulai & wkt_akhir dari modelmu) -->
+        <div class="text-center p-2 rounded-3 text-secondary" style="background-color: #f1f5f9; min-width: 80px;">
+            <div class="fw-semibold small">{{ jadwal.wkt_mulai|time:"H:i" }}</div>
+            <div class="border-top my-1 border-secondary-subtle"></div>
+            <div class="fw-semibold small">{{ jadwal.wkt_akhir|time:"H:i" }}</div>
+        </div>
+        <!-- Detail Praktikum Riil -->
+        <div class="flex-grow-1">
+            <h6 class="fw-bold mb-1" style="color: #1e293b;">{{ jadwal.mata_kuliah }}</h6>
+            <p class="text-muted small mb-2 d-flex align-items-center gap-1">
+                <i class="fa-solid fa-door-open" style="color: #00796b;"></i> 
+                <strong>{{ jadwal.ruang_lab.nama_ruang }}</strong>
+            </p>
+            <div class="d-flex gap-2 flex-wrap align-items-center">
+                <span class="badge bg-secondary-subtle text-secondary border rounded-pill px-2 py-1" style="font-size: 0.65rem;">
+                    <i class="fa-solid fa-microscope me-1"></i>{{ jadwal.alat_bahan.nama_alat }}
+                </span>
+                
+                <!-- Status Badge dinamis mengikuti alur berjenjangmu -->
+                {% if jadwal.status == 'pending' %}
+                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Menunggu ASLAB</span>
+                {% elif jadwal.status == 'verified' %}
+                    <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Menunggu KALAB</span>
+                {% elif jadwal.status == 'disetujui' %}
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Disetujui</span>
+                {% elif jadwal.status == 'ditolak' %}
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Ditolak</span>
+                {% elif jadwal.status == 'selesai' %}
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Selesai</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<!-- Jika belum ada data praktikum yang diajukan -->
+<div class="text-center py-5 text-muted bg-white rounded-4 shadow-sm mb-4">
+    <i class="fa-solid fa-calendar-xmark fs-2 mb-2 text-secondary opacity-50"></i>
+    <p class="small mb-0">Belum ada pengajuan jadwal praktikum di Lab Atas maupun Lab Bawah.</p>
+</div>
+{% endfor %}
+
+<!-- Banner CTA Pinjam Alat (Glow Teal Theme) -->
+<div class="position-relative overflow-hidden p-4 shadow-sm text-white mb-3"
+    style="border-radius: 20px; background: linear-gradient(135deg, #005b50 0%, #00796b 100%);">
+    <div class="position-absolute top-0 end-0 bottom-0 start-0 opacity-25"
+        style="background-image: url('https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=300'); background-size: cover; background-position: center; mix-blend-mode: overlay;">
+    </div>
+    <div class="position-relative z-1">
+        <h5 class="fw-bold mb-1">Pinjam Alat Sekarang</h5>
+        <p class="small text-white-50 mb-4" style="max-width: 75%;">Proses cepat, verifikasi real-time langsung dari asisten lab.</p>
+        <a href="{% url 'mahasiswa:pinjam_lab' %}"
+            class="btn btn-light btn-sm fw-bold px-3 py-2 text-teal d-inline-flex align-items-center gap-2 shadow-sm"
+            style="color: #00796b; border-radius: 10px;">
+            Mulai Peminjaman <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

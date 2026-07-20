@@ -1,0 +1,65 @@
+{% extends 'base/base_mahasiswa.html' %}
+
+{% block title %}Form Peminjaman Lab - UNUJA Lab{% endblock %}
+
+{% block content %}
+<div class="mb-3 d-flex align-items-center gap-2">
+    <a href="{% url 'mahasiswa:dashboard' %}" class="btn btn-light btn-sm text-secondary rounded-circle shadow-sm">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <h5 class="fw-bold mb-0" style="color: #0f172a;">Form Pengajuan Peminjaman</h5>
+</div>
+
+<div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 20px; background: #fff;">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold small text-secondary">Pilih Ruang Lab</label>
+            {{ form.ruang_lab }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold small text-secondary">Alat & Bahan Kesehatan</label>
+            {{ form.alat_bahan }}
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <label class="form-label fw-semibold small text-secondary">Nama Dosen Pengampu</label>
+                {{ form.nama_dosen }}
+            </div>
+            <div class="col-6">
+                <label class="form-label fw-semibold small text-secondary">Mata Kuliah</label>
+                {{ form.mata_kuliah }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold small text-secondary">Tanggal Pelaksanaan Praktikum</label>
+            {{ form.tanggal_pinjam }}
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <label class="form-label fw-semibold small text-secondary">Jam Mulai</label>
+                {{ form.wkt_mulai }}
+            </div>
+            <div class="col-6">
+                <label class="form-label fw-semibold small text-secondary">Jam Selesai</label>
+                {{ form.wkt_akhir }}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-semibold small text-secondary">Keperluan / Agenda Praktikum</label>
+            {{ form.keperluan }}
+        </div>
+
+        <button type="submit" class="btn text-white w-100 fw-bold py-2 shadow-sm"
+            style="background: linear-gradient(135deg, #005b50 0%, #00796b 100%); border-radius: 12px;">
+            Kirim Pengajuan <i class="fa-solid fa-paper-plane ms-1"></i>
+        </button>
+    </form>
+</div>
+{% endblock %}
