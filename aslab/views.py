@@ -14,9 +14,16 @@ def dashboard_aslab(request):
     # Mengambil semua data peminjaman dari yang paling baru
     semua_peminjaman = Peminjaman.objects.all().order_by('-tanggal_pinjam')
     
-    # Menghitung statistik untuk kotak info dashboard
-    total_masuk = Peminjaman.objects.filter(status__in=['pending', 'verified']).count()
-    total_disetujui = Peminjaman.objects.filter(status='disetujui').count()
+    # --------------------------------------------------------------------------
+    # PERBAIKAN PENGHITUNGAN STATISTIK
+    # --------------------------------------------------------------------------
+    # 1. Antrean Masuk = Hanya yang 'pending' (butuh verifikasi) & 'pengembalian_diajukan' (butuh konfirmasi)
+    total_masuk = Peminjaman.objects.filter(status__in=['pending', 'pengembalian_diajukan']).count()
+    
+    # 2. Disetujui = Status 'verified', 'disetujui', dan 'selesai'
+    total_disetujui = Peminjaman.objects.filter(status__in=['verified', 'disetujui', 'selesai']).count()
+    
+    # 3. Ditolak = Status 'ditolak'
     total_ditolak = Peminjaman.objects.filter(status='ditolak').count()
     
     context = {
