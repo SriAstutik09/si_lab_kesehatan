@@ -5,7 +5,8 @@
 {% block content %}
 <!-- Ucapan Selamat Datang Dinamis -->
 <div class="mb-4">
-    <h3 class="fw-bold mb-1" style="color: #0f172a;">Halo, {{ request.user.first_name|default:request.user.username }}</h3>
+    <h3 class="fw-bold mb-1" style="color: #0f172a;">Halo, {{ request.user.first_name|default:request.user.username }}
+    </h3>
     <p class="text-muted small">Selamat datang kembali di portal laboratorium kesehatan.</p>
 </div>
 
@@ -14,7 +15,8 @@
     <!-- Menunggu (Kombinasi pending + verified sesuai alur berjenjangmu) -->
     <div class="col-4">
         <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-warning rounded-circle" style="width: 40px; height: 40px; background-color: #fef9c3;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-warning rounded-circle"
+                style="width: 40px; height: 40px; background-color: #fef9c3;">
                 <i class="fa-regular fa-comment-dots fs-5"></i>
             </div>
             <h3 class="fw-bold mb-0 text-warning">{{ total_menunggu|stringformat:"02d" }}</h3>
@@ -24,7 +26,8 @@
     <!-- Disetujui -->
     <div class="col-4">
         <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-success rounded-circle" style="width: 40px; height: 40px; background-color: #dcfce7;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-success rounded-circle"
+                style="width: 40px; height: 40px; background-color: #dcfce7;">
                 <i class="fa-regular fa-circle-check fs-5"></i>
             </div>
             <h3 class="fw-bold mb-0 text-success">{{ total_disetujui|stringformat:"02d" }}</h3>
@@ -34,7 +37,8 @@
     <!-- Ditolak -->
     <div class="col-4">
         <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-danger rounded-circle" style="width: 40px; height: 40px; background-color: #fee2e2;">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-danger rounded-circle"
+                style="width: 40px; height: 40px; background-color: #fee2e2;">
                 <i class="fa-regular fa-circle-xmark fs-5"></i>
             </div>
             <h3 class="fw-bold mb-0 text-danger">{{ total_ditolak|stringformat:"02d" }}</h3>
@@ -62,25 +66,39 @@
         <div class="flex-grow-1">
             <h6 class="fw-bold mb-1" style="color: #1e293b;">{{ jadwal.mata_kuliah }}</h6>
             <p class="text-muted small mb-2 d-flex align-items-center gap-1">
-                <i class="fa-solid fa-door-open" style="color: #00796b;"></i> 
+                <i class="fa-solid fa-door-open" style="color: #00796b;"></i>
                 <strong>{{ jadwal.ruang_lab.nama_ruang }}</strong>
             </p>
             <div class="d-flex gap-2 flex-wrap align-items-center">
-                <span class="badge bg-secondary-subtle text-secondary border rounded-pill px-2 py-1" style="font-size: 0.65rem;">
-                    <i class="fa-solid fa-microscope me-1"></i>{{ jadwal.alat_bahan.nama_alat }}
-                </span>
-                
-                <!-- Status Badge dinamis mengikuti alur berjenjangmu -->
+                <!-- 1. Status Badge Dinamis -->
                 {% if jadwal.status == 'pending' %}
-                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Menunggu ASLAB</span>
+                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Menunggu ASLAB</span>
                 {% elif jadwal.status == 'verified' %}
-                    <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Menunggu KALAB</span>
+                <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Menunggu KALAB</span>
                 {% elif jadwal.status == 'disetujui' %}
-                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Disetujui</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Disetujui</span>
+                {% elif jadwal.status == 'pengembalian_diajukan' %}
+                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Proses Pengembalian</span>
                 {% elif jadwal.status == 'ditolak' %}
-                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Ditolak</span>
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Ditolak</span>
                 {% elif jadwal.status == 'selesai' %}
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1" style="font-size: 0.65rem;">Selesai</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1"
+                    style="font-size: 0.65rem;">Selesai</span>
+                {% endif %}
+
+                <!-- 2. Tombol Aksi Pengembalian (Hanya muncul jika status 'disetujui') -->
+                {% if jadwal.status == 'disetujui' %}
+                <a href="{% url 'mahasiswa:ajukan_pengembalian' jadwal.id %}"
+                    class="btn btn-warning btn-sm py-0 px-2 fw-semibold text-dark shadow-sm"
+                    style="font-size: 0.65rem; border-radius: 8px;"
+                    onclick="return confirm('Apakah Anda yakin ingin mengajukan pengembalian lab/alat ini?');">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Kembalikan
+                </a>
                 {% endif %}
             </div>
         </div>
@@ -102,7 +120,8 @@
     </div>
     <div class="position-relative z-1">
         <h5 class="fw-bold mb-1">Pinjam Alat Sekarang</h5>
-        <p class="small text-white-50 mb-4" style="max-width: 75%;">Proses cepat, verifikasi real-time langsung dari asisten lab.</p>
+        <p class="small text-white-50 mb-4" style="max-width: 75%;">Proses cepat, verifikasi real-time langsung dari
+            asisten lab.</p>
         <a href="{% url 'mahasiswa:pinjam_lab' %}"
             class="btn btn-light btn-sm fw-bold px-3 py-2 text-teal d-inline-flex align-items-center gap-2 shadow-sm"
             style="color: #00796b; border-radius: 10px;">
