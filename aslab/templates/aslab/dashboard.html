@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard ASLAB - TATA LAB</title>
-    <!-- Bootstrap 5 CSS untuk desain responsif -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome untuk ikon-ikon di website -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
@@ -17,7 +17,6 @@
             overflow-x: hidden;
         }
 
-        /* Desain Sidebar khusus ASLAB dengan warna tema gelap medis */
         .sidebar {
             position: fixed;
             top: 0;
@@ -26,7 +25,6 @@
             z-index: 1040;
             width: 260px;
             background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            /* Warna slate gelap membedakan dengan mahasiswa */
             box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease;
         }
@@ -51,11 +49,9 @@
         .sidebar .nav-link.active {
             color: #fff;
             background: #2563eb;
-            /* Warna biru untuk menandakan posisi menu aktif */
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
-        /* Desain Area Konten Utama */
         .main-content {
             margin-left: 260px;
             padding: 30px;
@@ -63,14 +59,12 @@
             transition: margin-left 0.3s ease;
         }
 
-        /* Top Navbar untuk layar HP */
         .top-navbar {
             display: none;
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        /* Responsif Breakpoint: Layar di bawah 992px (HP & Tablet) */
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
@@ -130,7 +124,6 @@
     <!-- Sidebar Menu Kiri -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <!-- Header Logo Sistem -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div>
                     <h4 class="fw-bold mb-0 text-uppercase tracking-wider">
@@ -138,24 +131,21 @@
                     </h4>
                     <small class="text-white-50">Portal Asisten Lab</small>
                 </div>
-                <!-- Tombol silang untuk menutup sidebar khusus di HP -->
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
                     <i class="fa-solid fa-xmark fs-4"></i>
                 </button>
             </div>
             <hr class="text-white-50 mx-3">
 
-            <!-- Daftar Menu Navigasi ASLAB -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="{% url 'aslab:dashboard' %}" class="nav-link active">
                         <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
                     </a>
                 </li>
             </ul>
         </div>
 
-        <!-- Tombol Keluar Sistem -->
         <div class="px-3">
             <hr class="text-white-50 mb-3">
             <a href="/auth/logout/"
@@ -165,25 +155,33 @@
         </div>
     </div>
 
-    <!-- Main Content Area (Isi Halaman Utama) -->
+    <!-- Main Content Area -->
     <div class="main-content">
+        <!-- Notifikasi Pesan Django (Success/Error) -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold text-slate-800 mb-0">Selamat Datang, ASLAB 👋</h3>
-                <p class="text-muted mb-0">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari
-                    mahasiswa.</p>
+                <p class="text-muted mb-0">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari mahasiswa.</p>
             </div>
         </div>
 
         <!-- Baris Kotak Statistik Ringkas -->
         <div class="row g-3 mb-4">
-            <!-- Statistik Pengajuan Masuk -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-medium mb-1">Pengajuan Masuk</h6>
-                            <h3 class="fw-bold text-warning mb-0">{{ total_masuk }}</h3>
+                            <h3 class="fw-bold text-warning mb-0">{{ total_masuk|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-warning-subtle text-warning p-3 rounded-3">
                             <i class="fa-solid fa-clock-rotate-left fs-4"></i>
@@ -191,13 +189,12 @@
                     </div>
                 </div>
             </div>
-            <!-- Statistik Disetujui -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-medium mb-1">Total Disetujui</h6>
-                            <h3 class="fw-bold text-success mb-0">{{ total_disetujui }}</h3>
+                            <h3 class="fw-bold text-success mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-success-subtle text-success p-3 rounded-3">
                             <i class="fa-solid fa-circle-check fs-4"></i>
@@ -205,13 +202,12 @@
                     </div>
                 </div>
             </div>
-            <!-- Statistik Ditolak -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-medium mb-1">Total Ditolak</h6>
-                            <h3 class="fw-bold text-danger mb-0">{{ total_ditolak }}</h3>
+                            <h3 class="fw-bold text-danger mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-danger-subtle text-danger p-3 rounded-3">
                             <i class="fa-solid fa-circle-xmark fs-4"></i>
@@ -224,8 +220,7 @@
         <!-- Tabel Data Peminjaman -->
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-header bg-white border-0 py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-primary"></i>Daftar Riwayat &
-                    Aksi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-primary"></i>Daftar Riwayat & Aksi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -240,11 +235,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Loop data menggunakan template engine Django untuk memunculkan antrean -->
                         {% for pinjam in semua_peminjaman %}
                         <tr>
                             <td>
-                                <div class="fw-bold">{{ pinjam.mahasiswa.username }}</div>
+                                <div class="fw-bold">{{ pinjam.mahasiswa.get_full_name|default:pinjam.mahasiswa.username }}</div>
                                 <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
@@ -253,41 +247,54 @@
                             </td>
                             <td>
                                 <div>{{ pinjam.mata_kuliah }}</div>
-                                <small class="text-muted">Dosen: {{ pinjam.dosen }}</small>
+                                <small class="text-muted">Dosen: {{ pinjam.dosen|default:"-" }}</small>
                             </td>
                             <td>
-                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
-                                </div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.jam_mulai }}
-                                    - {{ pinjam.jam_selesai }} WIB</small>
+                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}</div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
                             </td>
                             <td>
-                                <!-- Kondisi badge warna sesuai status data -->
-                                {% if pinjam.status == 'pending' or pinjam.status == 'verified' %}
-                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Menunggu</span>
+                                {% if pinjam.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Menunggu ASLAB</span>
+                                {% elif pinjam.status == 'verified' %}
+                                    <span class="badge bg-info text-white px-3 py-2 rounded-pill">Menunggu KALAB</span>
                                 {% elif pinjam.status == 'disetujui' %}
-                                <span class="badge bg-success px-3 py-2 rounded-pill">Disetujui</span>
+                                    <span class="badge bg-success px-3 py-2 rounded-pill">Disetujui</span>
+                                {% elif pinjam.status == 'pengembalian_diajukan' %}
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Ajukan Pengembalian</span>
+                                {% elif pinjam.status == 'selesai' %}
+                                    <span class="badge bg-primary px-3 py-2 rounded-pill">Selesai</span>
                                 {% else %}
-                                <span class="badge bg-danger px-3 py-2 rounded-pill">Ditolak</span>
+                                    <span class="badge bg-danger px-3 py-2 rounded-pill">Ditolak</span>
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- Tombol aksi validasi cepat (Akan kita fungsikan selanjutnya) -->
-                                {% if pinjam.status == 'pending' or pinjam.status == 'verified' %}
-                                <button class="btn btn-sm btn-success rounded-3 fw-bold me-1"><i
-                                        class="fa-solid fa-check"></i> Terima</button>
-                                <button class="btn btn-sm btn-danger rounded-3 fw-bold"><i
-                                        class="fa-solid fa-xmark"></i> Tolak</button>
+                                <!-- Tombol Aksi Berfungsi untuk Backend -->
+                                {% if pinjam.status == 'pending' %}
+                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}" 
+                                       class="btn btn-sm btn-success rounded-3 fw-bold me-1"
+                                       onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
+                                       <i class="fa-solid fa-check"></i> Verifikasi
+                                    </a>
+                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}" 
+                                       class="btn btn-sm btn-danger rounded-3 fw-bold"
+                                       onclick="return confirm('Tolak peminjaman ini?');">
+                                       <i class="fa-solid fa-xmark"></i> Tolak
+                                    </a>
+                                {% elif pinjam.status == 'pengembalian_diajukan' %}
+                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}" 
+                                       class="btn btn-sm btn-primary rounded-3 fw-bold"
+                                       onclick="return confirm('Konfirmasi bahwa pengembalian alat/lab sudah selesai?');">
+                                       <i class="fa-solid fa-box-archive me-1"></i> Konfirmasi Selesai
+                                    </a>
                                 {% else %}
-                                <span class="text-muted small italic">Selesai diproses</span>
+                                    <span class="text-muted small italic">Selesai diproses</span>
                                 {% endif %}
                             </td>
                         </tr>
                         {% empty %}
-                        <!-- Ditampilkan jika di database belum ada peminjaman sama sekali -->
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman
-                                laboratorium.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman laboratorium.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -299,7 +306,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Vanilla Javascript untuk mengendalikan buka-tutup hamburger menu -->
+    <!-- Script Vanilla Javascript -->
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
