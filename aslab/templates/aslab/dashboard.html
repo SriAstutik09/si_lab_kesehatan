@@ -65,6 +65,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
+        /* Responsif Layar Kecil / Tablet / HP */
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
@@ -76,7 +77,7 @@
 
             .main-content {
                 margin-left: 0;
-                padding: 20px;
+                padding: 15px;
                 padding-top: 80px;
             }
 
@@ -104,12 +105,31 @@
                 display: block;
             }
         }
+
+        /* Desain Khusus Tombol Aksi */
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Overlay penutup saat sidebar aktif di layar HP -->
+    <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Top Navbar Mobile -->
@@ -121,7 +141,7 @@
         <div class="ms-auto small badge bg-primary">ASLAB</div>
     </nav>
 
-    <!-- Sidebar Menu Kiri -->
+    <!-- Sidebar Menu -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
@@ -157,7 +177,7 @@
 
     <!-- Main Content Area -->
     <div class="main-content">
-        <!-- Notifikasi Pesan Django (Success/Error) -->
+        <!-- Notifikasi Pesan Django -->
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-4" role="alert">
@@ -170,17 +190,17 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold text-slate-800 mb-0">Selamat Datang, ASLAB 👋</h3>
-                <p class="text-muted mb-0">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari mahasiswa.</p>
+                <p class="text-muted mb-0 small">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari mahasiswa.</p>
             </div>
         </div>
 
-        <!-- Baris Kotak Statistik Ringkas -->
+        <!-- Kartu Ringkasan Statistik -->
         <div class="row g-3 mb-4">
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1">Pengajuan Masuk</h6>
+                            <h6 class="text-muted fw-medium mb-1 small">Pengajuan Masuk</h6>
                             <h3 class="fw-bold text-warning mb-0">{{ total_masuk|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-warning-subtle text-warning p-3 rounded-3">
@@ -189,11 +209,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1">Total Disetujui</h6>
+                            <h6 class="text-muted fw-medium mb-1 small">Total Disetujui</h6>
                             <h3 class="fw-bold text-success mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-success-subtle text-success p-3 rounded-3">
@@ -202,11 +222,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-4">
                 <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1">Total Ditolak</h6>
+                            <h6 class="text-muted fw-medium mb-1 small">Total Ditolak</h6>
                             <h3 class="fw-bold text-danger mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-danger-subtle text-danger p-3 rounded-3">
@@ -223,27 +243,27 @@
                 <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-primary"></i>Daftar Riwayat & Aksi</h5>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
                     <thead class="table-light">
                         <tr>
-                            <th>Mahasiswa</th>
-                            <th>Laboratorium</th>
-                            <th>Mata Kuliah / Dosen</th>
-                            <th>Waktu Praktikum</th>
-                            <th>Status</th>
-                            <th>Aksi Pembaruan</th>
+                            <th style="width: 15%;">Mahasiswa</th>
+                            <th style="width: 25%;">Laboratorium & Alat</th>
+                            <th style="width: 15%;">Mata Kuliah</th>
+                            <th style="width: 20%;">Waktu Praktikum</th>
+                            <th style="width: 12%;">Status</th>
+                            <th style="width: 13%;">Aksi Pembaruan</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for pinjam in semua_peminjaman %}
                         <tr>
                             <td>
-                                <div class="fw-bold">{{ pinjam.mahasiswa.get_full_name|default:pinjam.mahasiswa.username }}</div>
+                                <div class="fw-bold text-dark">{{ pinjam.mahasiswa.username }}</div>
                                 <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
-                                <small class="text-muted">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
+                                <small class="text-muted d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
                                 <div>{{ pinjam.mata_kuliah }}</div>
@@ -255,41 +275,47 @@
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Menunggu ASLAB</span>
+                                    <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Menunggu ASLAB</span>
                                 {% elif pinjam.status == 'verified' %}
-                                    <span class="badge bg-info text-white px-3 py-2 rounded-pill">Menunggu KALAB</span>
+                                    <span class="badge bg-info text-white px-2 py-1 rounded-pill small">Menunggu KALAB</span>
                                 {% elif pinjam.status == 'disetujui' %}
-                                    <span class="badge bg-success px-3 py-2 rounded-pill">Disetujui</span>
+                                    <span class="badge bg-success px-2 py-1 rounded-pill small">Disetujui</span>
                                 {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Ajukan Pengembalian</span>
+                                    <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Ajukan Pengembalian</span>
                                 {% elif pinjam.status == 'selesai' %}
-                                    <span class="badge bg-primary px-3 py-2 rounded-pill">Selesai</span>
+                                    <span class="badge bg-primary px-2 py-1 rounded-pill small">Selesai</span>
                                 {% else %}
-                                    <span class="badge bg-danger px-3 py-2 rounded-pill">Ditolak</span>
+                                    <span class="badge bg-danger px-2 py-1 rounded-pill small">Ditolak</span>
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- Tombol Aksi Berfungsi untuk Backend -->
-                                {% if pinjam.status == 'pending' %}
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}" 
-                                       class="btn btn-sm btn-success rounded-3 fw-bold me-1"
-                                       onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
-                                       <i class="fa-solid fa-check"></i> Verifikasi
-                                    </a>
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}" 
-                                       class="btn btn-sm btn-danger rounded-3 fw-bold"
-                                       onclick="return confirm('Tolak peminjaman ini?');">
-                                       <i class="fa-solid fa-xmark"></i> Tolak
-                                    </a>
-                                {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}" 
-                                       class="btn btn-sm btn-primary rounded-3 fw-bold"
-                                       onclick="return confirm('Konfirmasi bahwa pengembalian alat/lab sudah selesai?');">
-                                       <i class="fa-solid fa-box-archive me-1"></i> Konfirmasi Selesai
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted small italic">Selesai diproses</span>
-                                {% endif %}
+                                <div class="btn-action-group">
+                                    <!-- 1. Tombol Verifikasi & Tolak Aktif Berfungsi -->
+                                    {% if pinjam.status == 'pending' %}
+                                        <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}" 
+                                           class="btn btn-success btn-action"
+                                           onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
+                                           <i class="fa-solid fa-check"></i> Verifikasi
+                                        </a>
+                                        <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}" 
+                                           class="btn btn-danger btn-action"
+                                           onclick="return confirm('Yakin ingin MENOLAK peminjaman ini?');">
+                                           <i class="fa-solid fa-xmark"></i> Tolak
+                                        </a>
+
+                                    <!-- 2. Tombol Konfirmasi Selesai Pengembalian -->
+                                    {% elif pinjam.status == 'pengembalian_diajukan' %}
+                                        <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}" 
+                                           class="btn btn-primary btn-action"
+                                           onclick="return confirm('Konfirmasi bahwa alat/lab sudah selesai dikembalikan?');">
+                                           <i class="fa-solid fa-box-archive"></i> Selesai
+                                        </a>
+
+                                    <!-- Status Lainnya -->
+                                    {% else %}
+                                        <span class="text-muted small italic">-</span>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                         {% empty %}
@@ -306,7 +332,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Vanilla Javascript -->
+    <!-- Script Hamburger Menu Mobile -->
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
@@ -318,9 +344,9 @@
             sidebarOverlay.classList.toggle('show');
         }
 
-        hamburgerBtn.addEventListener('click', toggleSidebar);
-        closeSidebarBtn.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
+        if(hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if(closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+        if(sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
     </script>
 </body>
 
