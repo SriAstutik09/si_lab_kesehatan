@@ -4,70 +4,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Rekapitulasi Peminjaman - TATA LAB</title>
-    <!-- Bootstrap 5 & FontAwesome -->
+    <title>Laporan Rekapitulasi - TATA LAB</title>
+    <!-- Bootstrap 5 CSS & FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        body {
-            background-color: #f8fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-green: #10b981;
+            --dark-green: #065f46;
+            --emerald-gradient: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
+            --light-bg: #f0fdf4;
         }
 
+        body {
+            background-color: #f4fbf7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            color: #1e293b;
+        }
+
+        /* Sidebar Tema Hijau */
         .sidebar {
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
-            width: 260px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
             z-index: 1040;
+            width: 260px;
+            background: var(--sidebar-gradient);
+            box-shadow: 4px 0 15px rgba(4, 120, 87, 0.15);
+            transition: transform 0.3s ease;
         }
 
         .sidebar .nav-link {
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.8);
             padding: 12px 20px;
             margin: 4px 15px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
         }
 
         .sidebar .nav-link.active {
             color: #fff;
-            background: #2563eb;
+            background: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .main-content {
             margin-left: 260px;
             padding: 30px;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .top-navbar {
+            display: none;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Header Tabel Tema Hijau Emerald */
+        .table-custom-header {
+            background: var(--emerald-gradient) !important;
+            color: #ffffff !important;
+        }
+
+        .table-custom-header th {
+            color: #ffffff !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border: none !important;
+            padding: 14px 12px !important;
+        }
+
+        /* Custom Cards */
+        .card-custom {
+            border: 1px solid #d1fae5;
+            box-shadow: 0 4px 6px -1px rgba(6, 95, 70, 0.03), 0 2px 4px -1px rgba(6, 95, 70, 0.02);
+            border-radius: 16px;
+        }
+
+        /* Button Brand Hijau */
+        .btn-brand {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-brand:hover {
+            background-color: #059669;
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        /* Responsif Layar Kecil / Tablet / HP */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-260px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+                padding-top: 80px;
+            }
+
+            .top-navbar {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1030;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1035;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
         }
 
         /* DOKUMEN CETAK / PRINT STYLES */
         @media print {
-
-            .sidebar,
-            .btn-print,
-            .filter-card,
-            .top-navbar {
+            .sidebar, .btn-print, .filter-card, .top-navbar, .sidebar-overlay {
                 display: none !important;
             }
-
             .main-content {
                 margin-left: 0 !important;
                 padding: 0 !important;
             }
-
-            .card {
+            .card, .card-custom {
                 border: none !important;
                 box-shadow: none !important;
             }
-
+            .table-custom-header {
+                background: #064e3b !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
             .print-header {
                 display: block !important;
                 text-align: center;
@@ -75,7 +177,6 @@
                 border-bottom: 2px solid #000;
                 padding-bottom: 10px;
             }
-
             .signature-area {
                 display: flex !important;
                 justify-content: space-between;
@@ -83,8 +184,7 @@
             }
         }
 
-        .print-header,
-        .signature-area {
+        .print-header, .signature-area {
             display: none;
         }
     </style>
@@ -92,14 +192,31 @@
 
 <body>
 
-    <!-- Sidebar Menu -->
-    <div class="sidebar d-flex flex-column justify-content-between py-4">
+    <!-- Overlay HP -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Top Navbar Mobile -->
+    <nav class="navbar top-navbar px-3 py-2">
+        <button class="btn btn-light border" type="button" id="hamburgerBtn">
+            <i class="fa-solid fa-bars fs-4 text-success"></i>
+        </button>
+        <span class="fw-bold text-dark ms-2">TATA LAB</span>
+        <div class="ms-auto small badge bg-success">ASLAB</div>
+    </nav>
+
+    <!-- Sidebar Menu Hijau -->
+    <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <div class="px-4 mb-4 text-white">
-                <h4 class="fw-bold mb-0 text-uppercase">
-                    <i class="fa-solid fa-flask-vial text-info me-2"></i>TATA LAB
-                </h4>
-                <small class="text-white-50">Portal Asisten Lab</small>
+            <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
+                <div>
+                    <h4 class="fw-bold mb-0 text-uppercase tracking-wider">
+                        <i class="fa-solid fa-flask-vial text-warning me-2"></i>TATA LAB
+                    </h4>
+                    <small class="text-white-50">Portal Asisten Lab</small>
+                </div>
+                <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
+                    <i class="fa-solid fa-xmark fs-4"></i>
+                </button>
             </div>
             <hr class="text-white-50 mx-3">
 
@@ -118,125 +235,131 @@
         </div>
 
         <div class="px-3">
-            <a href="/auth/logout/" class="btn btn-danger w-100 py-2 rounded-3 fw-bold">
-                <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar
+            <hr class="text-white-50 mb-3">
+            <a href="/auth/logout/" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
     </div>
 
     <!-- Area Konten Utama -->
     <div class="main-content">
-
+        
         <!-- Header Khusus Cetak / Print -->
         <div class="print-header">
             <h3 class="fw-bold mb-1">UNIVERSITAS NURUL JADID</h3>
             <h5 class="fw-bold text-uppercase mb-1">FAKULTAS KESEHATAN - LABORATORIUM KESEHATAN</h5>
-            <p class="mb-0 small">Jl. Raya Paiton, Probolinggo, Jawa Timur | Laporan Operasional Peminjaman Laboratorium
-            </p>
+            <p class="mb-0 small">Jl. Raya Paiton, Probolinggo, Jawa Timur | Laporan Operasional Peminjaman Laboratorium</p>
         </div>
 
         <!-- Header Web -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
             <div>
-                <h3 class="fw-bold text-slate-800 mb-0">Laporan & Rekapitulasi</h3>
-                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.
-                </p>
+                <h3 class="fw-bold text-dark mb-0">Laporan & Rekapitulasi</h3>
+                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.</p>
             </div>
-            <button onclick="window.print()" class="btn btn-primary fw-bold btn-print">
+            <button onclick="window.print()" class="btn btn-brand fw-bold px-4 py-2 rounded-3 btn-print w-100 w-md-auto">
                 <i class="fa-solid fa-print me-2"></i> Cetak Laporan / PDF
             </button>
         </div>
 
         <!-- Filter Tanggal -->
-        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 filter-card">
+        <div class="card card-custom p-3 mb-4 filter-card bg-white">
             <form method="GET" action="{% url 'aslab:laporan' %}" class="row g-3 align-items-end">
-                <div class="col-md-4">
-                    <label class="form-label small fw-bold">Tanggal Mulai</label>
-                    <input type="date" name="tgl_mulai" class="form-control" value="{{ tgl_mulai }}">
+                <div class="col-12 col-md-4">
+                    <label class="form-label small fw-bold text-secondary">Tanggal Mulai</label>
+                    <input type="date" name="tgl_mulai" class="form-control rounded-3" value="{{ tgl_mulai }}">
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label small fw-bold">Tanggal Selesai</label>
-                    <input type="date" name="tgl_selesai" class="form-control" value="{{ tgl_selesai }}">
+                <div class="col-12 col-md-4">
+                    <label class="form-label small fw-bold text-secondary">Tanggal Selesai</label>
+                    <input type="date" name="tgl_selesai" class="form-control rounded-3" value="{{ tgl_selesai }}">
                 </div>
-                <div class="col-md-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-success fw-bold flex-fill">
+                <div class="col-12 col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-brand fw-bold flex-fill rounded-3">
                         <i class="fa-solid fa-filter me-1"></i> Filter Data
                     </button>
-                    <a href="{% url 'aslab:laporan' %}" class="btn btn-outline-secondary fw-bold">Reset</a>
+                    <a href="{% url 'aslab:laporan' %}" class="btn btn-outline-secondary fw-bold rounded-3">Reset</a>
                 </div>
             </form>
         </div>
 
         <!-- Ringkasan Singkat -->
         <div class="row g-3 mb-4 text-center">
-            <div class="col-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+            <div class="col-12 col-sm-4">
+                <div class="card card-custom p-3 bg-white">
                     <small class="text-muted fw-bold">TOTAL TRANSAKSI</small>
-                    <h3 class="fw-bold text-primary mb-0">{{ total_laporan }}</h3>
+                    <h3 class="fw-bold text-success mb-0 mt-1">{{ total_laporan }}</h3>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+            <div class="col-12 col-sm-4">
+                <div class="card card-custom p-3 bg-white">
                     <small class="text-muted fw-bold">SUKSES / SELESAI</small>
-                    <h3 class="fw-bold text-success mb-0">{{ total_selesai }}</h3>
+                    <h3 class="fw-bold text-emerald mb-0 mt-1" style="color: #059669;">{{ total_selesai }}</h3>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+            <div class="col-12 col-sm-4">
+                <div class="card card-custom p-3 bg-white">
                     <small class="text-muted fw-bold">DITOLAK</small>
-                    <h3 class="fw-bold text-danger mb-0">{{ total_ditolak }}</h3>
+                    <h3 class="fw-bold text-danger mb-0 mt-1">{{ total_ditolak }}</h3>
                 </div>
             </div>
         </div>
 
         <!-- Tabel Rekapitulasi -->
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            <div class="card-body p-0">
-                <table class="table table-bordered table-striped align-middle mb-0">
-                    <thead class="table-dark text-center">
+        <div class="card card-custom overflow-hidden bg-white">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
+                    <thead class="table-custom-header text-center">
                         <tr>
                             <th style="width: 5%;">No</th>
-                            <th>Mahasiswa / NIM</th>
-                            <th>Laboratorium & Alat</th>
-                            <th>Mata Kuliah / Dosen</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Status Akhir</th>
+                            <th style="width: 15%;">Mahasiswa / NIM</th>
+                            <th style="width: 25%;">Laboratorium & Alat</th>
+                            <th style="width: 20%;">Mata Kuliah / Dosen</th>
+                            <th style="width: 20%;">Tanggal & Jam</th>
+                            <th style="width: 15%;">Status Akhir</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in laporan_list %}
                         <tr>
-                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-center fw-bold text-secondary">{{ forloop.counter }}</td>
                             <td>
-                                <strong>{{ item.mahasiswa.username }}</strong>
+                                <strong class="text-dark">{{ item.mahasiswa.username }}</strong>
                             </td>
                             <td>
-                                <strong class="text-primary">{{ item.ruang_lab.nama_ruang }}</strong><br>
+                                <strong class="text-success">{{ item.ruang_lab.nama_ruang }}</strong><br>
                                 <small class="text-muted">Alat: {{ item.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
-                                {{ item.mata_kuliah }}<br>
+                                <div class="fw-medium">{{ item.mata_kuliah }}</div>
                                 <small class="text-muted">Dsn: {{ item.dosen|default:"-" }}</small>
                             </td>
                             <td class="text-center">
-                                {{ item.tanggal_pinjam|date:"d/m/Y" }}<br>
-                                <small class="text-muted">{{ item.wkt_mulai|time:"H:i" }} - {{ item.wkt_akhir|time:"H:i"
-                                    }}</small>
+                                <div class="fw-medium"><i class="fa-regular fa-calendar me-1"></i>{{ item.tanggal_pinjam|date:"d/m/Y" }}</div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ item.wkt_mulai }} - {{ item.wkt_akhir }} WIB</small>
                             </td>
                             <td class="text-center fw-bold">
                                 {% if item.status == 'selesai' %}
-                                <span class="text-success"><i class="fa-solid fa-check-double me-1"></i>Selesai</span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-check-double me-1"></i>Selesai</span>
                                 {% elif item.status == 'ditolak' %}
-                                <span class="text-danger"><i class="fa-solid fa-xmark me-1"></i>Ditolak</span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-xmark me-1"></i>Ditolak</span>
+                                {% elif item.status == 'pending' %}
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-clock me-1"></i>Menunggu ASLAB</span>
+                                {% elif item.status == 'verified' %}
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-clock me-1"></i>Menunggu KALAB</span>
+                                {% elif item.status == 'disetujui' %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-thumbs-up me-1"></i>Disetujui</span>
+                                {% elif item.status == 'pengembalian_diajukan' %}
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-box me-1"></i>Proses Pengembalian</span>
                                 {% else %}
-                                <span class="text-warning"><i class="fa-solid fa-clock me-1"></i>{{
-                                    item.get_status_display|default:item.status }}</span>
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill">{{ item.status }}</span>
                                 {% endif %}
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fa-solid fa-folder-open fs-2 mb-2 d-block text-success opacity-50"></i>
                                 Tidak ada data rekapitulasi peminjaman untuk periode ini.
                             </td>
                         </tr>
@@ -260,6 +383,25 @@
 
     </div>
 
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Hamburger Menu Mobile -->
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebarMenu.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        }
+
+        if(hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if(closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+        if(sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+    </script>
 </body>
 
 </html>
