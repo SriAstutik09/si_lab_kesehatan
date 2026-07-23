@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk ke Sistem - UNUJA Lab</title>
+    <title>Masuk ke Sistem - SIMPEL-K / TATA LAB</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome untuk Icon -->
@@ -29,19 +30,6 @@
             width: 100%;
             max-width: 420px;
             padding: 2.5rem 2rem;
-        }
-
-        .brand-icon {
-            background-color: #00796b;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin: 0 auto 1rem auto;
         }
 
         .btn-tosca {
@@ -122,13 +110,12 @@
 
 <body>
 
-    <!-- Logo & Judul Atas -->
+    <!-- Logo Gambar Di Tengah Atas (Presisi Sesuai UI/UX) -->
+
     <div class="text-center mb-4">
-        <div class="brand-icon shadow-sm">
-            <i class="fa-solid fa-briefcase-medical"></i>
-        </div>
-        <h2 class="fw-bold mb-1" style="color: #1e293b;">UNUJA Lab</h2>
-        <p class="text-muted small px-4">Sistem Informasi Peminjaman Lab Kesehatan</p>
+        <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K UNUJA Lab"
+            style="height: 90px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.06));"
+            class="img-fluid">
     </div>
 
     <!-- Card Form Login -->
