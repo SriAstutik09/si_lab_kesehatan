@@ -15,7 +15,7 @@
         :root {
             --primary-green: #10b981;
             --dark-green: #065f46;
-            --emerald-gradient: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            /* Gradasi Hijau Emerald Lembut & Modern */
             --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
             --light-bg: #f4fbf7;
         }
@@ -71,7 +71,7 @@
             transition: margin-left 0.3s ease;
         }
 
-        /* Header Atas Berdasar UI/UX */
+        /* Header Atas */
         .top-header-bar {
             background-color: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -81,39 +81,15 @@
 
         /* Mobile Adjustments */
         @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-260px);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-                padding-top: 15px;
-            }
-
-            .top-header-bar {
-                margin: -15px -15px 20px -15px;
-                padding: 10px 15px;
-            }
-
+            .sidebar { transform: translateX(-260px); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 15px; padding-top: 15px; }
+            .top-header-bar { margin: -15px -15px 20px -15px; padding: 10px 15px; }
             .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.4);
-                z-index: 1035;
+                display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.4); z-index: 1035;
             }
-
-            .sidebar-overlay.show {
-                display: block;
-            }
+            .sidebar-overlay.show { display: block; }
         }
 
         /* Card Custom */
@@ -123,23 +99,10 @@
             border-radius: 16px;
         }
 
-        /* Action Buttons */
-        .btn-action-group {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .btn-action-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .btn-action {
-            font-size: 0.75rem;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
+            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
         }
     </style>
 </head>
@@ -149,21 +112,27 @@
     <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu Hijau -->
+    <!-- Sidebar Menu Hijau Emerald -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <!-- Header Logo Sidebar -->
+            <!-- Header Logo Sidebar (KOTAK PUTIH SUDAH DIHILANGKAN FULL DENGAN BENTUK ELEGAN) -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center gap-2">
-                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB" style="height: 48px; width: auto; filter: brightness(0) invert(1);">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
+                        <i class="fa-solid fa-flask-vial fs-4 text-success"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">TATA LAB</h5>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Portal Asisten Lab</small>
+                    </div>
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
                     <i class="fa-solid fa-xmark fs-4"></i>
                 </button>
             </div>
-            <hr class="text-white-50 mx-3">
+            <hr class="text-white-50 mx-3 mb-4">
 
-            <!-- MENU SIDEBAR (Termasuk Dashboard) -->
+            <!-- MENU SIDEBAR -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="{% url 'aslab:dashboard' %}" class="nav-link active">
@@ -195,23 +164,24 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- HEADER ATAS PRESISI SESUAI GAMBAR DESAIN UI/UX -->
+        <!-- HEADER ATAS (LOGO DIBESARKAN) -->
         <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
                     <i class="fa-solid fa-bars fs-3 text-dark"></i>
                 </button>
-                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 42px; width: auto;">
+                <!-- UKURAN LOGO DIPERBESAR MENJADI 55px SANGAT JELAS -->
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 55px; width: auto; object-fit: contain;">
             </div>
 
-            <!-- Ikon Lonceng Notifikasi & Profil Aktif Dropdown -->
+            <!-- Ikon Lonceng Notifikasi & Dropdown Profil -->
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
                     <i class="fa-regular fa-bell fs-5 text-secondary"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
-                <!-- Dropdown Profil Asli User yang Sedang Login -->
+                <!-- Dropdown Profil Asli -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
