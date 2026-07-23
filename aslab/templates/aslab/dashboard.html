@@ -1,22 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard ASLAB - TATA LAB</title>
+    <title>Dashboard ASLAB - SIMPEL-K / TATA LAB</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+    <!-- Font Awesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        body {
-            background-color: #f8fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
+        :root {
+            --primary-green: #10b981;
+            --dark-green: #065f46;
+            --emerald-gradient: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
+            --light-bg: #f4fbf7;
         }
 
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            color: #1e293b;
+        }
+
+        /* Sidebar Tema Hijau Emerald */
         .sidebar {
             position: fixed;
             top: 0;
@@ -24,14 +35,14 @@
             left: 0;
             z-index: 1040;
             width: 260px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+            background: var(--sidebar-gradient);
+            box-shadow: 4px 0 15px rgba(4, 120, 87, 0.15);
             transition: transform 0.3s ease;
         }
 
         .sidebar .nav-link {
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.8);
             padding: 12px 20px;
             margin: 4px 15px;
             border-radius: 10px;
@@ -43,15 +54,16 @@
 
         .sidebar .nav-link:hover {
             color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.12);
         }
 
         .sidebar .nav-link.active {
             color: #fff;
-            background: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            background: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
+        /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 30px;
@@ -59,13 +71,15 @@
             transition: margin-left 0.3s ease;
         }
 
-        .top-navbar {
-            display: none;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        /* Header Atas Berdasar UI/UX */
+        .top-header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            margin: -30px -30px 30px -30px;
         }
 
-        /* Responsif Layar Kecil / Tablet / HP */
+        /* Mobile Adjustments */
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
@@ -78,16 +92,12 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
-                padding-top: 80px;
+                padding-top: 15px;
             }
 
-            .top-navbar {
-                display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 1030;
+            .top-header-bar {
+                margin: -15px -15px 20px -15px;
+                padding: 10px 15px;
             }
 
             .sidebar-overlay {
@@ -106,7 +116,14 @@
             }
         }
 
-        /* Desain Khusus Tombol Aksi */
+        /* Card Custom */
+        .card-custom {
+            border: 1px solid #d1fae5;
+            box-shadow: 0 4px 6px -1px rgba(6, 95, 70, 0.03);
+            border-radius: 16px;
+        }
+
+        /* Action Buttons */
         .btn-action-group {
             display: flex;
             gap: 6px;
@@ -116,7 +133,7 @@
 
         .btn-action {
             font-size: 0.75rem;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-weight: 600;
             display: inline-flex;
@@ -132,24 +149,13 @@
     <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Top Navbar Mobile -->
-    <nav class="navbar top-navbar px-3 py-2">
-        <button class="btn btn-light border" type="button" id="hamburgerBtn">
-            <i class="fa-solid fa-bars fs-4 text-secondary"></i>
-        </button>
-        <span class="fw-bold text-dark ms-2">TATA LAB</span>
-        <div class="ms-auto small badge bg-primary">ASLAB</div>
-    </nav>
-
-    <!-- Sidebar Menu -->
+    <!-- Sidebar Menu Hijau -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
+            <!-- Header Logo Sidebar -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
-                <div>
-                    <h4 class="fw-bold mb-0 text-uppercase tracking-wider">
-                        <i class="fa-solid fa-flask-vial text-info me-2"></i>TATA LAB
-                    </h4>
-                    <small class="text-white-50">Portal Asisten Lab</small>
+                <div class="d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB" style="height: 48px; width: auto; filter: brightness(0) invert(1);">
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
                     <i class="fa-solid fa-xmark fs-4"></i>
@@ -157,10 +163,15 @@
             </div>
             <hr class="text-white-50 mx-3">
 
-            ### SIDEBAR MENU ###
+            <!-- MENU SIDEBAR (Termasuk Dashboard) -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="{% url 'aslab:dashboard' %}" class="nav-link active">
+                        <i class="fa-solid fa-gauge fs-5"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'aslab:dashboard' %}" class="nav-link">
                         <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
                     </a>
                 </li>
@@ -172,10 +183,10 @@
             </ul>
         </div>
 
+        <!-- Tombol Logout -->
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="/auth/logout/"
-                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="/auth/logout/" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -183,6 +194,43 @@
 
     <!-- Main Content Area -->
     <div class="main-content">
+
+        <!-- HEADER ATAS PRESISI SESUAI GAMBAR DESAIN UI/UX -->
+        <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars fs-3 text-dark"></i>
+                </button>
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 42px; width: auto;">
+            </div>
+
+            <!-- Ikon Lonceng Notifikasi & Profil Aktif Dropdown -->
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
+                    <i class="fa-regular fa-bell fs-5 text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </button>
+
+                <!-- Dropdown Profil Asli User yang Sedang Login -->
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser">
+                        <li class="px-3 py-2 border-bottom">
+                            <span class="d-block fw-bold text-dark">{{ request.user.username }}</span>
+                            <small class="text-muted">Role: Asisten Lab (ASLAB)</small>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 text-danger fw-semibold" href="/auth/logout/">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Notifikasi Pesan Django -->
         {% if messages %}
         {% for message in messages %}
@@ -193,21 +241,19 @@
         {% endfor %}
         {% endif %}
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h3 class="fw-bold text-slate-800 mb-0">Selamat Datang, ASLAB 👋</h3>
-                <p class="text-muted mb-0 small">Berikut adalah daftar pengajuan peminjaman laboratorium kesehatan dari
-                    mahasiswa.</p>
-            </div>
+        <!-- Salam Welcoming -->
+        <div class="mb-4">
+            <h3 class="fw-bold text-dark mb-1">Halo, {{ request.user.first_name|default:"Aslab" }} 👋</h3>
+            <p class="text-muted small mb-0">Selamat datang kembali di portal laboratorium kesehatan.</p>
         </div>
 
         <!-- Kartu Ringkasan Statistik -->
         <div class="row g-3 mb-4">
             <div class="col-12 col-sm-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1 small">Pengajuan Masuk</h6>
+                            <h6 class="text-muted fw-bold mb-1 small">Pengajuan Masuk</h6>
                             <h3 class="fw-bold text-warning mb-0">{{ total_masuk|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-warning-subtle text-warning p-3 rounded-3">
@@ -217,10 +263,10 @@
                 </div>
             </div>
             <div class="col-12 col-sm-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1 small">Total Disetujui</h6>
+                            <h6 class="text-muted fw-bold mb-1 small">Total Disetujui</h6>
                             <h3 class="fw-bold text-success mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-success-subtle text-success p-3 rounded-3">
@@ -230,10 +276,10 @@
                 </div>
             </div>
             <div class="col-12 col-sm-4">
-                <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-medium mb-1 small">Total Ditolak</h6>
+                            <h6 class="text-muted fw-bold mb-1 small">Total Ditolak</h6>
                             <h3 class="fw-bold text-danger mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
                         </div>
                         <div class="bg-danger-subtle text-danger p-3 rounded-3">
@@ -245,10 +291,9 @@
         </div>
 
         <!-- Tabel Data Peminjaman -->
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            <div class="card-header bg-white border-0 py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-primary"></i>Daftar Riwayat &
-                    Aksi</h5>
+        <div class="card card-custom bg-white overflow-hidden">
+            <div class="card-header bg-white border-bottom py-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-success"></i>Daftar Riwayat & Aksi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
@@ -270,34 +315,28 @@
                                 <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
-                                <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
+                                <div class="fw-bold text-success">{{ pinjam.ruang_lab.nama_ruang }}</div>
                                 <small class="text-muted d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
-                                <div class="fw-bold">{{ pinjam.mata_kuliah }}</div>
-                                <!-- Menampilkan nama dosen dengan penanganan jika data kosong -->
+                                <div class="fw-bold text-dark">{{ pinjam.mata_kuliah }}</div>
                                 <small class="text-muted">
                                     Dosen: {{ pinjam.dosen|default:pinjam.nama_dosen|default:"-" }}
                                 </small>
                             </td>
                             <td>
-                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
-                                </div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai }}
-                                    - {{ pinjam.wkt_akhir }} WIB</small>
+                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}</div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai }} - {{ pinjam.wkt_akhir }} WIB</small>
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
-                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Menunggu
-                                    ASLAB</span>
+                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Menunggu ASLAB</span>
                                 {% elif pinjam.status == 'verified' %}
-                                <span class="badge bg-info text-white px-2 py-1 rounded-pill small">Menunggu
-                                    KALAB</span>
+                                <span class="badge bg-info text-white px-2 py-1 rounded-pill small">Menunggu KALAB</span>
                                 {% elif pinjam.status == 'disetujui' %}
                                 <span class="badge bg-success px-2 py-1 rounded-pill small">Disetujui</span>
                                 {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Ajukan
-                                    Pengembalian</span>
+                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Ajukan Pengembalian</span>
                                 {% elif pinjam.status == 'selesai' %}
                                 <span class="badge bg-primary px-2 py-1 rounded-pill small">Selesai</span>
                                 {% else %}
@@ -306,7 +345,6 @@
                             </td>
                             <td>
                                 <div class="btn-action-group">
-                                    <!-- 1. Tombol Verifikasi & Tolak Aktif Berfungsi -->
                                     {% if pinjam.status == 'pending' %}
                                     <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}"
                                         class="btn btn-success btn-action"
@@ -318,16 +356,12 @@
                                         onclick="return confirm('Yakin ingin MENOLAK peminjaman ini?');">
                                         <i class="fa-solid fa-xmark"></i> Tolak
                                     </a>
-
-                                    <!-- 2. Tombol Konfirmasi Selesai Pengembalian -->
                                     {% elif pinjam.status == 'pengembalian_diajukan' %}
                                     <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}"
                                         class="btn btn-primary btn-action"
                                         onclick="return confirm('Konfirmasi bahwa alat/lab sudah selesai dikembalikan?');">
                                         <i class="fa-solid fa-box-archive"></i> Selesai
                                     </a>
-
-                                    <!-- Status Lainnya -->
                                     {% else %}
                                     <span class="text-muted small italic">-</span>
                                     {% endif %}
@@ -336,8 +370,7 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman
-                                laboratorium.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman laboratorium.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -349,7 +382,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Hamburger Menu Mobile -->
+    <!-- Script Sidebar Mobile -->
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');

@@ -6,8 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Rekapitulasi - SIMPEL-K / TATA LAB</title>
-    <!-- Bootstrap 5 CSS & FontAwesome -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
@@ -16,17 +17,17 @@
             --dark-green: #065f46;
             --emerald-gradient: linear-gradient(135deg, #064e3b 0%, #047857 100%);
             --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
-            --light-bg: #f0fdf4;
+            --light-bg: #f4fbf7;
         }
 
         body {
-            background-color: #f4fbf7;
+            background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
             color: #1e293b;
         }
 
-        /* Sidebar Tema Hijau */
+        /* Sidebar Tema Hijau Emerald */
         .sidebar {
             position: fixed;
             top: 0;
@@ -62,6 +63,7 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
+        /* Main Content Area */
         .main-content {
             margin-left: 260px;
             padding: 30px;
@@ -69,13 +71,15 @@
             transition: margin-left 0.3s ease;
         }
 
-        .top-navbar {
-            display: none;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        /* Header Atas Presisi Sesuai Dashboard */
+        .top-header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            margin: -30px -30px 30px -30px;
         }
 
-        /* Header Tabel Tema Hijau Emerald */
+        /* Header Tabel Emerald */
         .table-custom-header {
             background: var(--emerald-gradient) !important;
             color: #ffffff !important;
@@ -91,10 +95,10 @@
             padding: 14px 12px !important;
         }
 
-        /* Custom Cards */
+        /* Card Custom */
         .card-custom {
             border: 1px solid #d1fae5;
-            box-shadow: 0 4px 6px -1px rgba(6, 95, 70, 0.03), 0 2px 4px -1px rgba(6, 95, 70, 0.02);
+            box-shadow: 0 4px 6px -1px rgba(6, 95, 70, 0.03);
             border-radius: 16px;
         }
 
@@ -112,7 +116,7 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
 
-        /* Responsif Layar Kecil / Tablet / HP */
+        /* Mobile Adjustments */
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
@@ -125,16 +129,12 @@
             .main-content {
                 margin-left: 0;
                 padding: 15px;
-                padding-top: 80px;
+                padding-top: 15px;
             }
 
-            .top-navbar {
-                display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 1030;
+            .top-header-bar {
+                margin: -15px -15px 20px -15px;
+                padding: 10px 15px;
             }
 
             .sidebar-overlay {
@@ -155,32 +155,22 @@
 
         /* DOKUMEN CETAK / PRINT STYLES */
         @media print {
-
-            .sidebar,
-            .btn-print,
-            .filter-card,
-            .top-navbar,
-            .sidebar-overlay {
+            .sidebar, .btn-print, .filter-card, .top-header-bar, .sidebar-overlay {
                 display: none !important;
             }
-
             .main-content {
                 margin-left: 0 !important;
                 padding: 0 !important;
             }
-
-            .card,
-            .card-custom {
+            .card, .card-custom {
                 border: none !important;
                 box-shadow: none !important;
             }
-
             .table-custom-header {
                 background: #064e3b !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-
             .print-header {
                 display: block !important;
                 text-align: center;
@@ -188,7 +178,6 @@
                 border-bottom: 2px solid #000;
                 padding-bottom: 10px;
             }
-
             .signature-area {
                 display: flex !important;
                 justify-content: space-between;
@@ -196,8 +185,7 @@
             }
         }
 
-        .print-header,
-        .signature-area {
+        .print-header, .signature-area {
             display: none;
         }
     </style>
@@ -208,30 +196,13 @@
     <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- 1. TOP NAVBAR MOBILE (LETAK LOGO DI HP / SESUAI DESAIN UI/UX GAMBAR 2) -->
-    <nav class="navbar top-navbar px-3 py-2 border-bottom bg-white">
-        <div class="d-flex align-items-center gap-3">
-            <button class="btn btn-light border-0 p-1" type="button" id="hamburgerBtn">
-                <i class="fa-solid fa-bars fs-4 text-dark"></i>
-            </button>
-            <!-- GAMBAR LOGO DI SAMPING HAMBURGER -->
-            <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 45px; width: auto;">
-        </div>
-
-        <div class="ms-auto d-flex align-items-center gap-3">
-            <i class="fa-regular fa-bell fs-5 text-secondary"></i>
-            <i class="fa-regular fa-user fs-4 text-dark"></i>
-        </div>
-    </nav>
-
-    <!-- 2. SIDEBAR MENU (LETAK LOGO DI LAPTOP / TAMPILAN UTAMA) -->
+    <!-- SIDEBAR MENU HIJAU -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <!-- GAMBAR LOGO UTAMA DI ATAS SIDEBAR -->
+            <!-- Header Logo Sidebar -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB"
-                        style="height: 55px; width: auto; filter: brightness(0) invert(1);">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB" style="height: 48px; width: auto; filter: brightness(0) invert(1);">
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
                     <i class="fa-solid fa-xmark fs-4"></i>
@@ -239,7 +210,13 @@
             </div>
             <hr class="text-white-50 mx-3">
 
+            <!-- NAVIGASI SIDEBAR SENADA WITH DASHBOARD -->
             <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'aslab:dashboard' %}" class="nav-link">
+                        <i class="fa-solid fa-gauge fs-5"></i> Dashboard
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{% url 'aslab:dashboard' %}" class="nav-link">
                         <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
@@ -253,36 +230,68 @@
             </ul>
         </div>
 
+        <!-- Tombol Logout -->
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="/auth/logout/"
-                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="/auth/logout/" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
     </div>
 
-    <!-- Area Konten Utama -->
+    <!-- MAIN CONTENT AREA -->
     <div class="main-content">
 
-        <!-- Header Khusus Cetak / Print -->
+        <!-- TOP HEADER BAR (SAMA PERSIS DENGAN DASHBOARD UI/UX) -->
+        <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars fs-3 text-dark"></i>
+                </button>
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 42px; width: auto;">
+            </div>
+
+            <!-- Ikon Lonceng Notifikasi & Dropdown Profil Asli -->
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
+                    <i class="fa-regular fa-bell fs-5 text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </button>
+
+                <!-- Dropdown Profil User Login -->
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser">
+                        <li class="px-3 py-2 border-bottom">
+                            <span class="d-block fw-bold text-dark">{{ request.user.username }}</span>
+                            <small class="text-muted">Role: Asisten Lab (ASLAB)</small>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2 text-danger fw-semibold" href="/auth/logout/">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Khusus Cetak / Print PDF -->
         <div class="print-header">
             <h3 class="fw-bold mb-1">UNIVERSITAS NURUL JADID</h3>
             <h5 class="fw-bold text-uppercase mb-1">FAKULTAS KESEHATAN - LABORATORIUM KESEHATAN</h5>
-            <p class="mb-0 small">Jl. Raya Paiton, Probolinggo, Jawa Timur | Laporan Operasional Peminjaman Laboratorium
-            </p>
+            <p class="mb-0 small">Jl. Raya Paiton, Probolinggo, Jawa Timur | Laporan Operasional Peminjaman Laboratorium</p>
         </div>
 
-        <!-- Header Web -->
-        <div
-            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+        <!-- Judul Halaman Web -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
             <div>
                 <h3 class="fw-bold text-dark mb-0">Laporan & Rekapitulasi</h3>
-                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.
-                </p>
+                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.</p>
             </div>
-            <button onclick="window.print()"
-                class="btn btn-brand fw-bold px-4 py-2 rounded-3 btn-print w-100 w-md-auto">
+            <button onclick="window.print()" class="btn btn-brand fw-bold px-4 py-2 rounded-3 btn-print w-100 w-md-auto">
                 <i class="fa-solid fa-print me-2"></i> Cetak Laporan / PDF
             </button>
         </div>
@@ -307,7 +316,7 @@
             </form>
         </div>
 
-        <!-- Ringkasan Singkat -->
+        <!-- Kartu Statistik Ringkasan -->
         <div class="row g-3 mb-4 text-center">
             <div class="col-12 col-sm-4">
                 <div class="card card-custom p-3 bg-white">
@@ -318,7 +327,7 @@
             <div class="col-12 col-sm-4">
                 <div class="card card-custom p-3 bg-white">
                     <small class="text-muted fw-bold">SUKSES / SELESAI</small>
-                    <h3 class="fw-bold text-emerald mb-0 mt-1" style="color: #059669;">{{ total_selesai }}</h3>
+                    <h3 class="fw-bold mb-0 mt-1" style="color: #059669;">{{ total_selesai }}</h3>
                 </div>
             </div>
             <div class="col-12 col-sm-4">
@@ -359,40 +368,24 @@
                                 <small class="text-muted">Dsn: {{ item.dosen|default:"-" }}</small>
                             </td>
                             <td class="text-center">
-                                <div class="fw-medium"><i class="fa-regular fa-calendar me-1"></i>{{
-                                    item.tanggal_pinjam|date:"d/m/Y" }}</div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ item.wkt_mulai }} -
-                                    {{ item.wkt_akhir }} WIB</small>
+                                <div class="fw-medium"><i class="fa-regular fa-calendar me-1"></i>{{ item.tanggal_pinjam|date:"d/m/Y" }}</div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ item.wkt_mulai }} - {{ item.wkt_akhir }} WIB</small>
                             </td>
                             <td class="text-center fw-bold">
                                 {% if item.status == 'selesai' %}
-                                <span
-                                    class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-check-double me-1"></i>Selesai</span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-check-double me-1"></i>Selesai</span>
                                 {% elif item.status == 'ditolak' %}
-                                <span
-                                    class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-xmark me-1"></i>Ditolak</span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-xmark me-1"></i>Ditolak</span>
                                 {% elif item.status == 'pending' %}
-                                <span
-                                    class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-clock me-1"></i>Menunggu ASLAB</span>
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-clock me-1"></i>Menunggu ASLAB</span>
                                 {% elif item.status == 'verified' %}
-                                <span
-                                    class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-clock me-1"></i>Menunggu KALAB</span>
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-clock me-1"></i>Menunggu KALAB</span>
                                 {% elif item.status == 'disetujui' %}
-                                <span
-                                    class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-thumbs-up me-1"></i>Disetujui</span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-thumbs-up me-1"></i>Disetujui</span>
                                 {% elif item.status == 'pengembalian_diajukan' %}
-                                <span
-                                    class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i
-                                        class="fa-solid fa-box me-1"></i>Proses Pengembalian</span>
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-2 rounded-pill"><i class="fa-solid fa-box me-1"></i>Proses Pengembalian</span>
                                 {% else %}
-                                <span
-                                    class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill">{{
-                                    item.status }}</span>
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill">{{ item.status }}</span>
                                 {% endif %}
                             </td>
                         </tr>
@@ -409,7 +402,7 @@
             </div>
         </div>
 
-        <!-- Area Tanda Tangan (Tampil Hanya Saat Dicetak) -->
+        <!-- Area Tanda Tangan Cetak PDF -->
         <div class="signature-area">
             <div class="text-center">
                 <p class="mb-5">Mengetahui,<br><strong>Kepala Laboratorium (KALAB)</strong></p>
@@ -426,7 +419,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Hamburger Menu Mobile -->
+    <!-- Script Sidebar Mobile -->
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
@@ -438,9 +431,9 @@
             sidebarOverlay.classList.toggle('show');
         }
 
-        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-        if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
-        if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+        if(hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if(closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+        if(sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
     </script>
 </body>
 
