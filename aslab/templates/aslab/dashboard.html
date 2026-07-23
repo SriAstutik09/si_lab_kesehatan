@@ -283,8 +283,8 @@
                             <td>
                                 <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
                                 </div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{
-                                    pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai }}
+                                    - {{ pinjam.wkt_akhir }} WIB</small>
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
