@@ -1,20 +1,31 @@
 # ==============================================================================
 # IMPOR MODUL DAN DEPENDENSI DJANGO
 # ==============================================================================
-# render: Untuk menampilkan file HTML template dengan membawa data (context)
-# redirect: Untuk mengarahkan (mengarahkan ulang) halaman web ke URL lain
-# get_object_or_404: Mengambil data dari database berdasarkan ID, jika tidak ketemu langsung tampilkan error 404 (aman dari error sistem)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
-# login_required: Hiasan (decorator) untuk mengamankan halaman agar hanya bisa dibuka jika user sudah login
 from django.contrib import messages
 
 # Impor model database yang digunakan dalam aplikasi
 from core_auth.models import Peminjaman, RuangLab, AlatBahan
 
-# Impor form HTML bawaan Django yang sudah kita definisikan di forms.py
+# Impor form HTML bawaan Django
 from .forms import PeminjamanForm
+
+
+# ==============================================================================
+# HELPER FUNCTION: PENGECEKAN ROLE AKSES MAHASISWA
+# ==============================================================================
+def cekk_role_mahasiswa(user):
+    """
+    Fungsi bantu untuk mengecek apakah user yang login BUKAN mahasiswa.
+    Jika user adalah ASLAB atau KALAB, return nama redirect tujuannya.
+    """
+    # Pengecekan berbasis Group Django atau atribut role
+    if user.groups.filter(name='ASLAB').exists() or getattr(user, 'role', '') == 'ASLAB':
+        return 'aslab:dashboard'
+    elif user.groups.filter(name='KALAB').exists() or getattr(user, 'role', '') == 'KALAB':
+        return 'kalab:dashboard'
+    return None
 
 
 # ==============================================================================
@@ -26,7 +37,13 @@ def dashboard_view(request):
     Fungsi untuk menampilkan statistik ringkasan dan daftar riwayat
     peminjaman khusus milik mahasiswa yang sedang login.
     """
-    # Mengambil semua daftar peminjaman milik user yang login, diurutkan dari yang terbaru (-tanggal_pinjam)
+    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB masuk ke Portal Mahasiswa
+    redirect_target = cekk_role_mahasiswa(request.user)
+    if redirect_target:
+        messages.warning(request, "Anda login sebagai petugas. Mengalihkan ke dashboard Anda.")
+        return redirect(redirect_target)
+
+    # Mengambil semua daftar peminjaman milik user yang login
     jadwal_mahasiswa = Peminjaman.objects.filter(mahasiswa=request.user).order_by('-tanggal_pinjam')
     
     # Menghitung statistik status peminjaman milik user ini
@@ -34,7 +51,6 @@ def dashboard_view(request):
     total_disetujui = Peminjaman.objects.filter(mahasiswa=request.user, status='disetujui').count()
     total_ditolak = Peminjaman.objects.filter(mahasiswa=request.user, status='ditolak').count()
     
-    # Membungkus data ke dalam dictionary context untuk dikirim ke file HTML dashboard.html
     context = {
         'jadwal_mahasiswa': jadwal_mahasiswa,
         'total_menunggu': total_menunggu,
@@ -53,6 +69,12 @@ def pinjam_lab_view(request):
     Fungsi untuk menampilkan form pengajuan pinjam lab/alat
     serta menyimpan data pengajuan baru dari mahasiswa.
     """
+    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB membuat pengajuan pinjaman
+    redirect_target = cekk_role_mahasiswa(request.user)
+    if redirect_target:
+        messages.error(request, "Petugas Lab tidak dapat mengajukan peminjaman lab/alat.")
+        return redirect(redirect_target)
+
     # [OTOMATISASI] Memastikan data awal dummy di database RuangLab dan AlatBahan terisi jika masih kosong
     if not RuangLab.objects.exists():
         RuangLab.objects.create(nama_ruang="Lab Atas", kapasitas=30)
@@ -63,32 +85,24 @@ def pinjam_lab_view(request):
         AlatBahan.objects.create(nama_alat="Manekin Anatomi Kesehatan")
         AlatBahan.objects.create(nama_alat="Set Bedah Minor / Hecting Kit")
 
-    # Mengecek apakah mahasiswa mengirimkan form (metode POST)
     if request.method == 'POST':
         form = PeminjamanForm(request.POST)
         if form.is_valid():
-            # commit=False: Menyiapkan objek data peminjaman tapi jangan disimpan ke DB dulu
             peminjaman = form.save(commit=False)
-            
-            # Mengisi data otomatis yang tidak ada di dalam pilihan form
             peminjaman.mahasiswa = request.user  # Mengisi peminjam dengan user yang sedang login
             peminjaman.status = 'pending'        # Status awal otomatis 'pending' (menunggu verifikasi ASLAB)
-            
-            # Simpan data peminjaman secara permanen ke database
             peminjaman.save()
             
-            # Tampilkan pesan notifikasi sukses
             messages.success(request, 'Pengajuan peminjaman berhasil dikirim! Menunggu validasi ASLAB.')
             return redirect('mahasiswa:dashboard')
     else:
-        # Jika baru pertama kali membuka halaman (metode GET), tampilkan form kosong
         form = PeminjamanForm()
     
     return render(request, 'mahasiswa/form_pinjam.html', {'form': form})
 
 
 # ==============================================================================
-# 3. VIEW FITUR BARU: AJUKAN PENGEMBALIAN LAB/ALAT
+# 3. VIEW FITUR: AJUKAN PENGEMBALIAN LAB/ALAT
 # ==============================================================================
 @login_required(login_url='core_auth:login')
 def ajukan_pengembalian_view(request, pinjam_id):
@@ -96,17 +110,19 @@ def ajukan_pengembalian_view(request, pinjam_id):
     Fungsi untuk mengubah status peminjaman menjadi 'pengembalian_diajukan'
     setelah mahasiswa selesai menggunakan laboratorium atau alat.
     """
-    # Mengambil objek Peminjaman berdasarkan ID (pinjam_id) dan dipastikan milik user yang login
+    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB memproses URL ini secara langsung
+    redirect_target = cekk_role_mahasiswa(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    # Mengambil objek Peminjaman berdasarkan ID dan dipastikan milik mahasiswa yang sedang login
     peminjaman = get_object_or_404(Peminjaman, id=pinjam_id, mahasiswa=request.user)
     
-    # Validasi: Pengembalian hanya boleh diajukan jika status peminjaman saat ini adalah 'disetujui'
     if peminjaman.status == 'disetujui':
-        peminjaman.status = 'pengembalian_diajukan'  # Mengubah status di objek
-        peminjaman.save()                             # Menyimpan perubahan status ke database
-        
+        peminjaman.status = 'pengembalian_diajukan'
+        peminjaman.save()
         messages.success(request, 'Pengajuan pengembalian berhasil dikirim! Silakan hubungi ASLAB untuk pengecekan alat.')
     else:
         messages.error(request, 'Pengajuan pengembalian tidak dapat diproses untuk status peminjaman ini.')
         
-    # Mengarahkan kembali ke halaman dashboard mahasiswa
     return redirect('mahasiswa:dashboard')
