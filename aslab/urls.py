@@ -9,4 +9,6 @@ urlpatterns = [
     
     # Rute Aksi Verifikasi / Tolak / Selesai
     path('verifikasi/<int:pinjam_id>/<str:aksi>/', views.verifikasi_peminjaman, name='verifikasi'),
+    # path LAPORAN 
+    path('laporan/', views.laporan_peminjaman, name='laporan'),
 ]

@@ -12,16 +12,26 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
+            messages.success(request, f'Selamat datang kembali, {user.username}!')
             
-            # Pengecekan Hak Akses (Role-Based Redirect)
-            if user.role == 'mahasiswa':
-                return redirect('mahasiswa:dashboard')
-            elif user.role == 'aslab':
+            # ==================================================================
+            # TEMPAT MENULISKAN KODE PENGECEKAN HAK AKSES (ROLE-BASED REDIRECT)
+            # ==================================================================
+            user_role = str(user.role).lower() if hasattr(user, 'role') and user.role else ''
+            
+            if user_role == 'aslab':
                 return redirect('aslab:dashboard')
-            elif user.role == 'kaleb':
+            elif user_role == 'kaleb' or user_role == 'kalab':
                 return redirect('kalab:dashboard')
+            elif user_role == 'mahasiswa':
+                return redirect('mahasiswa:dashboard')
             else:
-                return redirect('/admin/') # Jika superuser bawaan Django
+                # Jika akun staff/superuser atau role belum terdefinisi
+                if user.is_staff or user.is_superuser:
+                    return redirect('aslab:dashboard')
+                return redirect('mahasiswa:dashboard')
+            # ==================================================================
+            
         else:
             messages.error(request, 'Username atau Password salah!')
             

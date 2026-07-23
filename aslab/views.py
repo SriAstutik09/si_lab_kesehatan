@@ -60,3 +60,34 @@ def verifikasi_peminjaman(request, pinjam_id, aksi):
         
     peminjaman.save()
     return redirect('aslab:dashboard')
+
+# Fungsi Laporan peminjaman
+@login_required(login_url='core_auth:login')
+def laporan_peminjaman(request):
+    """
+    Menampilkan halaman rekapitulasi laporan peminjaman dengan fitur filter tanggal.
+    """
+    tgl_mulai = request.GET.get('tgl_mulai')
+    tgl_selesai = request.GET.get('tgl_selesai')
+
+    # Ambil semua data peminjaman
+    laporan_list = Peminjaman.objects.all().order_by('-tanggal_pinjam')
+
+    # Filter berdasarkan tanggal jika parameter diisi oleh user
+    if tgl_mulai and tgl_selesai:
+        laporan_list = laporan_list.filter(tanggal_pinjam__range=[tgl_mulai, tgl_selesai])
+
+    # Hitung ringkasan statistik laporan
+    total_laporan = laporan_list.count()
+    total_selesai = laporan_list.filter(status='selesai').count()
+    total_ditolak = laporan_list.filter(status='ditolak').count()
+
+    context = {
+        'laporan_list': laporan_list,
+        'tgl_mulai': tgl_mulai or '',
+        'tgl_selesai': tgl_selesai or '',
+        'total_laporan': total_laporan,
+        'total_selesai': total_selesai,
+        'total_ditolak': total_ditolak,
+    }
+    return render(request, 'aslab/laporan.html', context)
