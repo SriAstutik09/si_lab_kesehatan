@@ -121,6 +121,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+#petunjuk lokasi untuk LOGO / gambar
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 # Konfigurasi Custom User Model terpusat
 AUTH_USER_MODEL = 'core_auth.User'
 # Memberitahu Django jalur login resmi sistem kita
