@@ -10,23 +10,36 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+    <!-- Google Fonts — samakan dengan halaman login -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary-green: #10b981;
-            --dark-green: #065f46;
-            --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
-            --light-bg: #f4fbf7;
+            --teal-900: #00443c;
+            --teal-700: #00796b;
+            --teal-600: #009688;
+            --teal-050: #e6f4f1;
+            --ink: #16241f;
+            --ink-muted: #5b6b66;
+            --line: #e1e8e5;
+            --paper: #ffffff;
+            --bg: #f3f7f6;
+            --radius-lg: 22px;
+            --radius-md: 12px;
+            --shadow-card: 0 16px 34px -18px rgba(0, 68, 60, 0.22);
         }
-
         body {
-            background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
-            color: #1e293b;
+            color: var(--ink);
         }
-
-        /* Sidebar Styling */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+        /* ===== Sidebar Styling — gradient sama seperti brand-panel di halaman login ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -34,34 +47,53 @@
             left: 0;
             z-index: 1040;
             width: 260px;
-            background: var(--sidebar-gradient);
-            box-shadow: 4px 0 15px rgba(4, 120, 87, 0.15);
+            background: linear-gradient(160deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            box-shadow: 4px 0 22px rgba(0, 68, 60, 0.18);
             transition: transform 0.3s ease;
         }
-
         .sidebar .nav-link {
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: .92rem;
+            color: rgba(255, 255, 255, 0.75);
             padding: 12px 20px;
             margin: 4px 15px;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             gap: 12px;
             transition: all 0.2s;
         }
-
         .sidebar .nav-link:hover {
             color: #fff;
-            background-color: rgba(255, 255, 255, 0.12);
+            background-color: rgba(255, 255, 255, 0.1);
         }
-
         .sidebar .nav-link.active {
             color: #fff;
-            background: #10b981;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            background: var(--teal-600);
+            box-shadow: 0 8px 18px -4px rgba(0, 150, 136, 0.45);
         }
-
+        /* Tombol Keluar — netral & profesional, aksen merah hanya saat hover */
+        .btn-logout {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #fff;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: .55rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            width: 100%;
+            transition: background-color .18s ease, border-color .18s ease;
+            text-decoration: none;
+        }
+        .btn-logout:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+            color: #fff;
+        }
         /* Main Content Styling */
         .main-content {
             margin-left: 260px;
@@ -69,19 +101,53 @@
             min-height: 100vh;
             transition: margin-left 0.3s ease;
         }
-
-        /* Top Header Bar Presisi Sesuai UI/UX */
+        /* Top Header Bar */
         .top-header-bar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
+            background-color: var(--paper);
+            border-bottom: 1px solid var(--line);
             padding: 12px 24px;
             margin: -30px -30px 30px -30px;
+        }
+        .top-header-bar .btn-icon {
+            background-color: var(--teal-050);
+            color: var(--teal-700);
+            border: none;
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background-color .15s ease;
+        }
+        .top-header-bar .btn-icon:hover {
+            background-color: #d6ece8;
+            color: var(--teal-900);
+        }
+
+        #dropdownUser i {
+            color: var(--teal-700) !important;
+        }
+
+        .dropdown-menu {
+            border-radius: var(--radius-md) !important;
+        }
+
+        .dropdown-menu li:first-child {
+            border-color: var(--line) !important;
+        }
+
+        .dropdown-item.text-danger:hover {
+            background-color: #fee2e2;
         }
 
         /* Responsive Breakpoints */
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
+                background: linear-gradient(160deg, rgba(0, 121, 107, 0.55) 0%, rgba(0, 68, 60, 0.65) 100%);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
             }
 
             .sidebar.show {
@@ -129,7 +195,7 @@
             <!-- Header Sidebar (Logo Gambar Terang di Sidebar Dark) -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB" style="height: 48px; width: auto; filter: brightness(0) invert(1);">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo TATA LAB" style="height: 48px; width: auto; object-fit: contain; border-radius: 10px;">
                 </div>
                 <!-- Tombol close silang (hanya di HP) -->
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
@@ -158,8 +224,7 @@
         <!-- Tombol Logout -->
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="/auth/logout/"
-                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="/auth/logout/" class="btn-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -181,15 +246,15 @@
 
             <!-- Ikon Lonceng Notifikasi & Profil Interaktif Dropdown -->
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
-                    <i class="fa-regular fa-bell fs-5 text-secondary"></i>
+                <button class="btn btn-icon rounded-circle p-2 position-relative" type="button">
+                    <i class="fa-regular fa-bell fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
                 <!-- Dropdown Profil User Login -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
+                        <i class="fa-regular fa-circle-user fs-2"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser">
                         <li class="px-3 py-2 border-bottom">

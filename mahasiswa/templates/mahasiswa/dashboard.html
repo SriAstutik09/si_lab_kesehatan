@@ -4,129 +4,409 @@
 {% block title %}Dashboard Mahasiswa - SIMPEL-K / TATA LAB{% endblock %}
 
 {% block content %}
-<!-- Ucapan Selamat Datang Dinamis -->
-<div class="mb-4">
-    <h3 class="fw-bold mb-1" style="color: #0f172a;">Halo, {{ request.user.first_name|default:request.user.username }} 👋</h3>
-    <p class="text-muted small">Selamat datang kembali di portal laboratorium kesehatan.</p>
-</div>
 
-<!-- Grid Kartu Status Peminjaman (Dihitung Dinamis dari Database) -->
-<div class="row g-3 mb-4 text-center">
-    <!-- Menunggu (Kombinasi pending + verified) -->
-    <div class="col-4">
-        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff; border: 1px solid #fef08a;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-warning rounded-circle"
-                style="width: 42px; height: 42px; background-color: #fef9c3;">
-                <i class="fa-regular fa-comment-dots fs-5"></i>
+<!-- ===== CSS Internal — mengikuti tema halaman login (teal / Plus Jakarta Sans) ===== -->
+<style>
+    .dashboard-mhs {
+        --teal-900: #00443c;
+        --teal-700: #00796b;
+        --teal-600: #009688;
+        --teal-050: #e6f4f1;
+        --amber-600: #b45309;
+        --amber-050: #fef9c3;
+        --amber-line: #fef08a;
+        --rose-600: #b91c1c;
+        --rose-050: #fee2e2;
+        --rose-line: #fecaca;
+        --green-600: #15803d;
+        --green-050: #dcfce7;
+        --green-line: #bbf7d0;
+        --ink: #16241f;
+        --ink-muted: #5b6b66;
+        --line: #e1e8e5;
+        --paper: #ffffff;
+        --radius-lg: 22px;
+        --radius-md: 12px;
+        --shadow-card: 0 16px 34px -18px rgba(0, 68, 60, 0.22);
+        --shadow-card-hover: 0 22px 40px -16px rgba(0, 68, 60, 0.3);
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+    }
+
+    .dashboard-mhs h1,
+    .dashboard-mhs h2,
+    .dashboard-mhs h3,
+    .dashboard-mhs h4,
+    .dashboard-mhs h5,
+    .dashboard-mhs h6 {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    /* ---- Header sambutan ---- */
+    .dashboard-mhs .welcome-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-size: .7rem;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--teal-700);
+        background: var(--teal-050);
+        padding: .3rem .65rem;
+        border-radius: 999px;
+        margin-bottom: .6rem;
+    }
+
+    .dashboard-mhs .welcome-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: .2rem;
+    }
+
+    .dashboard-mhs .welcome-subtitle {
+        font-size: .85rem;
+        color: var(--ink-muted);
+    }
+
+    /* ---- Kartu statistik ---- */
+    .dashboard-mhs .stat-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 1.1rem .5rem;
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .dashboard-mhs .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card-hover);
+    }
+
+    .dashboard-mhs .stat-icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 0 auto .55rem;
+    }
+
+    .dashboard-mhs .stat-card--pending { border-color: var(--amber-line); }
+    .dashboard-mhs .stat-card--pending .stat-icon { background: var(--amber-050); color: var(--amber-600); }
+    .dashboard-mhs .stat-card--pending .stat-number { color: var(--amber-600); }
+
+    .dashboard-mhs .stat-card--approved { border-color: var(--green-line); }
+    .dashboard-mhs .stat-card--approved .stat-icon { background: var(--green-050); color: var(--green-600); }
+    .dashboard-mhs .stat-card--approved .stat-number { color: var(--green-600); }
+
+    .dashboard-mhs .stat-card--rejected { border-color: var(--rose-line); }
+    .dashboard-mhs .stat-card--rejected .stat-icon { background: var(--rose-050); color: var(--rose-600); }
+    .dashboard-mhs .stat-card--rejected .stat-number { color: var(--rose-600); }
+
+    .dashboard-mhs .stat-number {
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 0;
+    }
+
+    .dashboard-mhs .stat-label {
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 600;
+    }
+
+    /* ---- Header seksi jadwal ---- */
+    .dashboard-mhs .section-heading {
+        font-weight: 700;
+        color: var(--ink);
+        font-size: 1.02rem;
+    }
+
+    .dashboard-mhs .section-heading i {
+        color: var(--teal-700);
+    }
+
+    /* ---- Kartu jadwal praktikum: mengambang sedikit ---- */
+    .dashboard-mhs .jadwal-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        animation: floatCard 5s ease-in-out infinite;
+        transition: box-shadow .2s ease;
+        will-change: transform;
+    }
+
+    .dashboard-mhs .jadwal-card:hover {
+        box-shadow: var(--shadow-card-hover);
+        animation-play-state: paused;
+    }
+
+    /* variasi delay biar tiap kartu tidak mengambang serempak */
+    .dashboard-mhs .jadwal-card:nth-child(2n) { animation-delay: .6s; }
+    .dashboard-mhs .jadwal-card:nth-child(3n) { animation-delay: 1.2s; }
+    .dashboard-mhs .jadwal-card:nth-child(4n) { animation-delay: 1.8s; }
+
+    @keyframes floatCard {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .dashboard-mhs .jadwal-card { animation: none; }
+    }
+
+    .dashboard-mhs .jam-widget {
+        background-color: var(--teal-050);
+        color: var(--teal-900);
+        border-radius: var(--radius-md);
+        min-width: 78px;
+        padding: .5rem;
+        text-align: center;
+    }
+
+    .dashboard-mhs .jam-widget .divider-line {
+        border-top: 1px solid rgba(0, 121, 107, 0.25);
+        margin: .25rem 0;
+    }
+
+    .dashboard-mhs .mk-title {
+        color: var(--ink);
+        font-weight: 700;
+        margin-bottom: .25rem;
+    }
+
+    .dashboard-mhs .ruang-info {
+        color: var(--ink-muted);
+        font-size: .82rem;
+    }
+
+    .dashboard-mhs .ruang-info strong {
+        color: var(--ink);
+    }
+
+    .dashboard-mhs .ruang-info i {
+        color: var(--teal-600);
+    }
+
+    /* ---- Badge status (override tema teal, scoped) ---- */
+    .dashboard-mhs .badge-status {
+        font-size: .65rem;
+        font-weight: 600;
+        padding: .32rem .6rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+    }
+
+    .dashboard-mhs .badge-status--wait-aslab { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+    .dashboard-mhs .badge-status--wait-kalab { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+    .dashboard-mhs .badge-status--approved { background: var(--green-050); color: var(--green-600); border-color: var(--green-line); }
+    .dashboard-mhs .badge-status--return { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+    .dashboard-mhs .badge-status--rejected { background: var(--rose-050); color: var(--rose-600); border-color: var(--rose-line); }
+    .dashboard-mhs .badge-status--done { background: var(--teal-050); color: var(--teal-700); border-color: #b9dfda; }
+
+    .dashboard-mhs .btn-return {
+        background-color: var(--teal-700);
+        border: none;
+        color: #fff;
+        font-size: .68rem;
+        font-weight: 600;
+        padding: .3rem .65rem;
+        border-radius: var(--radius-md);
+        transition: background-color .15s ease;
+    }
+
+    .dashboard-mhs .btn-return:hover {
+        background-color: var(--teal-900);
+        color: #fff;
+    }
+
+    /* ---- Empty state ---- */
+    .dashboard-mhs .empty-jadwal {
+        background: var(--paper);
+        border: 1px dashed var(--line);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 2.5rem 1rem;
+        text-align: center;
+        color: var(--ink-muted);
+    }
+
+    .dashboard-mhs .empty-jadwal i {
+        color: var(--teal-600);
+        opacity: .55;
+    }
+
+    /* ---- Banner CTA pinjam alat ---- */
+    .dashboard-mhs .cta-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        color: #fff;
+        background: linear-gradient(160deg, var(--teal-700) 0%, var(--teal-900) 100%);
+        box-shadow: var(--shadow-card);
+    }
+
+    .dashboard-mhs .cta-banner::before {
+        content: '';
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        top: -70px;
+        right: -70px;
+    }
+
+    .dashboard-mhs .cta-banner .cta-desc {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: .85rem;
+        max-width: 75%;
+    }
+
+    .dashboard-mhs .cta-banner .btn-cta {
+        background: #fff;
+        color: var(--teal-700);
+        font-weight: 700;
+        font-size: .85rem;
+        padding: .5rem .9rem;
+        border-radius: var(--radius-md);
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        transition: transform .12s ease;
+        text-decoration: none;
+    }
+
+    .dashboard-mhs .cta-banner .btn-cta:hover {
+        transform: translateY(-1px);
+        color: var(--teal-900);
+    }
+
+    @media (max-width: 480px) {
+        .dashboard-mhs .cta-banner .cta-desc { max-width: 100%; }
+    }
+</style>
+
+<div class="dashboard-mhs">
+
+    <!-- Ucapan Selamat Datang Dinamis -->
+    <div class="mb-4">
+        <span class="welcome-eyebrow"><i class="fa-solid fa-flask"></i> Simpel-K</span>
+        <h3 class="welcome-title">Halo, {{ request.user.first_name|default:request.user.username }} 👋</h3>
+        <p class="welcome-subtitle mb-0">Selamat datang kembali di portal laboratorium kesehatan.</p>
+    </div>
+
+    <!-- Grid Kartu Status Peminjaman (Dihitung Dinamis dari Database) -->
+    <div class="row g-3 mb-4 text-center">
+        <!-- Menunggu (Kombinasi pending + verified) -->
+        <div class="col-4">
+            <div class="stat-card stat-card--pending">
+                <div class="stat-icon">
+                    <i class="fa-regular fa-comment-dots fs-5"></i>
+                </div>
+                <h3 class="stat-number">{{ total_menunggu|stringformat:"02d" }}</h3>
+                <span class="stat-label">Menunggu</span>
             </div>
-            <h3 class="fw-bold mb-0 text-warning">{{ total_menunggu|stringformat:"02d" }}</h3>
-            <span class="text-muted" style="font-size: 0.75rem; font-weight: 600;">Menunggu</span>
         </div>
-    </div>
-    <!-- Disetujui -->
-    <div class="col-4">
-        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff; border: 1px solid #bbf7d0;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-success rounded-circle"
-                style="width: 42px; height: 42px; background-color: #dcfce7;">
-                <i class="fa-regular fa-circle-check fs-5"></i>
+        <!-- Disetujui -->
+        <div class="col-4">
+            <div class="stat-card stat-card--approved">
+                <div class="stat-icon">
+                    <i class="fa-regular fa-circle-check fs-5"></i>
+                </div>
+                <h3 class="stat-number">{{ total_disetujui|stringformat:"02d" }}</h3>
+                <span class="stat-label">Disetujui</span>
             </div>
-            <h3 class="fw-bold mb-0 text-success">{{ total_disetujui|stringformat:"02d" }}</h3>
-            <span class="text-muted" style="font-size: 0.75rem; font-weight: 600;">Disetujui</span>
         </div>
-    </div>
-    <!-- Ditolak -->
-    <div class="col-4">
-        <div class="card border-0 shadow-sm py-3" style="border-radius: 16px; background: #fff; border: 1px solid #fecaca;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-2 text-danger rounded-circle"
-                style="width: 42px; height: 42px; background-color: #fee2e2;">
-                <i class="fa-regular fa-circle-xmark fs-5"></i>
-            </div>
-            <h3 class="fw-bold mb-0 text-danger">{{ total_ditolak|stringformat:"02d" }}</h3>
-            <span class="text-muted" style="font-size: 0.75rem; font-weight: 600;">Ditolak</span>
-        </div>
-    </div>
-</div>
-
-<!-- Header Jadwal -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold mb-0" style="color: #0f172a;"><i class="fa-solid fa-calendar-day me-2 text-success"></i>Jadwal Praktikum Anda</h5>
-</div>
-
-<!-- Loop Data Peminjaman Riil dari Database -->
-{% for jadwal in jadwal_mahasiswa %}
-<div class="card border-0 shadow-sm mb-3 p-3 bg-white" style="border-radius: 16px; border: 1px solid #e2e8f0;">
-    <div class="d-flex align-items-start gap-3">
-        <!-- Jam Widget -->
-        <div class="text-center p-2 rounded-3 text-secondary" style="background-color: #f1f5f9; min-width: 80px;">
-            <div class="fw-semibold small text-dark">{{ jadwal.wkt_mulai|time:"H:i" }}</div>
-            <div class="border-top my-1 border-secondary-subtle"></div>
-            <div class="fw-semibold small text-dark">{{ jadwal.wkt_akhir|time:"H:i" }}</div>
-        </div>
-        
-        <!-- Detail Praktikum Riil -->
-        <div class="flex-grow-1">
-            <h6 class="fw-bold mb-1" style="color: #1e293b;">{{ jadwal.mata_kuliah }}</h6>
-            <p class="text-muted small mb-2 d-flex align-items-center gap-1">
-                <i class="fa-solid fa-door-open text-success"></i>
-                <strong class="text-dark">{{ jadwal.ruang_lab.nama_ruang }}</strong>
-            </p>
-            
-            <div class="d-flex gap-2 flex-wrap align-items-center">
-                <!-- Status Badge Dinamis -->
-                {% if jadwal.status == 'pending' %}
-                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Menunggu ASLAB</span>
-                {% elif jadwal.status == 'verified' %}
-                <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Menunggu KALAB</span>
-                {% elif jadwal.status == 'disetujui' %}
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Disetujui</span>
-                {% elif jadwal.status == 'pengembalian_diajukan' %}
-                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Proses Pengembalian</span>
-                {% elif jadwal.status == 'ditolak' %}
-                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Ditolak</span>
-                {% elif jadwal.status == 'selesai' %}
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1"
-                    style="font-size: 0.65rem;">Selesai</span>
-                {% endif %}
-
-                <!-- Tombol Aksi Pengembalian -->
-                {% if jadwal.status == 'disetujui' %}
-                <a href="{% url 'mahasiswa:ajukan_pengembalian' jadwal.id %}"
-                    class="btn btn-warning btn-sm py-0 px-2 fw-semibold text-dark shadow-sm"
-                    style="font-size: 0.65rem; border-radius: 8px;"
-                    onclick="return confirm('Apakah Anda yakin ingin mengajukan pengembalian lab/alat ini?');">
-                    <i class="fa-solid fa-rotate-left me-1"></i> Kembalikan
-                </a>
-                {% endif %}
+        <!-- Ditolak -->
+        <div class="col-4">
+            <div class="stat-card stat-card--rejected">
+                <div class="stat-icon">
+                    <i class="fa-regular fa-circle-xmark fs-5"></i>
+                </div>
+                <h3 class="stat-number">{{ total_ditolak|stringformat:"02d" }}</h3>
+                <span class="stat-label">Ditolak</span>
             </div>
         </div>
     </div>
-</div>
-{% empty %}
-<div class="text-center py-5 text-muted bg-white rounded-4 shadow-sm mb-4 border border-light">
-    <i class="fa-solid fa-calendar-xmark fs-2 mb-2 text-success opacity-50"></i>
-    <p class="small mb-0">Belum ada pengajuan jadwal praktikum di Lab Atas maupun Lab Bawah.</p>
-</div>
-{% endfor %}
 
-<!-- Banner CTA Pinjam Alat (Glow Emerald Theme) -->
-<div class="position-relative overflow-hidden p-4 shadow-sm text-white mb-3"
-    style="border-radius: 20px; background: linear-gradient(135deg, #064e3b 0%, #047857 100%);">
-    <div class="position-absolute top-0 end-0 bottom-0 start-0 opacity-25"
-        style="background-image: url('https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=300'); background-size: cover; background-position: center; mix-blend-mode: overlay;">
+    <!-- Header Jadwal -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="section-heading mb-0"><i class="fa-solid fa-calendar-day me-2"></i>Jadwal Praktikum Anda</h5>
     </div>
-    <div class="position-relative z-1">
-        <h5 class="fw-bold mb-1">Pinjam Alat Sekarang</h5>
-        <p class="small text-white-50 mb-4" style="max-width: 75%;">Proses cepat, verifikasi real-time langsung dari asisten lab.</p>
-        <a href="{% url 'mahasiswa:pinjam_lab' %}"
-            class="btn btn-light btn-sm fw-bold px-3 py-2 text-success d-inline-flex align-items-center gap-2 shadow-sm"
-            style="color: #047857 !important; border-radius: 10px;">
-            Mulai Peminjaman <i class="fa-solid fa-arrow-right"></i>
-        </a>
+
+    <!-- Loop Data Peminjaman Riil dari Database -->
+    {% for jadwal in jadwal_mahasiswa %}
+    <div class="jadwal-card">
+        <div class="d-flex align-items-start gap-3">
+            <!-- Jam Widget -->
+            <div class="jam-widget">
+                <div class="fw-semibold small">{{ jadwal.wkt_mulai|time:"H:i" }}</div>
+                <div class="divider-line"></div>
+                <div class="fw-semibold small">{{ jadwal.wkt_akhir|time:"H:i" }}</div>
+            </div>
+
+            <!-- Detail Praktikum Riil -->
+            <div class="flex-grow-1">
+                <h6 class="mk-title">{{ jadwal.mata_kuliah }}</h6>
+                <p class="ruang-info mb-2 d-flex align-items-center gap-1">
+                    <i class="fa-solid fa-door-open"></i>
+                    <strong>{{ jadwal.ruang_lab.nama_ruang }}</strong>
+                </p>
+
+                <div class="d-flex gap-2 flex-wrap align-items-center">
+                    <!-- Status Badge Dinamis -->
+                    {% if jadwal.status == 'pending' %}
+                    <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
+                    {% elif jadwal.status == 'verified' %}
+                    <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
+                    {% elif jadwal.status == 'disetujui' %}
+                    <span class="badge-status badge-status--approved">Disetujui</span>
+                    {% elif jadwal.status == 'pengembalian_diajukan' %}
+                    <span class="badge-status badge-status--return">Proses Pengembalian</span>
+                    {% elif jadwal.status == 'ditolak' %}
+                    <span class="badge-status badge-status--rejected">Ditolak</span>
+                    {% elif jadwal.status == 'selesai' %}
+                    <span class="badge-status badge-status--done">Selesai</span>
+                    {% endif %}
+
+                    <!-- Tombol Aksi Pengembalian -->
+                    {% if jadwal.status == 'disetujui' %}
+                    <a href="{% url 'mahasiswa:ajukan_pengembalian' jadwal.id %}"
+                        class="btn-return"
+                        onclick="return confirm('Apakah Anda yakin ingin mengajukan pengembalian lab/alat ini?');">
+                        <i class="fa-solid fa-rotate-left me-1"></i> Kembalikan
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
+    {% empty %}
+    <div class="empty-jadwal mb-4">
+        <i class="fa-solid fa-calendar-xmark fs-2 mb-2"></i>
+        <p class="small mb-0">Belum ada pengajuan jadwal praktikum di Lab Atas maupun Lab Bawah.</p>
+    </div>
+    {% endfor %}
+
+    <!-- Banner CTA Pinjam Alat -->
+    <div class="cta-banner mb-3">
+        <div class="position-relative z-1">
+            <h5 class="fw-bold mb-1">Pinjam Alat Sekarang</h5>
+            <p class="cta-desc mb-4">Proses cepat, verifikasi real-time langsung dari asisten lab.</p>
+            <a href="{% url 'mahasiswa:pinjam_lab' %}" class="btn-cta">
+                Mulai Peminjaman <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

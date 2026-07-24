@@ -3,62 +3,313 @@
 {% block title %}Form Peminjaman Lab - UNUJA Lab{% endblock %}
 
 {% block content %}
-<div class="mb-3 d-flex align-items-center gap-2">
-    <a href="{% url 'mahasiswa:dashboard' %}" class="btn btn-light btn-sm text-secondary rounded-circle shadow-sm">
+<style>
+    :root {
+        --teal-900: #00443c;
+        --teal-700: #00796b;
+        --teal-600: #009688;
+        --teal-050: #e6f4f1;
+        --ink: #16241f;
+        --ink-muted: #5b6b66;
+        --line: #e1e8e5;
+        --paper: #ffffff;
+        --bg: #f3f7f6;
+        --radius-lg: 22px;
+        --radius-md: 12px;
+        --shadow-card: 0 20px 45px -20px rgba(0, 68, 60, 0.25);
+    }
+
+    /* ===== Header halaman ===== */
+    .pinjam-header {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-back {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--paper);
+        color: var(--teal-700);
+        border-radius: 50%;
+        box-shadow: 0 6px 16px -8px rgba(0, 68, 60, 0.35);
+        border: 1px solid var(--line);
+        transition: background-color .15s ease, transform .1s ease;
+        text-decoration: none;
+    }
+
+    .btn-back:hover {
+        background-color: var(--teal-050);
+        color: var(--teal-900);
+    }
+
+    .btn-back:active {
+        transform: translateY(1px);
+    }
+
+    .pinjam-title {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .pinjam-subtitle {
+        font-size: .82rem;
+        color: var(--ink-muted);
+        margin: 0;
+    }
+
+    /* ===== Kartu form ===== */
+    .pinjam-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: clamp(1.5rem, 3vw, 2.25rem);
+        margin-bottom: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 1.75rem;
+    }
+
+    .form-section:last-of-type {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--teal-700);
+        background: var(--teal-050);
+        padding: .3rem .65rem;
+        border-radius: 999px;
+        margin-bottom: 1.1rem;
+    }
+
+    .field-group {
+        margin-bottom: 1.1rem;
+    }
+
+    .field-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .field-group label {
+        display: block;
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: .4rem;
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.1rem;
+    }
+
+    /* Menimpa tampilan default widget Django/Bootstrap agar konsisten dengan tema login */
+    .pinjam-card select,
+    .pinjam-card input[type="text"],
+    .pinjam-card input[type="date"],
+    .pinjam-card input[type="time"],
+    .pinjam-card textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: .68rem .9rem;
+        font-size: .92rem;
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: #fbfdfc;
+        transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    }
+
+    .pinjam-card textarea {
+        min-height: 96px;
+        resize: vertical;
+    }
+
+    .pinjam-card select:focus,
+    .pinjam-card input:focus,
+    .pinjam-card textarea:focus {
+        outline: none;
+        border-color: var(--teal-600);
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(0, 150, 136, 0.14);
+    }
+
+    .pinjam-card ::placeholder {
+        color: #a7b3af;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid var(--line);
+        margin: 0 0 1.75rem;
+    }
+
+    /* ===== Tombol kirim ===== */
+    .btn-submit {
+        background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: .93rem;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: .78rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        transition: filter .15s ease, transform .1s ease;
+    }
+
+    .btn-submit:hover {
+        filter: brightness(1.08);
+    }
+
+    .btn-submit:active {
+        transform: translateY(1px);
+    }
+
+    /* Hover pada kotak input tanggal & jam */
+    .pinjam-card input[type="date"]:hover,
+    .pinjam-card input[type="time"]:hover {
+        border-color: var(--teal-600);
+        background: #ffffff;
+    }
+
+    /* Efek pada ikon kalender/jam bawaan browser (khusus Chrome/Edge/Safari) */
+    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator,
+    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 6px;
+        transition: background-color .15s ease, transform .1s ease;
+    }
+
+    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator:hover,
+    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator:hover {
+        background-color: var(--teal-050);
+    }
+
+    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator:active,
+    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator:active {
+        transform: scale(0.9);
+    }
+
+    /* ===== Responsif ===== */
+    @media (max-width: 576px) {
+        .field-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .field-row .field-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .pinjam-card {
+            padding: 1.35rem;
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="pinjam-header">
+    <a href="{% url 'mahasiswa:dashboard' %}" class="btn-back" aria-label="Kembali">
         <i class="fa-solid fa-arrow-left"></i>
     </a>
-    <h5 class="fw-bold mb-0" style="color: #0f172a;">Form Pengajuan Peminjaman</h5>
+    <div>
+        <p class="pinjam-title">Form Pengajuan Peminjaman</p>
+        <p class="pinjam-subtitle">Lengkapi data di bawah untuk mengajukan peminjaman lab</p>
+    </div>
 </div>
 
-<div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 20px; background: #fff;">
-    <form method="POST">
+<div class="pinjam-card">
+    <form method="POST" novalidate>
         {% csrf_token %}
 
-        <div class="mb-3">
-            <label class="form-label fw-semibold small text-secondary">Pilih Ruang Lab</label>
-            {{ form.ruang_lab }}
-        </div>
+        <div class="form-section">
+            <span class="form-section-label"><i class="fa-solid fa-flask"></i> Ruang &amp; Peralatan</span>
 
-        <div class="mb-3">
-            <label class="form-label fw-semibold small text-secondary">Alat & Bahan Kesehatan</label>
-            {{ form.alat_bahan }}
-        </div>
-
-        <div class="row g-2 mb-3">
-            <div class="col-6">
-                <label class="form-label fw-semibold small text-secondary">Nama Dosen Pengampu</label>
-                {{ form.nama_dosen }}
+            <div class="field-group">
+                <label for="{{ form.ruang_lab.id_for_label }}">Pilih Ruang Lab</label>
+                {{ form.ruang_lab }}
             </div>
-            <div class="col-6">
-                <label class="form-label fw-semibold small text-secondary">Mata Kuliah</label>
-                {{ form.mata_kuliah }}
+
+            <div class="field-group">
+                <label for="{{ form.alat_bahan.id_for_label }}">Alat &amp; Bahan Kesehatan</label>
+                {{ form.alat_bahan }}
             </div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label fw-semibold small text-secondary">Tanggal Pelaksanaan Praktikum</label>
-            {{ form.tanggal_pinjam }}
-        </div>
+        <hr class="form-divider">
 
-        <div class="row g-2 mb-3">
-            <div class="col-6">
-                <label class="form-label fw-semibold small text-secondary">Jam Mulai</label>
-                {{ form.wkt_mulai }}
+        <div class="form-section">
+            <span class="form-section-label"><i class="fa-solid fa-chalkboard-user"></i> Pengampu &amp; Mata Kuliah</span>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="{{ form.nama_dosen.id_for_label }}">Nama Dosen Pengampu</label>
+                    {{ form.nama_dosen }}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.mata_kuliah.id_for_label }}">Mata Kuliah</label>
+                    {{ form.mata_kuliah }}
+                </div>
             </div>
-            <div class="col-6">
-                <label class="form-label fw-semibold small text-secondary">Jam Selesai</label>
-                {{ form.wkt_akhir }}
+        </div>
+
+        <hr class="form-divider">
+
+        <div class="form-section">
+            <span class="form-section-label"><i class="fa-regular fa-calendar-check"></i> Jadwal Praktikum</span>
+
+            <div class="field-group">
+                <label for="{{ form.tanggal_pinjam.id_for_label }}">Tanggal Pelaksanaan Praktikum</label>
+                {{ form.tanggal_pinjam }}
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label for="{{ form.wkt_mulai.id_for_label }}">Jam Mulai</label>
+                    {{ form.wkt_mulai }}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.wkt_akhir.id_for_label }}">Jam Selesai</label>
+                    {{ form.wkt_akhir }}
+                </div>
             </div>
         </div>
 
-        <div class="mb-4">
-            <label class="form-label fw-semibold small text-secondary">Keperluan / Agenda Praktikum</label>
-            {{ form.keperluan }}
+        <hr class="form-divider">
+
+        <div class="form-section">
+            <span class="form-section-label"><i class="fa-regular fa-note-sticky"></i> Keperluan</span>
+
+            <div class="field-group">
+                <label for="{{ form.keperluan.id_for_label }}">Keperluan / Agenda Praktikum</label>
+                {{ form.keperluan }}
+            </div>
         </div>
 
-        <button type="submit" class="btn text-white w-100 fw-bold py-2 shadow-sm"
-            style="background: linear-gradient(135deg, #005b50 0%, #00796b 100%); border-radius: 12px;">
-            Kirim Pengajuan <i class="fa-solid fa-paper-plane ms-1"></i>
+        <button type="submit" class="btn-submit">
+            Kirim Pengajuan <i class="fa-solid fa-paper-plane"></i>
         </button>
     </form>
 </div>
