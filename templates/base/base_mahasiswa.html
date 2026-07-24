@@ -233,15 +233,15 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- TOP HEADER BAR UTAMA (LOGO BESAR & DROPDOWN PROFIL ASLI) -->
+        <!-- TOP HEADER BAR UTAMA -->
         <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
                 <!-- Tombol Hamburger Mobile -->
                 <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
                     <i class="fa-solid fa-bars fs-3 text-dark"></i>
                 </button>
-                <!-- LOGO DIBESARKAN (52px) -->
-                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 52px; width: auto; object-fit: contain;">
+                <!-- LOGO DENGAN CLASS d-lg-none (Otomatis hilang di layar besar, muncul di mobile) -->
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="d-lg-none" style="height: 52px; width: auto; object-fit: contain;">
             </div>
 
             <!-- Ikon Lonceng Notifikasi & Profil Interaktif Dropdown -->
