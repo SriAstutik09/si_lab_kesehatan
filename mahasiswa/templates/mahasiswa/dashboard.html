@@ -343,7 +343,7 @@
         <h5 class="section-heading mb-0"><i class="fa-solid fa-calendar-day me-2"></i>Jadwal Praktikum Anda</h5>
     </div>
 
-    <!-- Loop Data Peminjaman Riil dari Database -->
+    <!-- Loop Data Peminjaman real dari Database -->
     {% for jadwal in jadwal_mahasiswa %}
     <div class="jadwal-card">
         <div class="d-flex align-items-start gap-3">
@@ -354,7 +354,7 @@
                 <div class="fw-semibold small">{{ jadwal.wkt_akhir|time:"H:i" }}</div>
             </div>
 
-            <!-- Detail Praktikum Riil -->
+            <!-- Detail Praktikum real -->
             <div class="flex-grow-1">
                 <h6 class="mk-title">{{ jadwal.mata_kuliah }}</h6>
                 <p class="ruang-info mb-2 d-flex align-items-center gap-1">
