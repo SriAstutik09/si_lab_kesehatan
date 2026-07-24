@@ -22,4 +22,5 @@ urlpatterns = [
     path('auth/', include('core_auth.urls')),
     path('mahasiswa/', include('mahasiswa.urls')),
     path('aslab/', include('aslab.urls')),
+    path('kalab/', include('kalab.urls')),
 ]
