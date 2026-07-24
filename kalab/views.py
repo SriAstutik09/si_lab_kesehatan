@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from core_auth.models import Peminjaman
+from datetime import datetime
 
 
 # ==============================================================================
@@ -15,8 +16,6 @@ def cekk_role_kalab(user):
         return 'mahasiswa:dashboard'
     return None
 
-
-# ==============================================================================
 # 1. VIEW DASHBOARD KALAB
 # ==============================================================================
 @login_required(login_url='core_auth:login')
@@ -80,3 +79,39 @@ def persetujuan_kalab(request, pinjam_id, aksi):
 
     peminjaman.save()
     return redirect('kalab:dashboard')
+# 3. VIEW LAPORAN & REKAP PEMINJAMAN (KALAB)
+# ==============================================================================
+@login_required(login_url='core_auth:login')
+def laporan_kalab(request):
+    target = cekk_role_kalab(request.user)
+    if target:
+        return redirect(target)
+
+    # Ambil parameter filter dari URL (GET Request)
+    tgl_mulai = request.GET.get('tgl_mulai', '')
+    tgl_selesai = request.GET.get('tgl_selesai', '')
+    filter_status = request.GET.get('status', '')
+
+    # Default query: Seluruh riwayat peminjaman
+    laporan_list = Peminjaman.objects.all().order_by('-tanggal_pinjam')
+
+    # Apply Filter Rentang Tanggal
+    if tgl_mulai:
+        laporan_list = laporan_list.filter(tanggal_pinjam__gte=tgl_mulai)
+    if tgl_selesai:
+        laporan_list = laporan_list.filter(tanggal_pinjam__lte=tgl_selesai)
+
+    # Apply Filter Status
+    if filter_status and filter_status != 'semua':
+        laporan_list = laporan_list.filter(status=filter_status)
+
+    total_laporan = laporan_list.count()
+
+    context = {
+        'laporan_list': laporan_list,
+        'total_laporan': total_laporan,
+        'tgl_mulai': tgl_mulai,
+        'tgl_selesai': tgl_selesai,
+        'filter_status': filter_status,
+    }
+    return render(request, 'kalab/laporan.html', context)

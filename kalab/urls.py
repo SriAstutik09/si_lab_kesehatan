@@ -6,4 +6,5 @@ app_name = 'kalab'
 urlpatterns = [
     path('dashboard/', views.dashboard_kalab, name='dashboard'),
     path('persetujuan/<int:pinjam_id>/<str:aksi>/', views.persetujuan_kalab, name='persetujuan'),
+    path('laporan/', views.laporan_kalab, name='laporan'),
 ]

@@ -13,23 +13,27 @@
 
     <style>
         :root {
-            --sidebar-gradient: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
+            --sidebar-gradient: linear-gradient(180deg, #25b369 0%, #0f172a 100%);
+            --primary-blue: #1dbd63;
+            --accent-blue: #20e834;
             --light-bg: #f8fafc;
         }
 
         body {
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1e293b;
+            color: #334155;
+            font-size: 0.875rem; /* Font dasar seragam */
         }
 
+        /* Sidebar Styling Mirip Laporan */
         .sidebar {
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             z-index: 1040;
-            width: 260px;
+            width: 250px;
             background: var(--sidebar-gradient);
             box-shadow: 4px 0 15px rgba(30, 58, 138, 0.15);
         }
@@ -37,42 +41,63 @@
         .sidebar .nav-link {
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            margin: 4px 15px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            margin: 4px 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            font-size: 0.875rem;
         }
 
         .sidebar .nav-link.active {
             color: #fff;
-            background: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            background: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(71, 241, 116, 0.3);
         }
 
+        /* Main Content Styling */
         .main-content {
-            margin-left: 260px;
-            padding: 30px;
+            margin-left: 250px;
+            padding: 24px;
             min-height: 100vh;
         }
 
         .top-header-bar {
             background-color: #ffffff;
             border-bottom: 1px solid #e2e8f0;
-            padding: 12px 24px;
-            margin: -30px -30px 30px -30px;
+            padding: 10px 24px;
+            margin: -24px -24px 24px -24px;
+        }
+
+        /* Logo Lebih Besar & Proporsional */
+        .brand-logo {
+            height: 65px;
+            width: auto;
+            object-fit: contain;
         }
 
         .card-custom {
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+        }
+
+        /* Warna Tombol Theme Harmony */
+        .btn-theme-primary {
+            background-color: var(--primary-blue);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-theme-primary:hover {
+            background-color: #159a4f;
+            color: #fff;
         }
 
         @media (max-width: 991.98px) {
             .sidebar {
-                transform: translateX(-260px);
+                transform: translateX(-250px);
             }
 
             .main-content {
@@ -89,25 +114,29 @@
 
 <body>
 
-    <!-- Sidebar Menu KALAB (Tema Biru Elegan) -->
-    <div class="sidebar d-flex flex-column justify-content-between py-4">
+    <!-- Sidebar Menu KALAB (Identik dengan Laporan) -->
+    <div class="sidebar d-flex flex-column justify-content-between py-3">
         <div>
-            <div class="px-4 mb-4 text-white d-flex align-items-center gap-3">
-                <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm"
-                    style="width: 42px; height: 42px;">
-                    <i class="fa-solid fa-user-tie fs-4 text-primary"></i>
+            <div class="px-3 mb-3 text-white d-flex align-items-center gap-3">
+                <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
+                    <i class="fa-solid fa-user-tie fs-5 text-primary"></i>
                 </div>
                 <div>
-                    <h5 class="fw-bold mb-0 text-white">TATA LAB</h5>
+                    <h6 class="fw-bold mb-0 text-white">TATA LAB</h6>
                     <small class="text-white-50" style="font-size: 0.7rem;">Kepala Laboratorium</small>
                 </div>
             </div>
-            <hr class="text-white-50 mx-3 mb-4">
+            <hr class="text-white-50 mx-3 mb-3">
 
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="{% url 'kalab:dashboard' %}" class="nav-link active">
-                        <i class="fa-solid fa-gauge fs-5"></i> Dashboard Persetujuan
+                        <i class="fa-solid fa-gauge"></i> Dashboard Persetujuan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'kalab:laporan' %}" class="nav-link">
+                        <i class="fa-solid fa-file-invoice"></i> Laporan & Rekap
                     </a>
                 </li>
             </ul>
@@ -115,8 +144,7 @@
 
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="{% url 'core_auth:logout' %}"
-                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm" style="font-size: 0.85rem;">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -128,42 +156,41 @@
         <!-- Top Header Bar -->
         <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
-                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K"
-                    style="height: 55px; width: auto; object-fit: contain;">
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="brand-logo">
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="fw-bold text-dark me-2">{{ request.user.username }} (KALAB)</span>
-                <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
+            <div class="d-flex align-items-center gap-2">
+                <span class="fw-semibold text-dark me-1" style="font-size: 0.9rem;">{{ request.user.username }} (KALAB)</span>
+                <i class="fa-regular fa-circle-user fs-4 text-dark"></i>
             </div>
         </div>
 
         <!-- Messages Notifikasi -->
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-4 shadow-sm" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-3 shadow-sm" role="alert" style="font-size: 0.85rem;">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
         {% endif %}
 
-        <!-- Welcoming -->
-        <div class="mb-4">
-            <h3 class="fw-bold text-dark mb-1">Persetujuan Akhir Kepala Laboratorium 👋</h3>
+        <!-- Header Welcoming -->
+        <div class="mb-3">
+            <h4 class="fw-bold text-dark mb-1">Persetujuan Akhir Kepala Laboratorium 👋</h4>
             <p class="text-muted small mb-0">Tinjau dan berikan keputusan persetujuan peminjaman lab/alat kesehatan.</p>
         </div>
 
         <!-- Kartu Ringkasan Statistik -->
-        <div class="row g-3 mb-4">
+        <div class="row g-3 mb-3">
             <div class="col-12 col-sm-4">
                 <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-bold mb-1 small">Butuh Persetujuan (ACC)</h6>
+                            <h6 class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Butuh Persetujuan (ACC)</h6>
                             <h3 class="fw-bold text-warning mb-0">{{ total_butuh_acc|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-warning-subtle text-warning p-3 rounded-3">
-                            <i class="fa-solid fa-file-signature fs-4"></i>
+                        <div class="bg-warning-subtle text-warning p-2.5 rounded-3">
+                            <i class="fa-solid fa-file-signature fs-5"></i>
                         </div>
                     </div>
                 </div>
@@ -172,11 +199,11 @@
                 <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-bold mb-1 small">Total Disetujui</h6>
+                            <h6 class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Total Disetujui</h6>
                             <h3 class="fw-bold text-success mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-success-subtle text-success p-3 rounded-3">
-                            <i class="fa-solid fa-circle-check fs-4"></i>
+                        <div class="bg-success-subtle text-success p-2.5 rounded-3">
+                            <i class="fa-solid fa-circle-check fs-5"></i>
                         </div>
                     </div>
                 </div>
@@ -185,11 +212,11 @@
                 <div class="card card-custom p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted fw-bold mb-1 small">Total Ditolak</h6>
+                            <h6 class="text-muted fw-bold mb-1" style="font-size: 0.75rem;">Total Ditolak</h6>
                             <h3 class="fw-bold text-danger mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-danger-subtle text-danger p-3 rounded-3">
-                            <i class="fa-solid fa-circle-xmark fs-4"></i>
+                        <div class="bg-danger-subtle text-danger p-2.5 rounded-3">
+                            <i class="fa-solid fa-circle-xmark fs-5"></i>
                         </div>
                     </div>
                 </div>
@@ -198,13 +225,13 @@
 
         <!-- Tabel Antrean Persetujuan KALAB -->
         <div class="card card-custom bg-white overflow-hidden mb-4 shadow-sm">
-            <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark">
+            <div class="card-header bg-white border-bottom py-2.5">
+                <h6 class="fw-bold mb-0 text-dark">
                     <i class="fa-solid fa-hourglass-half me-2 text-warning"></i>Pengajuan Menunggu Persetujuan KALAB
-                </h5>
+                </h6>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="min-width: 900px;">
+                <table class="table table-hover align-middle mb-0" style="min-width: 850px; font-size: 0.85rem;">
                     <thead class="table-light text-secondary">
                         <tr>
                             <th style="width: 18%;">Mahasiswa</th>
@@ -218,34 +245,34 @@
                         {% for pinjam in antrean_persetujuan %}
                         <tr>
                             <td>
-                                <div class="fw-bold text-dark fs-6">{{ pinjam.mahasiswa.username }}</div>
-                                <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
+                                <div class="fw-bold text-dark">{{ pinjam.mahasiswa.username }}</div>
+                                <small class="text-muted" style="font-size: 0.75rem;">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
-                                <small class="text-secondary d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
+                                <small class="text-secondary d-block" style="font-size: 0.75rem;">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold text-dark">{{ pinjam.mata_kuliah }}</div>
-                                <small class="text-muted">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
+                                <small class="text-muted" style="font-size: 0.75rem;">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
                             </td>
                             <td>
                                 <div class="fw-semibold text-dark mb-1">
                                     <i class="fa-regular fa-calendar text-primary me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
                                 </div>
-                                <small class="text-muted d-block" style="white-space: nowrap;">
+                                <small class="text-muted d-block" style="white-space: nowrap; font-size: 0.75rem;">
                                     <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB
                                 </small>
                             </td>
                             <td>
                                 <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
                                     <a href="{% url 'kalab:persetujuan' pinjam.id 'acc' %}"
-                                        class="btn btn-success btn-sm fw-bold px-3 py-2 rounded-2 d-inline-flex align-items-center justify-content-center"
+                                        class="btn btn-success btn-sm fw-bold px-2.5 py-1.5 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem;"
                                         onclick="return confirm('ACC peminjaman ini?');">
                                         <i class="fa-solid fa-check me-1"></i> Setujui
                                     </a>
                                     <a href="{% url 'kalab:persetujuan' pinjam.id 'tolak' %}"
-                                        class="btn btn-danger btn-sm fw-bold px-3 py-2 rounded-2 d-inline-flex align-items-center justify-content-center"
+                                        class="btn btn-danger btn-sm fw-bold px-2.5 py-1.5 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem;"
                                         onclick="return confirm('Tolak peminjaman ini?');">
                                         <i class="fa-solid fa-xmark me-1"></i> Tolak
                                     </a>
@@ -254,8 +281,8 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
-                                <i class="fa-solid fa-inbox fs-2 mb-2 d-block text-secondary"></i>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="fa-solid fa-inbox fs-3 mb-2 d-block text-secondary"></i>
                                 Tidak ada pengajuan peminjaman yang menunggu persetujuan.
                             </td>
                         </tr>
@@ -267,13 +294,13 @@
 
         <!-- Tabel Riwayat Keputusan KALAB -->
         <div class="card card-custom bg-white overflow-hidden mb-4 shadow-sm">
-            <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark">
+            <div class="card-header bg-white border-bottom py-2.5">
+                <h6 class="fw-bold mb-0 text-dark">
                     <i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Riwayat Persetujuan KALAB
-                </h5>
+                </h6>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="min-width: 900px;">
+                <table class="table table-hover align-middle mb-0" style="min-width: 850px; font-size: 0.85rem;">
                     <thead class="table-light text-secondary">
                         <tr>
                             <th style="width: 18%;">Mahasiswa</th>
@@ -287,36 +314,36 @@
                         {% for pinjam in riwayat_peminjaman %}
                         <tr>
                             <td>
-                                <div class="fw-bold text-dark fs-6">{{ pinjam.mahasiswa.username }}</div>
-                                <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
+                                <div class="fw-bold text-dark">{{ pinjam.mahasiswa.username }}</div>
+                                <small class="text-muted" style="font-size: 0.75rem;">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
-                                <small class="text-secondary d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
+                                <small class="text-secondary d-block" style="font-size: 0.75rem;">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold text-dark">{{ pinjam.mata_kuliah }}</div>
-                                <small class="text-muted">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
+                                <small class="text-muted" style="font-size: 0.75rem;">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
                             </td>
                             <td>
                                 <div class="fw-semibold text-dark mb-1">
                                     <i class="fa-regular fa-calendar text-primary me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
                                 </div>
-                                <small class="text-muted d-block" style="white-space: nowrap;">
+                                <small class="text-muted d-block" style="white-space: nowrap; font-size: 0.75rem;">
                                     <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB
                                 </small>
                             </td>
                             <td class="text-center">
                                 {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
-                                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold border border-success-subtle">
+                                <span class="badge bg-success-subtle text-success px-2.5 py-1.5 rounded-pill fw-bold border border-success-subtle" style="font-size: 0.75rem;">
                                     <i class="fa-solid fa-circle-check me-1"></i> Disetujui
                                 </span>
                                 {% elif pinjam.status == 'ditolak' %}
-                                <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold border border-danger-subtle">
+                                <span class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded-pill fw-bold border border-danger-subtle" style="font-size: 0.75rem;">
                                     <i class="fa-solid fa-circle-xmark me-1"></i> Ditolak
                                 </span>
                                 {% else %}
-                                <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill fw-bold">
+                                <span class="badge bg-secondary-subtle text-secondary px-2.5 py-1.5 rounded-pill fw-bold" style="font-size: 0.75rem;">
                                     {{ pinjam.status }}
                                 </span>
                                 {% endif %}
