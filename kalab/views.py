@@ -66,6 +66,11 @@ def persetujuan_kalab(request, pinjam_id, aksi):
 
     peminjaman = get_object_or_404(Peminjaman, id=pinjam_id)
 
+    # Validasi Tambahan: Hanya proses jika statusnya masih 'verified'
+    if peminjaman.status != 'verified':
+        messages.warning(request, f'Pengajuan #{peminjaman.id} sudah diproses sebelumnya atau tidak valid.')
+        return redirect('kalab:dashboard')
+
     if aksi == 'acc':
         peminjaman.status = 'disetujui'
         messages.success(request, f'Pengajuan peminjaman oleh {peminjaman.mahasiswa.username} telah DISETUJUI!')

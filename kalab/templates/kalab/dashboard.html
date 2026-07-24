@@ -227,23 +227,14 @@
                             </td>
                             <td>
                                 <div class="fw-bold text-dark">{{ pinjam.mata_kuliah }}</div>
-                                <small class="text-muted">
-                                    Dosen: 
-                                    {% if pinjam.dosen %}
-                                        {{ pinjam.dosen }}
-                                    {% elif pinjam.nama_dosen %}
-                                        {{ pinjam.nama_dosen }}
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                </small>
+                                <small class="text-muted">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
                             </td>
                             <td>
                                 <div class="fw-semibold text-dark mb-1">
                                     <i class="fa-regular fa-calendar text-primary me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
                                 </div>
                                 <small class="text-muted d-block" style="white-space: nowrap;">
-                                    <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai }} - {{ pinjam.wkt_akhir }} WIB
+                                    <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB
                                 </small>
                             </td>
                             <td>
@@ -266,6 +257,75 @@
                             <td colspan="5" class="text-center py-5 text-muted">
                                 <i class="fa-solid fa-inbox fs-2 mb-2 d-block text-secondary"></i>
                                 Tidak ada pengajuan peminjaman yang menunggu persetujuan.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabel Riwayat Keputusan KALAB -->
+        <div class="card card-custom bg-white overflow-hidden mb-4 shadow-sm">
+            <div class="card-header bg-white border-bottom py-3">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Riwayat Persetujuan KALAB
+                </h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="min-width: 900px;">
+                    <thead class="table-light text-secondary">
+                        <tr>
+                            <th style="width: 18%;">Mahasiswa</th>
+                            <th style="width: 25%;">Laboratorium & Alat</th>
+                            <th style="width: 22%;">Mata Kuliah</th>
+                            <th style="width: 20%;">Tanggal & Waktu</th>
+                            <th style="width: 15%; text-align: center;">Status Akhir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pinjam in riwayat_peminjaman %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-dark fs-6">{{ pinjam.mahasiswa.username }}</div>
+                                <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
+                                <small class="text-secondary d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-dark">{{ pinjam.mata_kuliah }}</div>
+                                <small class="text-muted">Dosen: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</small>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark mb-1">
+                                    <i class="fa-regular fa-calendar text-primary me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
+                                </div>
+                                <small class="text-muted d-block" style="white-space: nowrap;">
+                                    <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB
+                                </small>
+                            </td>
+                            <td class="text-center">
+                                {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
+                                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold border border-success-subtle">
+                                    <i class="fa-solid fa-circle-check me-1"></i> Disetujui
+                                </span>
+                                {% elif pinjam.status == 'ditolak' %}
+                                <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold border border-danger-subtle">
+                                    <i class="fa-solid fa-circle-xmark me-1"></i> Ditolak
+                                </span>
+                                {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill fw-bold">
+                                    {{ pinjam.status }}
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                Belum ada riwayat persetujuan peminjaman.
                             </td>
                         </tr>
                         {% endfor %}
