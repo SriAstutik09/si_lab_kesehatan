@@ -23,7 +23,7 @@
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #334155;
-            font-size: 0.875rem; /* Font dasar disesuaikan agar lebih proporsional */
+            font-size: 0.875rem;
         }
 
         /* Sidebar Styling */
@@ -70,9 +70,9 @@
             margin: -24px -24px 24px -24px;
         }
 
-        /* Logo Lebih Besar & Proporsional */
+        /* Logo Diperbesar & Proporsional */
         .brand-logo {
-            height: 65px; /* Diperbesar dari 55px */
+            height: 65px;
             width: auto;
             object-fit: contain;
         }
@@ -91,13 +91,17 @@
         }
 
         .btn-theme-primary:hover {
-            background-color: #1d4ed8;
+            background-color: #159a4f;
             color: #fff;
         }
 
         /* STYLING KHUSUS CETAK / PRINT */
         @media print {
-            .sidebar, .top-header-bar, .filter-card, .btn-print, .no-print {
+            .sidebar,
+            .top-header-bar,
+            .filter-card,
+            .btn-print,
+            .no-print {
                 display: none !important;
             }
 
@@ -165,7 +169,7 @@
 
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm style="font-size: 0.85rem;">
+            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm" style="font-size: 0.85rem;">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -174,14 +178,27 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- Top Header Bar -->
+        <!-- Top Header Bar dengan Dropdown Profil Aktif -->
         <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="brand-logo">
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <span class="fw-semibold text-dark me-1" style="font-size: 0.9rem;">{{ request.user.username }} (KALAB)</span>
-                <i class="fa-regular fa-circle-user fs-4 text-dark"></i>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-dark dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="fw-semibold me-1" style="font-size: 0.9rem;">{{ request.user.username }} (KALAB)</span>
+                    <i class="fa-regular fa-circle-user fs-4 text-dark"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" aria-labelledby="dropdownUser" style="font-size: 0.85rem;">
+                    <li class="px-3 py-2 border-bottom">
+                        <div class="fw-bold text-dark">{{ request.user.username }}</div>
+                        <small class="text-muted d-block">Kepala Laboratorium</small>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2 text-danger fw-semibold d-flex align-items-center gap-2" href="{% url 'core_auth:logout' %}">
+                            <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -196,7 +213,7 @@
             </button>
         </div>
 
-        <!-- Card Filter Data (Warna Senada) -->
+        <!-- Card Filter Data -->
         <div class="card card-custom filter-card p-3 bg-white mb-3">
             <form method="GET" action="{% url 'kalab:laporan' %}" class="row g-2 align-items-end">
                 <div class="col-12 col-md-3">
