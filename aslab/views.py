@@ -1,3 +1,6 @@
+# ==============================================================================
+# IMPOR MODUL DAN DEPENDENSI DJANGO
+# ==============================================================================
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,11 +13,12 @@ from core_auth.models import Peminjaman
 def cekk_role_aslab(user):
     """
     Fungsi bantu untuk mengecek apakah user yang login BUKAN ASLAB.
-    Jika Mahasiswa atau KALAB mencoba masuk, kembalikan nama redirect tujuannya.
+    Mengecek berdasarkan username, Django Group, maupun atribut role.
     """
-    if user.groups.filter(name='KALAB').exists() or getattr(user, 'role', '') == 'KALAB':
+    username_lower = user.username.lower()
+    if 'kalab' in username_lower or user.groups.filter(name__iexact='KALAB').exists() or getattr(user, 'role', '') == 'KALAB':
         return 'kalab:dashboard'
-    elif not (user.groups.filter(name='ASLAB').exists() or getattr(user, 'role', '') == 'ASLAB'):
+    elif not ('aslab' in username_lower or user.groups.filter(name__iexact='ASLAB').exists() or getattr(user, 'role', '') == 'ASLAB'):
         return 'mahasiswa:dashboard'
     return None
 
@@ -33,20 +37,13 @@ def dashboard_aslab(request):
         messages.error(request, "Anda tidak memiliki hak akses sebagai ASLAB!")
         return redirect(redirect_target)
 
-    # Mengambil semua data peminjaman dari yang paling baru
-    semua_peminjaman = Peminjaman.objects.all().order_by('-tanggal_pinjam')
+    # Mengambil peminjaman buatan Mahasiswa asli (mengabaikan jika ada pengajuan dummy dari akun ASLAB)
+    semua_peminjaman = Peminjaman.objects.exclude(mahasiswa__username__icontains='aslab').order_by('-tanggal_pinjam')
     
-    # --------------------------------------------------------------------------
-    # PENGHITUNGAN STATISTIK
-    # --------------------------------------------------------------------------
-    # 1. Antrean Masuk = Hanya yang 'pending' (butuh verifikasi) & 'pengembalian_diajukan' (butuh konfirmasi)
-    total_masuk = Peminjaman.objects.filter(status__in=['pending', 'pengembalian_diajukan']).count()
-    
-    # 2. Disetujui = Status 'verified', 'disetujui', dan 'selesai'
-    total_disetujui = Peminjaman.objects.filter(status__in=['verified', 'disetujui', 'selesai']).count()
-    
-    # 3. Ditolak = Status 'ditolak'
-    total_ditolak = Peminjaman.objects.filter(status='ditolak').count()
+    # Penghitungan Statistik Ringkasan
+    total_masuk = semua_peminjaman.filter(status__in=['pending', 'pengembalian_diajukan']).count()
+    total_disetujui = semua_peminjaman.filter(status__in=['verified', 'disetujui', 'selesai']).count()
+    total_ditolak = semua_peminjaman.filter(status='ditolak').count()
     
     context = {
         'semua_peminjaman': semua_peminjaman,
@@ -68,7 +65,6 @@ def verifikasi_peminjaman(request, pinjam_id, aksi):
     - tolak      : pending/verified -> ditolak
     - selesai    : pengembalian_diajukan -> selesai
     """
-    # 🛡️ KEAMANAN: Hanya ASLAB yang boleh mengeksekusi fungsi ini
     redirect_target = cekk_role_aslab(request.user)
     if redirect_target:
         messages.error(request, "Aksi ditolak. Anda bukan ASLAB!")
@@ -98,7 +94,6 @@ def laporan_peminjaman(request):
     """
     Menampilkan halaman rekapitulasi laporan peminjaman dengan fitur filter tanggal.
     """
-    # 🛡️ KEAMANAN: Cegah Mahasiswa menerobos halaman Laporan
     redirect_target = cekk_role_aslab(request.user)
     if redirect_target:
         messages.error(request, "Anda tidak memiliki hak akses ke Halaman Laporan!")
@@ -107,10 +102,10 @@ def laporan_peminjaman(request):
     tgl_mulai = request.GET.get('tgl_mulai')
     tgl_selesai = request.GET.get('tgl_selesai')
 
-    # Ambil semua data peminjaman
-    laporan_list = Peminjaman.objects.all().order_by('-tanggal_pinjam')
+    # Ambil semua data peminjaman milik mahasiswa
+    laporan_list = Peminjaman.objects.exclude(mahasiswa__username__icontains='aslab').order_by('-tanggal_pinjam')
 
-    # Filter berdasarkan tanggal jika parameter diisi oleh user
+    # Filter berdasarkan tanggal jika parameter diisi
     if tgl_mulai and tgl_selesai:
         laporan_list = laporan_list.filter(tanggal_pinjam__range=[tgl_mulai, tgl_selesai])
 

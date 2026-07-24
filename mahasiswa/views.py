@@ -13,18 +13,23 @@ from .forms import PeminjamanForm
 
 
 # ==============================================================================
-# HELPER FUNCTION: PENGECEKAN ROLE AKSES MAHASISWA
+# HELPER FUNCTION: PENGECEKAN AUTOMATIS BERDASARKAN USERNAME & GROUP
 # ==============================================================================
 def cekk_role_mahasiswa(user):
     """
-    Fungsi bantu untuk mengecek apakah user yang login BUKAN mahasiswa.
-    Jika user adalah ASLAB atau KALAB, return nama redirect tujuannya.
+    Fungsi otomatis: Mengecek apakah user yang login BUKAN mahasiswa.
+    Mengecek berdasarkan nama username (aslab/kalab), Group, maupun atribut role.
     """
-    # Pengecekan berbasis Group Django atau atribut role
-    if user.groups.filter(name='ASLAB').exists() or getattr(user, 'role', '') == 'ASLAB':
+    username_lower = user.username.lower()
+
+    # 1. Cek jika user adalah ASLAB
+    if 'aslab' in username_lower or user.groups.filter(name__iexact='ASLAB').exists() or getattr(user, 'role', '').upper() == 'ASLAB':
         return 'aslab:dashboard'
-    elif user.groups.filter(name='KALAB').exists() or getattr(user, 'role', '') == 'KALAB':
+
+    # 2. Cek jika user adalah KALAB
+    if 'kalab' in username_lower or user.groups.filter(name__iexact='KALAB').exists() or getattr(user, 'role', '').upper() == 'KALAB':
         return 'kalab:dashboard'
+
     return None
 
 
@@ -37,10 +42,9 @@ def dashboard_view(request):
     Fungsi untuk menampilkan statistik ringkasan dan daftar riwayat
     peminjaman khusus milik mahasiswa yang sedang login.
     """
-    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB masuk ke Portal Mahasiswa
+    # 🛡️ KEAMANAN AUTOMATIS: Cegah ASLAB / KALAB masuk ke Portal Mahasiswa
     redirect_target = cekk_role_mahasiswa(request.user)
     if redirect_target:
-        messages.warning(request, "Anda login sebagai petugas. Mengalihkan ke dashboard Anda.")
         return redirect(redirect_target)
 
     # Mengambil semua daftar peminjaman milik user yang login
@@ -69,10 +73,9 @@ def pinjam_lab_view(request):
     Fungsi untuk menampilkan form pengajuan pinjam lab/alat
     serta menyimpan data pengajuan baru dari mahasiswa.
     """
-    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB membuat pengajuan pinjaman
+    # 🛡️ KEAMANAN AUTOMATIS: Cegah ASLAB / KALAB membuat pengajuan pinjaman
     redirect_target = cekk_role_mahasiswa(request.user)
     if redirect_target:
-        messages.error(request, "Petugas Lab tidak dapat mengajukan peminjaman lab/alat.")
         return redirect(redirect_target)
 
     # [OTOMATISASI] Memastikan data awal dummy di database RuangLab dan AlatBahan terisi jika masih kosong
@@ -110,7 +113,7 @@ def ajukan_pengembalian_view(request, pinjam_id):
     Fungsi untuk mengubah status peminjaman menjadi 'pengembalian_diajukan'
     setelah mahasiswa selesai menggunakan laboratorium atau alat.
     """
-    # 🛡️ KEAMANAN: Cegah ASLAB / KALAB memproses URL ini secara langsung
+    # 🛡️ KEAMANAN AUTOMATIS: Cegah ASLAB / KALAB memproses URL ini
     redirect_target = cekk_role_mahasiswa(request.user)
     if redirect_target:
         return redirect(redirect_target)
