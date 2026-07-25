@@ -5,19 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard ASLAB - SIMPEL-K </title>
+    <title>Dashboard ASLAB - SIMPEL-K</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome untuk Icon -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Google Fonts — disamakan dengan halaman login -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* ---- Palet warna: identik dengan halaman login ---- */
+            /* Palet warna SIMPEL-K */
             --teal-900: #001744;
             --teal-700: #003279;
             --teal-600: #004b96;
@@ -39,9 +39,15 @@
             --ink-muted: #5b626b;
             --line: #e1e5e8;
 
-            /* Gradasi biru tua untuk sidebar, sama arah & nuansa dengan brand-panel di login */
             --sidebar-gradient: linear-gradient(180deg, var(--teal-700) 0%, var(--teal-900) 100%);
             --light-bg: #f3f6f7;
+            --radius-lg: 22px;
+            --radius-md: 12px;
+            --shadow-card: 0 16px 34px -18px rgba(0, 23, 68, 0.22);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -51,15 +57,14 @@
             font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
             color: var(--ink);
+            font-size: 0.875rem;
         }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
-        /* ===================================================== */
-        /* ===== Sidebar — tema biru tua                    ===== */
-        /* ===================================================== */
+        /* Sidebar Styling */
         .sidebar {
             position: fixed;
             top: 0;
@@ -103,7 +108,6 @@
             transition: margin-left 0.3s ease;
         }
 
-        /* Header Atas */
         .top-header-bar {
             background-color: #ffffff;
             border-bottom: 1px solid var(--line);
@@ -111,7 +115,6 @@
             margin: -30px -30px 30px -30px;
         }
 
-        /* Mobile Adjustments */
         @media (max-width: 991.98px) {
             .sidebar { transform: translateX(-260px); }
             .sidebar.show { transform: translateX(0); }
@@ -124,12 +127,9 @@
             .sidebar-overlay.show { display: block; }
         }
 
-        /* ===================================================== */
-        /* ===== Kartu & elemen umum                        ===== */
-        /* ===================================================== */
         .card-custom {
             border: 1px solid var(--line);
-            box-shadow: 0 16px 34px -18px rgba(0, 23, 68, 0.22);
+            box-shadow: var(--shadow-card);
             border-radius: 16px;
         }
 
@@ -138,10 +138,10 @@
             font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; font-weight: 600;
             display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
             border: none; transition: background-color .15s ease, transform .1s ease;
+            text-decoration: none;
         }
         .btn-action:active { transform: translateY(1px); }
 
-        /* Tombol aksi bertema biru/amber/rose, gantikan warna hijau bawaan Bootstrap */
         .btn-action--approve { background-color: var(--teal-700); color: #fff; }
         .btn-action--approve:hover { background-color: var(--teal-900); color: #fff; }
 
@@ -151,7 +151,6 @@
         .btn-action--done { background-color: var(--teal-600); color: #fff; }
         .btn-action--done:hover { background-color: var(--teal-900); color: #fff; }
 
-        /* ---- Kartu ringkasan statistik ---- */
         .stat-icon-box {
             width: 54px; height: 54px;
             display: flex; align-items: center; justify-content: center;
@@ -163,13 +162,16 @@
 
         .text-brand { color: var(--teal-700) !important; }
 
-        /* ---- Badge status ---- */
+        /* Badge status */
         .badge-status {
             font-size: .72rem;
             font-weight: 600;
             padding: .38rem .7rem;
             border-radius: 999px;
             border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
         }
         .badge-status--wait-aslab { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
         .badge-status--wait-kalab { background: var(--sky-050); color: var(--sky-600); border-color: var(--sky-line); }
@@ -184,13 +186,11 @@
 
 <body>
 
-    <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu -->
+    <!-- Sidebar Menu ASLAB -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <!-- Header Logo Sidebar -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
@@ -198,7 +198,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">SIMPEL-K</h5>
-                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab Kesehatan</small>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab</small>
                     </div>
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
@@ -207,15 +207,15 @@
             </div>
             <hr class="text-white-50 mx-3 mb-4">
 
-            <!-- MENU SIDEBAR -->
+            <!-- NAVIGASI SIDEBAR ASLAB -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="{% url 'aslab:dashboard' %}" class="nav-link active">
+                    <a href="#" class="nav-link active" id="btn-nav-dashboard">
                         <i class="fa-solid fa-gauge fs-5"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'aslab:dashboard' %}" class="nav-link">
+                    <a href="#tabel-validasi" class="nav-link" id="btn-nav-validasi">
                         <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
                     </a>
                 </li>
@@ -227,10 +227,9 @@
             </ul>
         </div>
 
-        <!-- Tombol Logout -->
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="/auth/logout/" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -248,14 +247,12 @@
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 55px; width: auto; object-fit: contain;">
             </div>
 
-            <!-- Ikon Lonceng Notifikasi & Dropdown Profil -->
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
                     <i class="fa-regular fa-bell fs-5 text-secondary"></i>
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
-                <!-- Dropdown Profil -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
@@ -266,7 +263,7 @@
                             <small class="text-muted">Role: Asisten Lab (ASLAB)</small>
                         </li>
                         <li>
-                            <a class="dropdown-item py-2 text-danger fw-semibold" href="/auth/logout/">
+                            <a class="dropdown-item py-2 text-danger fw-semibold" href="{% url 'core_auth:logout' %}">
                                 <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar
                             </a>
                         </li>
@@ -275,7 +272,6 @@
             </div>
         </div>
 
-        <!-- Notifikasi Pesan Django -->
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-4" role="alert">
@@ -298,7 +294,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Pengajuan Masuk</h6>
-                            <h3 class="fw-bold mb-0" style="color: var(--amber-600);">{{ total_masuk|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold mb-0" style="color: var(--amber-600);">{{ total_masuk }}</h3>
                         </div>
                         <div class="stat-icon-box stat-icon-box--pending">
                             <i class="fa-solid fa-clock-rotate-left fs-4"></i>
@@ -311,7 +307,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Total Disetujui</h6>
-                            <h3 class="fw-bold text-brand mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold text-brand mb-0">{{ total_disetujui }}</h3>
                         </div>
                         <div class="stat-icon-box stat-icon-box--approved">
                             <i class="fa-solid fa-circle-check fs-4"></i>
@@ -324,7 +320,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Total Ditolak</h6>
-                            <h3 class="fw-bold mb-0" style="color: var(--rose-600);">{{ total_ditolak|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold mb-0" style="color: var(--rose-600);">{{ total_ditolak }}</h3>
                         </div>
                         <div class="stat-icon-box stat-icon-box--rejected">
                             <i class="fa-solid fa-circle-xmark fs-4"></i>
@@ -334,10 +330,10 @@
             </div>
         </div>
 
-        <!-- Tabel Data Peminjaman -->
-        <div class="card card-custom bg-white overflow-hidden">
+        <!-- Tabel Data Peminjaman Lengkap Milik ASLAB -->
+        <div class="card card-custom bg-white overflow-hidden" id="tabel-validasi">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi Verifikasi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
@@ -370,7 +366,7 @@
                             </td>
                             <td>
                                 <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}</div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai }} - {{ pinjam.wkt_akhir }} WIB</small>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
@@ -426,7 +422,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Sidebar Mobile -->
+    <!-- Script Sidebar Active State & Mobile Overlay -->
     <script>
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
@@ -441,6 +437,22 @@
         if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
         if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
         if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Switch Active Highlight pada Sidebar
+        const btnDashboard = document.getElementById('btn-nav-dashboard');
+        const btnValidasi = document.getElementById('btn-nav-validasi');
+
+        btnValidasi.addEventListener('click', function () {
+            btnDashboard.classList.remove('active');
+            btnValidasi.classList.add('active');
+        });
+
+        btnDashboard.addEventListener('click', function (e) {
+            e.preventDefault();
+            btnValidasi.classList.remove('active');
+            btnDashboard.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 
