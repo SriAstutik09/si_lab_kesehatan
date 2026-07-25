@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Peminjaman - KALAB SIMPEL-K</title>
+    <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -13,155 +17,201 @@
 
     <style>
         :root {
-            --sidebar-gradient: linear-gradient(180deg, #25b369 0%, #0f172a 100%);
-            --primary-blue: #1dbd63;
-            --accent-blue: #20e834;
-            --light-bg: #f8fafc;
+            /* Token Warna Utama — Disamakan Persis dengan Mahasiswa & Login */
+            --teal-900: #001744;
+            --teal-700: #003279;
+            --teal-600: #004b96;
+            --teal-050: #e6ebf4;
+            --ink: #16241f;
+            --ink-muted: #5b626b;
+            --line: #e1e5e8;
+            --paper: #ffffff;
+            --bg: #f3f6f7;
+            --radius-lg: 22px;
+            --radius-md: 12px;
+            --shadow-card: 0 16px 34px -18px rgba(0, 68, 60, 0.22);
+            --shadow-card-hover: 0 22px 40px -16px rgba(0, 24, 68, 0.28);
+
+            /* Token Warna Status */
+            --amber-600: #b45309; --amber-050: #fef9c3; --amber-line: #fde68a;
+            --info-600:  #0369a1; --info-050:  #e0f2fe; --info-line:  #bae6fd;
+            --success-600: #15803d; --success-050: #dcfce7; --success-line: #bbf7d0;
+            --danger-600: #b91c1c; --danger-050: #fee2e2; --danger-line: #fecaca;
         }
 
         body {
-            background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #334155;
+            background-color: var(--bg);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--ink);
             font-size: 0.875rem;
         }
 
-        /* Sidebar Styling */
+        h1, h2, h3, h4, h5, h6, .brand-title {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
+        /* Sidebar Styling Khas SIMPEL-K */
         .sidebar {
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             z-index: 1040;
-            width: 250px;
-            background: var(--sidebar-gradient);
-            box-shadow: 4px 0 15px rgba(30, 58, 138, 0.15);
+            width: 260px;
+            background: linear-gradient(180deg, var(--teal-900) 0%, #060d21 100%);
+            box-shadow: 4px 0 18px rgba(0, 23, 68, 0.25);
         }
 
         .sidebar .nav-link {
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
-            padding: 10px 16px;
-            margin: 4px 12px;
-            border-radius: 8px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            padding: 12px 18px;
+            margin: 4px 14px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-size: 0.875rem;
+            transition: all .2s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .sidebar .nav-link.active {
             color: #fff;
-            background: var(--accent-blue);
-            box-shadow: 0 4px 12px rgba(71, 241, 116, 0.3);
+            background: var(--teal-600);
+            box-shadow: 0 8px 20px -4px rgba(0, 75, 150, 0.5);
         }
 
-        /* Main Content Styling */
+        /* Main Shell & Top Bar (Tekstur Titik-Titik Halus) */
         .main-content {
-            margin-left: 250px;
+            margin-left: 260px;
             padding: 24px;
             min-height: 100vh;
+            background-image: radial-gradient(#d3e2de 1px, transparent 1px);
+            background-size: 22px 22px;
         }
 
         .top-header-bar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 10px 24px;
-            margin: -24px -24px 24px -24px;
+            background-color: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 12px 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
         }
 
-        /* Logo Diperbesar & Proporsional */
         .brand-logo {
-            height: 65px;
+            height: 52px;
             width: auto;
             object-fit: contain;
         }
 
+        /* Card Section */
         .card-custom {
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            border-radius: 12px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
         }
 
-        /* Warna Tombol & Theme Harmony */
+        .card-custom .card-header {
+            background: var(--paper);
+            border-bottom: 1px solid var(--line);
+            padding: 1rem 1.25rem;
+        }
+
+        /* Button Styling */
         .btn-theme-primary {
-            background-color: var(--primary-blue);
+            background-color: var(--teal-700);
             color: #fff;
             border: none;
+            transition: background-color .15s ease, transform .12s ease;
         }
 
         .btn-theme-primary:hover {
-            background-color: #159a4f;
+            background-color: var(--teal-900);
             color: #fff;
+            transform: translateY(-1px);
         }
 
+        /* Status Badges */
+        .badge-status {
+            font-size: .72rem;
+            font-weight: 700;
+            padding: .35rem .7rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .badge-status--approved { background: var(--success-050); color: var(--success-600); border-color: var(--success-line); }
+        .badge-status--rejected { background: var(--danger-050); color: var(--danger-600); border-color: var(--danger-line); }
+        .badge-status--pending  { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+
         /* STYLING KHUSUS CETAK / PRINT */
+        .print-only { display: none; }
+
         @media print {
-            .sidebar,
-            .top-header-bar,
-            .filter-card,
-            .btn-print,
-            .no-print {
+            .sidebar, .top-header-bar, .filter-card, .btn-print, .no-print {
                 display: none !important;
             }
+
+            .print-only { display: block !important; }
 
             .main-content {
                 margin-left: 0 !important;
                 padding: 0 !important;
+                background-image: none !important;
             }
 
-            body {
-                background-color: #fff !important;
-            }
+            body { background-color: #fff !important; color: #000 !important; }
 
-            .card-custom {
-                border: none !important;
-                box-shadow: none !important;
-            }
+            .card-custom { border: none !important; box-shadow: none !important; }
+
+            table { width: 100% !important; border-collapse: collapse !important; }
+
+            th, td { border: 1px solid #000 !important; padding: 6px 8px !important; }
         }
 
         @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-            }
-
-            .top-header-bar {
-                margin: -15px -15px 20px -15px;
-            }
+            .sidebar { transform: translateX(-260px); }
+            .main-content { margin-left: 0; padding: 15px; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Sidebar Menu KALAB -->
-    <div class="sidebar d-flex flex-column justify-content-between py-3">
+    <!-- Sidebar Menu KALAB (Tema Navy/Teal MHS) -->
+    <div class="sidebar d-flex flex-column justify-content-between py-4">
         <div>
-            <div class="px-3 mb-3 text-white d-flex align-items-center gap-3">
-                <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
-                    <i class="fa-solid fa-user-tie fs-5 text-primary"></i>
+            <div class="px-4 mb-3 text-white d-flex align-items-center gap-3">
+                <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
+                    <i class="fa-solid fa-user-tie fs-4" style="color: var(--teal-700);"></i>
                 </div>
                 <div>
-                    <h6 class="fw-bold mb-0 text-white">TATA LAB</h6>
+                    <h6 class="fw-bold mb-0 text-white brand-title">TATA LAB</h6>
                     <small class="text-white-50" style="font-size: 0.7rem;">Kepala Laboratorium</small>
                 </div>
             </div>
-            <hr class="text-white-50 mx-3 mb-3">
+            <hr class="text-white-50 mx-3 mb-4">
 
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="{% url 'kalab:dashboard' %}" class="nav-link">
-                        <i class="fa-solid fa-gauge"></i> Dashboard Persetujuan
+                        <i class="fa-solid fa-gauge fs-6"></i> Dashboard Persetujuan
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'kalab:laporan' %}" class="nav-link active">
-                        <i class="fa-solid fa-file-invoice"></i> Laporan & Rekap
+                        <i class="fa-solid fa-file-invoice fs-6"></i> Laporan & Rekap
                     </a>
                 </li>
             </ul>
@@ -178,17 +228,17 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- Top Header Bar dengan Dropdown Profil Aktif -->
-        <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
+        <!-- Top Header Bar -->
+        <div class="top-header-bar d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="brand-logo">
             </div>
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-dark dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="fw-semibold me-1" style="font-size: 0.9rem;">{{ request.user.username }} (KALAB)</span>
-                    <i class="fa-regular fa-circle-user fs-4 text-dark"></i>
+                    <span class="fw-semibold me-1" style="font-size: 0.88rem;">{{ request.user.username }} (KALAB)</span>
+                    <i class="fa-regular fa-circle-user fs-4" style="color: var(--teal-700);"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" aria-labelledby="dropdownUser" style="font-size: 0.85rem;">
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser" style="font-size: 0.85rem;">
                     <li class="px-3 py-2 border-bottom">
                         <div class="fw-bold text-dark">{{ request.user.username }}</div>
                         <small class="text-muted d-block">Kepala Laboratorium</small>
@@ -202,8 +252,16 @@
             </div>
         </div>
 
+        <!-- KOP SURAT (Otomatis Muncul Hanya Saat Dicetak) -->
+        <div class="print-only text-center mb-4 pb-2 border-bottom border-dark border-2">
+            <h4 class="fw-bold mb-0 text-uppercase">FAKULTAS ILMU KESEHATAN</h4>
+            <h5 class="fw-bold mb-1 text-uppercase">SISTEM INFORMASI PEMINJAMAN LABORATORIUM (SIMPEL-K)</h5>
+            <p class="small mb-0">Jl. Raya Paiton, Probolinggo, Jawa Timur | Email: lab.kesehatan@unuji.ac.id</p>
+            <h6 class="fw-bold mt-3 text-decoration-underline">REKAPITULASI LAPORAN PEMINJAMAN LAB & ALAT</h6>
+        </div>
+
         <!-- Header Laporan -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2 no-print">
             <div>
                 <h4 class="fw-bold text-dark mb-1">Laporan & Rekapitulasi Peminjaman 📑</h4>
                 <p class="text-muted small mb-0">Cari, filter, dan cetak rekapitulasi data penggunaan laboratorium.</p>
@@ -214,7 +272,7 @@
         </div>
 
         <!-- Card Filter Data -->
-        <div class="card card-custom filter-card p-3 bg-white mb-3">
+        <div class="card card-custom filter-card p-3 mb-3">
             <form method="GET" action="{% url 'kalab:laporan' %}" class="row g-2 align-items-end">
                 <div class="col-12 col-md-3">
                     <label class="form-label small fw-semibold text-secondary mb-1">Dari Tanggal</label>
@@ -236,10 +294,10 @@
                     </select>
                 </div>
                 <div class="col-12 col-md-3 d-flex gap-2">
-                    <button type="submit" class="btn btn-theme-primary btn-sm fw-bold w-100 py-1-5 rounded-2">
+                    <button type="submit" class="btn btn-theme-primary btn-sm fw-bold w-100 py-1.5 rounded-2">
                         <i class="fa-solid fa-filter me-1"></i> Filter
                     </button>
-                    <a href="{% url 'kalab:laporan' %}" class="btn btn-outline-secondary btn-sm fw-bold py-1-5 rounded-2">
+                    <a href="{% url 'kalab:laporan' %}" class="btn btn-outline-secondary btn-sm fw-bold py-1.5 rounded-2">
                         Reset
                     </a>
                 </div>
@@ -247,12 +305,12 @@
         </div>
 
         <!-- Tabel Rekap Laporan -->
-        <div class="card card-custom bg-white overflow-hidden shadow-sm">
-            <div class="card-header bg-white border-bottom py-2.5 d-flex justify-content-between align-items-center">
+        <div class="card card-custom">
+            <div class="card-header border-bottom py-2.5 d-flex justify-content-between align-items-center no-print">
                 <h6 class="fw-bold mb-0 text-dark">
-                    <i class="fa-solid fa-table me-2 text-primary"></i>Data Rekapitulasi Peminjaman
+                    <i class="fa-solid fa-table me-2" style="color: var(--teal-700);"></i>Data Rekapitulasi Peminjaman
                 </h6>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2.5 py-1-5 rounded-pill fw-bold" style="font-size: 0.75rem;">
+                <span class="badge px-2.5 py-1.5 rounded-pill fw-bold" style="background: var(--teal-050); color: var(--teal-700); font-size: 0.75rem;">
                     Total: {{ total_laporan }} Data
                 </span>
             </div>
@@ -277,7 +335,7 @@
                                 <small class="text-muted" style="font-size: 0.75rem;">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
-                                <div class="fw-bold text-primary">{{ pinjam.ruang_lab.nama_ruang }}</div>
+                                <div class="fw-bold" style="color: var(--teal-700);">{{ pinjam.ruang_lab.nama_ruang }}</div>
                                 <small class="text-secondary d-block" style="font-size: 0.75rem;">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
@@ -290,15 +348,15 @@
                             </td>
                             <td class="text-center">
                                 {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
-                                <span class="badge bg-success-subtle text-success px-2.5 py-1.5 rounded-pill fw-bold border border-success-subtle" style="font-size: 0.75rem;">
+                                <span class="badge-status badge-status--approved">
                                     Disetujui
                                 </span>
                                 {% elif pinjam.status == 'ditolak' %}
-                                <span class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded-pill fw-bold border border-danger-subtle" style="font-size: 0.75rem;">
+                                <span class="badge-status badge-status--rejected">
                                     Ditolak
                                 </span>
                                 {% else %}
-                                <span class="badge bg-warning-subtle text-warning px-2.5 py-1.5 rounded-pill fw-bold border border-warning-subtle" style="font-size: 0.75rem;">
+                                <span class="badge-status badge-status--pending">
                                     {{ pinjam.status|capfirst }}
                                 </span>
                                 {% endif %}
@@ -313,6 +371,19 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- BLOK TANDA TANGAN (Hanya Saat Dicetak) -->
+        <div class="print-only mt-5">
+            <div class="d-flex justify-content-end">
+                <div class="text-center" style="width: 250px;">
+                    <p class="mb-1">Probolinggo, {% now "d F Y" %}</p>
+                    <p class="fw-bold mb-5">Kepala Laboratorium,</p>
+                    <br><br>
+                    <p class="fw-bold text-decoration-underline mb-0">{{ request.user.username }}</p>
+                    <small>NIP/NIK. ..........................</small>
+                </div>
             </div>
         </div>
 
