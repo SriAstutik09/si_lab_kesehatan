@@ -4,30 +4,56 @@
 
 {% block content %}
 <style>
-    :root {
+    /* ===== Token warna & bentuk: disamakan persis dengan login & dashboard mahasiswa ===== */
+    .pinjam-lab {
         --teal-900: #001744;
         --teal-700: #003279;
         --teal-600: #004b96;
         --teal-050: #e6ebf4;
-        --ink: #161b24;
-        --ink-muted: #5b5c6b;
-        --line: #e1e3e8;
+        --ink: #16241f;
+        --ink-muted: #5b626b;
+        --line: #e1e5e8;
         --paper: #ffffff;
-        --bg: #f3f4f7;
+        --bg: #f3f6f7;
         --radius-lg: 22px;
         --radius-md: 12px;
         --shadow-card: 0 20px 45px -20px rgba(0, 19, 68, 0.25);
+
+        /* status galat, satu keluarga dengan token merah di dashboard */
+        --danger-600: #b91c1c;
+        --danger-050: #fee2e2;
+        --danger-line: #fecaca;
+
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+
+        /* "shell" halaman: mengulang tekstur titik-titik dari background login */
+        background-color: var(--bg);
+        background-image: radial-gradient(#d3e2de 1px, transparent 1px);
+        background-size: 22px 22px;
+        border-radius: var(--radius-lg);
+        padding: clamp(1rem, 3vw, 1.75rem);
+        margin: -0.25rem;
+    }
+
+    .pinjam-lab h1,
+    .pinjam-lab h2,
+    .pinjam-lab h3,
+    .pinjam-lab h4,
+    .pinjam-lab h5,
+    .pinjam-lab h6 {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     }
 
     /* ===== Header halaman ===== */
-    .pinjam-header {
+    .pinjam-lab .pinjam-header {
         display: flex;
         align-items: center;
         gap: .75rem;
         margin-bottom: 1.25rem;
     }
 
-    .btn-back {
+    .pinjam-lab .btn-back {
         width: 38px;
         height: 38px;
         display: inline-flex;
@@ -40,18 +66,19 @@
         border: 1px solid var(--line);
         transition: background-color .15s ease, transform .1s ease;
         text-decoration: none;
+        flex-shrink: 0;
     }
 
-    .btn-back:hover {
+    .pinjam-lab .btn-back:hover {
         background-color: var(--teal-050);
         color: var(--teal-900);
     }
 
-    .btn-back:active {
+    .pinjam-lab .btn-back:active {
         transform: translateY(1px);
     }
 
-    .pinjam-title {
+    .pinjam-lab .pinjam-title {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         font-weight: 700;
         font-size: 1.15rem;
@@ -59,14 +86,43 @@
         margin: 0;
     }
 
-    .pinjam-subtitle {
+    .pinjam-lab .pinjam-subtitle {
         font-size: .82rem;
         color: var(--ink-muted);
         margin: 0;
     }
 
+    /* ===== Progres singkat: menunjukkan alur persetujuan setelah kirim ===== */
+    .pinjam-lab .flow-hint {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        flex-wrap: wrap;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: .65rem .9rem;
+        margin-bottom: 1.25rem;
+        font-size: .76rem;
+        color: var(--ink-muted);
+        box-shadow: var(--shadow-card);
+    }
+
+    .pinjam-lab .flow-hint .flow-step {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        font-weight: 600;
+        color: var(--teal-700);
+    }
+
+    .pinjam-lab .flow-hint i.fa-chevron-right {
+        color: #c3cdd8;
+        font-size: .65rem;
+    }
+
     /* ===== Kartu form ===== */
-    .pinjam-card {
+    .pinjam-lab .pinjam-card {
         background: var(--paper);
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
@@ -75,15 +131,39 @@
         margin-bottom: 2rem;
     }
 
-    .form-section {
-        margin-bottom: 1.75rem;
-    }
-
-    .form-section:last-of-type {
+    /* ===== Peringatan galat non-field ===== */
+    .pinjam-lab .alert-form-error {
+        display: flex;
+        align-items: flex-start;
+        gap: .6rem;
+        background: var(--danger-050);
+        border: 1px solid var(--danger-line);
+        color: var(--danger-600);
+        border-radius: var(--radius-md);
+        padding: .85rem 1rem;
+        font-size: .84rem;
         margin-bottom: 1.5rem;
     }
 
-    .form-section-label {
+    .pinjam-lab .alert-form-error i {
+        margin-top: .15rem;
+        flex-shrink: 0;
+    }
+
+    .pinjam-lab .alert-form-error ul {
+        margin: 0;
+        padding-left: 1.1rem;
+    }
+
+    .pinjam-lab .form-section {
+        margin-bottom: 1.75rem;
+    }
+
+    .pinjam-lab .form-section:last-of-type {
+        margin-bottom: 1.5rem;
+    }
+
+    .pinjam-lab .form-section-label {
         display: inline-flex;
         align-items: center;
         gap: .4rem;
@@ -98,15 +178,15 @@
         margin-bottom: 1.1rem;
     }
 
-    .field-group {
+    .pinjam-lab .field-group {
         margin-bottom: 1.1rem;
     }
 
-    .field-group:last-child {
+    .pinjam-lab .field-group:last-child {
         margin-bottom: 0;
     }
 
-    .field-group label {
+    .pinjam-lab .field-group label {
         display: block;
         font-size: .8rem;
         font-weight: 600;
@@ -114,18 +194,28 @@
         margin-bottom: .4rem;
     }
 
-    .field-row {
+    .pinjam-lab .field-error {
+        display: flex;
+        align-items: center;
+        gap: .35rem;
+        font-size: .74rem;
+        font-weight: 500;
+        color: var(--danger-600);
+        margin: .4rem 0 0;
+    }
+
+    .pinjam-lab .field-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.1rem;
     }
 
     /* Menimpa tampilan default widget Django/Bootstrap agar konsisten dengan tema login */
-    .pinjam-card select,
-    .pinjam-card input[type="text"],
-    .pinjam-card input[type="date"],
-    .pinjam-card input[type="time"],
-    .pinjam-card textarea {
+    .pinjam-lab select,
+    .pinjam-lab input[type="text"],
+    .pinjam-lab input[type="date"],
+    .pinjam-lab input[type="time"],
+    .pinjam-lab textarea {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: var(--radius-md);
@@ -137,32 +227,67 @@
         transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
     }
 
-    .pinjam-card textarea {
+    .pinjam-lab textarea {
         min-height: 96px;
         resize: vertical;
     }
 
-    .pinjam-card select:focus,
-    .pinjam-card input:focus,
-    .pinjam-card textarea:focus {
+    /* Panah kustom untuk <select>, menggantikan panah bawaan browser agar senada tema */
+    .pinjam-lab select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23003279' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right .9rem center;
+        background-size: 14px;
+        padding-right: 2.4rem;
+        cursor: pointer;
+    }
+
+    .pinjam-lab select:hover,
+    .pinjam-lab input[type="text"]:hover {
+        border-color: var(--teal-600);
+        background: #ffffff;
+    }
+
+    .pinjam-lab select:focus,
+    .pinjam-lab input:focus,
+    .pinjam-lab textarea:focus {
         outline: none;
         border-color: var(--teal-600);
         background: #ffffff;
         box-shadow: 0 0 0 4px rgba(0, 150, 136, 0.14);
     }
 
-    .pinjam-card ::placeholder {
+    /* Kondisi galat pada field: border & fokus ring beralih ke merah */
+    .pinjam-lab .field-group.has-error select,
+    .pinjam-lab .field-group.has-error input,
+    .pinjam-lab .field-group.has-error textarea {
+        border-color: var(--danger-line);
+        background: var(--danger-050);
+    }
+
+    .pinjam-lab .field-group.has-error select:focus,
+    .pinjam-lab .field-group.has-error input:focus,
+    .pinjam-lab .field-group.has-error textarea:focus {
+        border-color: var(--danger-600);
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.12);
+    }
+
+    .pinjam-lab ::placeholder {
         color: #a7b3af;
     }
 
-    .form-divider {
+    .pinjam-lab .form-divider {
         border: none;
         border-top: 1px solid var(--line);
         margin: 0 0 1.75rem;
     }
 
     /* ===== Tombol kirim ===== */
-    .btn-submit {
+    .pinjam-lab .btn-submit {
         background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
         color: #fff;
         font-weight: 600;
@@ -178,139 +303,198 @@
         transition: filter .15s ease, transform .1s ease;
     }
 
-    .btn-submit:hover {
+    .pinjam-lab .btn-submit:hover {
         filter: brightness(1.08);
     }
 
-    .btn-submit:active {
+    .pinjam-lab .btn-submit:active {
         transform: translateY(1px);
     }
 
-    /* Hover pada kotak tempat input tanggal & jam */
-    .pinjam-card input[type="date"]:hover,
-    .pinjam-card input[type="time"]:hover {
-        border-color: var(--teal-600);
-        background: #ffffff;
+    .pinjam-lab .form-note {
+        text-align: center;
+        font-size: .74rem;
+        color: var(--ink-muted);
+        margin: .85rem 0 0;
     }
 
     /* Efek pada ikon kalender/jam bawaan browser (khusus Chrome/Edge/Safari) */
-    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator,
-    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator {
+    .pinjam-lab input[type="date"]::-webkit-calendar-picker-indicator,
+    .pinjam-lab input[type="time"]::-webkit-calendar-picker-indicator {
         cursor: pointer;
         padding: 4px;
         border-radius: 6px;
         transition: background-color .15s ease, transform .1s ease;
     }
 
-    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator:hover,
-    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    .pinjam-lab input[type="date"]::-webkit-calendar-picker-indicator:hover,
+    .pinjam-lab input[type="time"]::-webkit-calendar-picker-indicator:hover {
         background-color: var(--teal-050);
     }
 
-    .pinjam-card input[type="date"]::-webkit-calendar-picker-indicator:active,
-    .pinjam-card input[type="time"]::-webkit-calendar-picker-indicator:active {
+    .pinjam-lab input[type="date"]::-webkit-calendar-picker-indicator:active,
+    .pinjam-lab input[type="time"]::-webkit-calendar-picker-indicator:active {
         transform: scale(0.9);
     }
 
     /* ===== Responsif ===== */
     @media (max-width: 576px) {
-        .field-row {
+        .pinjam-lab .field-row {
             grid-template-columns: 1fr;
             gap: 0;
         }
 
-        .field-row .field-group {
+        .pinjam-lab .field-row .field-group {
             margin-bottom: 1.1rem;
         }
 
-        .pinjam-card {
+        .pinjam-lab .pinjam-card {
             padding: 1.35rem;
             border-radius: 16px;
+        }
+
+        .pinjam-lab .flow-hint {
+            font-size: .7rem;
         }
     }
 </style>
 
-<div class="pinjam-header">
-    <a href="{% url 'mahasiswa:dashboard' %}" class="btn-back" aria-label="Kembali">
-        <i class="fa-solid fa-arrow-left"></i>
-    </a>
-    <div>
-        <p class="pinjam-title">Form Pengajuan Peminjaman</p>
-        <p class="pinjam-subtitle">Lengkapi data di bawah untuk mengajukan peminjaman lab</p>
+<div class="pinjam-lab">
+
+    <div class="pinjam-header">
+        <a href="{% url 'mahasiswa:dashboard' %}" class="btn-back" aria-label="Kembali">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <div>
+            <p class="pinjam-title">Form Pengajuan Peminjaman</p>
+            <p class="pinjam-subtitle">Lengkapi data di bawah untuk mengajukan peminjaman lab</p>
+        </div>
     </div>
-</div>
 
-<div class="pinjam-card">
-    <form method="POST" novalidate>
-        {% csrf_token %}
+    <!-- Alur persetujuan, membantu mahasiswa tahu apa yang terjadi setelah kirim -->
+    <div class="flow-hint">
+        <span class="flow-step"><i class="fa-regular fa-square-check"></i> Anda isi form</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Verifikasi ASLAB</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Persetujuan KALAB</span>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Siap digunakan</span>
+    </div>
 
-        <div class="form-section">
-            <span class="form-section-label"><i class="fa-solid fa-flask"></i> Ruang &amp; Peralatan</span>
+    <div class="pinjam-card">
+        <form method="POST" novalidate>
+            {% csrf_token %}
 
-            <div class="field-group">
-                <label for="{{ form.ruang_lab.id_for_label }}">Pilih Ruang Lab</label>
-                {{ form.ruang_lab }}
-            </div>
-
-            <div class="field-group">
-                <label for="{{ form.alat_bahan.id_for_label }}">Alat &amp; Bahan Kesehatan</label>
-                {{ form.alat_bahan }}
-            </div>
-        </div>
-
-        <hr class="form-divider">
-
-        <div class="form-section">
-            <span class="form-section-label"><i class="fa-solid fa-chalkboard-user"></i> Pengampu &amp; Mata Kuliah</span>
-
-            <div class="field-row">
-                <div class="field-group">
-                    <label for="{{ form.nama_dosen.id_for_label }}">Nama Dosen Pengampu</label>
-                    {{ form.nama_dosen }}
-                </div>
-                <div class="field-group">
-                    <label for="{{ form.mata_kuliah.id_for_label }}">Mata Kuliah</label>
-                    {{ form.mata_kuliah }}
+            <!-- Galat umum yang tidak terikat ke satu field spesifik -->
+            {% if form.non_field_errors %}
+            <div class="alert-form-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <div>
+                    <strong>Pengajuan belum bisa dikirim.</strong>
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-        </div>
+            {% endif %}
 
-        <hr class="form-divider">
+            <div class="form-section">
+                <span class="form-section-label"><i class="fa-solid fa-flask"></i> Ruang &amp; Peralatan</span>
 
-        <div class="form-section">
-            <span class="form-section-label"><i class="fa-regular fa-calendar-check"></i> Jadwal Praktikum</span>
-
-            <div class="field-group">
-                <label for="{{ form.tanggal_pinjam.id_for_label }}">Tanggal Pelaksanaan Praktikum</label>
-                {{ form.tanggal_pinjam }}
-            </div>
-
-            <div class="field-row">
-                <div class="field-group">
-                    <label for="{{ form.wkt_mulai.id_for_label }}">Jam Mulai</label>
-                    {{ form.wkt_mulai }}
+                <div class="field-group {% if form.ruang_lab.errors %}has-error{% endif %}">
+                    <label for="{{ form.ruang_lab.id_for_label }}">Pilih Ruang Lab</label>
+                    {{ form.ruang_lab }}
+                    {% if form.ruang_lab.errors %}
+                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.ruang_lab.errors.0 }}</p>
+                    {% endif %}
                 </div>
-                <div class="field-group">
-                    <label for="{{ form.wkt_akhir.id_for_label }}">Jam Selesai</label>
-                    {{ form.wkt_akhir }}
+
+                <div class="field-group {% if form.alat_bahan.errors %}has-error{% endif %}">
+                    <label for="{{ form.alat_bahan.id_for_label }}">Alat &amp; Bahan Kesehatan</label>
+                    {{ form.alat_bahan }}
+                    {% if form.alat_bahan.errors %}
+                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.alat_bahan.errors.0 }}</p>
+                    {% endif %}
                 </div>
             </div>
-        </div>
 
-        <hr class="form-divider">
+            <hr class="form-divider">
 
-        <div class="form-section">
-            <span class="form-section-label"><i class="fa-regular fa-note-sticky"></i> Keperluan</span>
+            <div class="form-section">
+                <span class="form-section-label"><i class="fa-solid fa-chalkboard-user"></i> Pengampu &amp; Mata Kuliah</span>
 
-            <div class="field-group">
-                <label for="{{ form.keperluan.id_for_label }}">Keperluan / Agenda Praktikum</label>
-                {{ form.keperluan }}
+                <div class="field-row">
+                    <div class="field-group {% if form.nama_dosen.errors %}has-error{% endif %}">
+                        <label for="{{ form.nama_dosen.id_for_label }}">Nama Dosen Pengampu</label>
+                        {{ form.nama_dosen }}
+                        {% if form.nama_dosen.errors %}
+                        <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.nama_dosen.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="field-group {% if form.mata_kuliah.errors %}has-error{% endif %}">
+                        <label for="{{ form.mata_kuliah.id_for_label }}">Mata Kuliah</label>
+                        {{ form.mata_kuliah }}
+                        {% if form.mata_kuliah.errors %}
+                        <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.mata_kuliah.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <button type="submit" class="btn-submit">
-            Kirim Pengajuan <i class="fa-solid fa-paper-plane"></i>
-        </button>
-    </form>
+            <hr class="form-divider">
+
+            <div class="form-section">
+                <span class="form-section-label"><i class="fa-regular fa-calendar-check"></i> Jadwal Praktikum</span>
+
+                <div class="field-group {% if form.tanggal_pinjam.errors %}has-error{% endif %}">
+                    <label for="{{ form.tanggal_pinjam.id_for_label }}">Tanggal Pelaksanaan Praktikum</label>
+                    {{ form.tanggal_pinjam }}
+                    {% if form.tanggal_pinjam.errors %}
+                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.tanggal_pinjam.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group {% if form.wkt_mulai.errors %}has-error{% endif %}">
+                        <label for="{{ form.wkt_mulai.id_for_label }}">Jam Mulai</label>
+                        {{ form.wkt_mulai }}
+                        {% if form.wkt_mulai.errors %}
+                        <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.wkt_mulai.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="field-group {% if form.wkt_akhir.errors %}has-error{% endif %}">
+                        <label for="{{ form.wkt_akhir.id_for_label }}">Jam Selesai</label>
+                        {{ form.wkt_akhir }}
+                        {% if form.wkt_akhir.errors %}
+                        <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.wkt_akhir.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <hr class="form-divider">
+
+            <div class="form-section">
+                <span class="form-section-label"><i class="fa-regular fa-note-sticky"></i> Keperluan</span>
+
+                <div class="field-group {% if form.keperluan.errors %}has-error{% endif %}">
+                    <label for="{{ form.keperluan.id_for_label }}">Keperluan / Agenda Praktikum</label>
+                    {{ form.keperluan }}
+                    {% if form.keperluan.errors %}
+                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.keperluan.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Kirim Pengajuan <i class="fa-solid fa-paper-plane"></i>
+            </button>
+            <p class="form-note">Pengajuan akan diverifikasi ASLAB sebelum disetujui KALAB.</p>
+        </form>
+    </div>
+
 </div>
 {% endblock %}
