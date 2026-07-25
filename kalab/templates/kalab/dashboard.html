@@ -17,7 +17,7 @@
 
     <style>
         :root {
-            /* Token warna disamakan persis dengan MHS */
+            /* Token warna SIMPEL-K KALAB */
             --teal-900: #001744;
             --teal-700: #003279;
             --teal-600: #004b96;
@@ -231,6 +231,17 @@
 
         .badge-status--approved { background: var(--success-050); color: var(--success-600); border-color: var(--success-line); }
         .badge-status--rejected { background: var(--danger-050); color: var(--danger-600); border-color: var(--danger-line); }
+        .badge-status--wait-kalab { background: var(--info-050); color: var(--info-600); border-color: var(--info-line); }
+
+        .btn-action--detail {
+            background-color: var(--info-600);
+            color: #ffffff;
+            border: none;
+        }
+        .btn-action--detail:hover {
+            background-color: #0284c7;
+            color: #ffffff;
+        }
 
         @media (max-width: 991.98px) {
             .sidebar { transform: translateX(-260px); }
@@ -241,7 +252,7 @@
 
 <body>
 
-    <!-- Sidebar Menu KALAB (Tema Navy/Teal MHS) -->
+    <!-- Sidebar Menu KALAB -->
     <div class="sidebar d-flex flex-column justify-content-between py-4">
         <div>
             <div class="px-4 mb-3 text-white d-flex align-items-center gap-3">
@@ -280,7 +291,7 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- Top Header Bar dengan Dropdown Profil -->
+        <!-- Top Header Bar -->
         <div class="top-header-bar d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="brand-logo">
@@ -331,7 +342,7 @@
                         <i class="fa-solid fa-file-signature"></i>
                     </div>
                     <div>
-                        <h3 class="stat-number">{{ total_butuh_acc|stringformat:"02d" }}</h3>
+                        <h3 class="stat-number">{{ total_butuh_acc }}</h3>
                         <span class="stat-label">Butuh Persetujuan (ACC)</span>
                     </div>
                 </div>
@@ -342,7 +353,7 @@
                         <i class="fa-regular fa-circle-check"></i>
                     </div>
                     <div>
-                        <h3 class="stat-number">{{ total_disetujui|stringformat:"02d" }}</h3>
+                        <h3 class="stat-number">{{ total_disetujui }}</h3>
                         <span class="stat-label">Total Disetujui</span>
                     </div>
                 </div>
@@ -353,7 +364,7 @@
                         <i class="fa-regular fa-circle-xmark"></i>
                     </div>
                     <div>
-                        <h3 class="stat-number">{{ total_ditolak|stringformat:"02d" }}</h3>
+                        <h3 class="stat-number">{{ total_ditolak }}</h3>
                         <span class="stat-label">Total Ditolak</span>
                     </div>
                 </div>
@@ -368,14 +379,14 @@
                 </h6>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="min-width: 850px; font-size: 0.85rem;">
+                <table class="table table-hover align-middle mb-0" style="min-width: 900px; font-size: 0.85rem;">
                     <thead class="table-light text-secondary">
                         <tr>
                             <th style="width: 18%;">Mahasiswa</th>
-                            <th style="width: 25%;">Laboratorium & Alat</th>
-                            <th style="width: 22%;">Mata Kuliah & Dosen</th>
-                            <th style="width: 20%;">Tanggal & Waktu</th>
-                            <th style="width: 15%; text-align: center;">Aksi Keputusan</th>
+                            <th style="width: 23%;">Laboratorium & Alat</th>
+                            <th style="width: 20%;">Mata Kuliah & Dosen</th>
+                            <th style="width: 17%;">Tanggal & Waktu</th>
+                            <th style="width: 22%; text-align: center;">Aksi Keputusan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -401,14 +412,17 @@
                                     <i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB
                                 </small>
                             </td>
-                            <td>
-                                <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                            <td class="text-center">
+                                <div class="d-flex align-items-center justify-content-center gap-1 flex-nowrap">
+                                    <button type="button" class="btn btn-action--detail btn-sm fw-bold px-2 py-1 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem; white-space: nowrap;" data-bs-toggle="modal" data-bs-target="#modalDetailKalab{{ pinjam.id }}">
+                                        <i class="fa-solid fa-eye me-1"></i> Detail
+                                    </button>
                                     <a href="{% url 'kalab:persetujuan' pinjam.id 'acc' %}"
-                                        class="btn btn-success btn-sm fw-bold px-2.5 py-1.5 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem;" onclick="return confirm('ACC peminjaman ini?');">
+                                        class="btn btn-success btn-sm fw-bold px-2 py-1 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem; white-space: nowrap;" onclick="return confirm('ACC peminjaman ini?');">
                                         <i class="fa-solid fa-check me-1"></i> Setujui
                                     </a>
                                     <a href="{% url 'kalab:persetujuan' pinjam.id 'tolak' %}"
-                                        class="btn btn-danger btn-sm fw-bold px-2.5 py-1.5 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem;" onclick="return confirm('Tolak peminjaman ini?');">
+                                        class="btn btn-danger btn-sm fw-bold px-2 py-1 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem; white-space: nowrap;" onclick="return confirm('Tolak peminjaman ini?');">
                                         <i class="fa-solid fa-xmark me-1"></i> Tolak
                                     </a>
                                 </div>
@@ -440,9 +454,9 @@
                         <tr>
                             <th style="width: 18%;">Mahasiswa</th>
                             <th style="width: 25%;">Laboratorium & Alat</th>
-                            <th style="width: 22%;">Mata Kuliah</th>
-                            <th style="width: 20%;">Tanggal & Waktu</th>
-                            <th style="width: 15%; text-align: center;">Status Akhir</th>
+                            <th style="width: 20%;">Mata Kuliah</th>
+                            <th style="width: 18%;">Tanggal & Waktu</th>
+                            <th style="width: 19%; text-align: center;">Status & Detail</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -469,19 +483,25 @@
                                 </small>
                             </td>
                             <td class="text-center">
-                                {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
-                                <span class="badge-status badge-status--approved">
-                                    <i class="fa-solid fa-circle-check"></i> Disetujui
-                                </span>
-                                {% elif pinjam.status == 'ditolak' %}
-                                <span class="badge-status badge-status--rejected">
-                                    <i class="fa-solid fa-circle-xmark"></i> Ditolak
-                                </span>
-                                {% else %}
-                                <span class="badge bg-secondary-subtle text-secondary px-2.5 py-1.5 rounded-pill fw-bold" style="font-size: 0.75rem;">
-                                    {{ pinjam.status }}
-                                </span>
-                                {% endif %}
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                    {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
+                                    <span class="badge-status badge-status--approved">
+                                        <i class="fa-solid fa-circle-check"></i> Disetujui
+                                    </span>
+                                    {% elif pinjam.status == 'ditolak' %}
+                                    <span class="badge-status badge-status--rejected">
+                                        <i class="fa-solid fa-circle-xmark"></i> Ditolak
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary px-2.5 py-1.5 rounded-pill fw-bold" style="font-size: 0.75rem;">
+                                        {{ pinjam.status }}
+                                    </span>
+                                    {% endif %}
+
+                                    <button type="button" class="btn btn-action--detail btn-sm fw-bold px-2 py-1 rounded-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#modalDetailKalabRiw{{ pinjam.id }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         {% empty %}
@@ -497,6 +517,234 @@
         </div>
 
     </div>
+
+    <!-- MODAL DETAIL ANTREAN PERSETUJUAN KALAB -->
+    {% for pinjam in antrean_persetujuan %}
+    <div class="modal fade" id="modalDetailKalab{{ pinjam.id }}" tabindex="-1" aria-labelledby="labelModalKalab{{ pinjam.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                    <h5 class="modal-title fw-bold text-dark" id="labelModalKalab{{ pinjam.id }}">
+                        <i class="fa-solid fa-file-circle-check me-2 text-brand"></i>Detail Permohonan Persetujuan KALAB
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 mb-4" style="background: #f8fafc; border: 1px solid var(--line);">
+                        <div>
+                            <small class="text-muted d-block fw-semibold mb-1">STATUS SAAT INI</small>
+                            <span class="badge-status badge-status--wait-kalab"><i class="fa-solid fa-clock me-1"></i>Menunggu Persetujuan KALAB</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block fw-semibold mb-1">ID TRANSAKSI</small>
+                            <span class="fw-bold text-dark">#LAB-{{ pinjam.id }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-id-card me-2"></i>Identitas Peminjam
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Username / NIM</td>
+                                        <td class="fw-bold text-dark px-0">: {{ pinjam.mahasiswa.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Nama Lengkap</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-graduation-cap me-2"></i>Akademik & Praktikum
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Mata Kuliah</td>
+                                        <td class="fw-bold text-dark px-0">: {{ pinjam.mata_kuliah }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Dosen Pengampu</td>
+                                        <td class="fw-semibold text-dark px-0">: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Tanggal Pinjam</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Waktu Praktikum</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-door-open me-2"></i>Laboratorium & Alat
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Ruang Lab</td>
+                                        <td class="fw-bold text-brand px-0">: {{ pinjam.ruang_lab.nama_ruang }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Alat / Bahan</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.alat_bahan.nama_alat }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ALASAN / KEPERLUAN PEMINJAMAN -->
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-2" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-pen-to-square me-2"></i>Alasan / Keperluan
+                                </h6>
+                                <p class="text-dark small mb-0 fst-italic bg-light p-2 rounded border">
+                                    "{{ pinjam.keperluan|default:"-" }}"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary btn-sm px-3 rounded-2 fw-semibold" data-bs-dismiss="modal">Tutup</button>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'kalab:persetujuan' pinjam.id 'tolak' %}" class="btn btn-danger btn-sm px-3 rounded-2 fw-bold" onclick="return confirm('Tolak peminjaman ini?');">
+                            <i class="fa-solid fa-xmark me-1"></i> Tolak
+                        </a>
+                        <a href="{% url 'kalab:persetujuan' pinjam.id 'acc' %}" class="btn btn-success btn-sm px-3 rounded-2 fw-bold" onclick="return confirm('ACC peminjaman ini?');">
+                            <i class="fa-solid fa-check me-1"></i> Setujui (ACC)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- MODAL DETAIL RIWAYAT PERSETUJUAN KALAB (ID KHUSUS modalDetailKalabRiw) -->
+    {% for pinjam in riwayat_peminjaman %}
+    <div class="modal fade" id="modalDetailKalabRiw{{ pinjam.id }}" tabindex="-1" aria-labelledby="labelModalKalabRiw{{ pinjam.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                    <h5 class="modal-title fw-bold text-dark" id="labelModalKalabRiw{{ pinjam.id }}">
+                        <i class="fa-solid fa-file-circle-info me-2 text-brand"></i>Detail Riwayat Peminjaman Laboratorium
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 mb-4" style="background: #f8fafc; border: 1px solid var(--line);">
+                        <div>
+                            <small class="text-muted d-block fw-semibold mb-1">STATUS AKHIR</small>
+                            {% if pinjam.status == 'disetujui' or pinjam.status == 'selesai' %}
+                            <span class="badge-status badge-status--approved"><i class="fa-solid fa-circle-check me-1"></i>Disetujui</span>
+                            {% elif pinjam.status == 'ditolak' %}
+                            <span class="badge-status badge-status--rejected"><i class="fa-solid fa-circle-xmark me-1"></i>Ditolak</span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary px-2.5 py-1.5 rounded-pill fw-bold">{{ pinjam.status }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block fw-semibold mb-1">ID TRANSAKSI</small>
+                            <span class="fw-bold text-dark">#LAB-{{ pinjam.id }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-id-card me-2"></i>Identitas Peminjam
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Username / NIM</td>
+                                        <td class="fw-bold text-dark px-0">: {{ pinjam.mahasiswa.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Nama Lengkap</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-graduation-cap me-2"></i>Akademik & Praktikum
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Mata Kuliah</td>
+                                        <td class="fw-bold text-dark px-0">: {{ pinjam.mata_kuliah }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Dosen Pengampu</td>
+                                        <td class="fw-semibold text-dark px-0">: {% if pinjam.dosen %}{{ pinjam.dosen }}{% elif pinjam.nama_dosen %}{{ pinjam.nama_dosen }}{% else %}-{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Tanggal Pinjam</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Waktu Praktikum</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-door-open me-2"></i>Laboratorium & Alat
+                                </h6>
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tr>
+                                        <td class="text-muted px-0" style="width: 40%;">Ruang Lab</td>
+                                        <td class="fw-bold text-brand px-0">: {{ pinjam.ruang_lab.nama_ruang }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted px-0">Alat / Bahan</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.alat_bahan.nama_alat }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ALASAN / KEPERLUAN PEMINJAMAN RIWAYAT -->
+                        <div class="col-12 col-md-6">
+                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                                <h6 class="fw-bold mb-2" style="color: var(--teal-700);">
+                                    <i class="fa-solid fa-pen-to-square me-2"></i>Alasan / Keperluan
+                                </h6>
+                                <p class="text-dark small mb-0 fst-italic bg-light p-2 rounded border">
+                                    "{{ pinjam.keperluan|default:"-" }}"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 text-end">
+                    <button type="button" class="btn btn-secondary btn-sm px-3 rounded-2 fw-semibold" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
