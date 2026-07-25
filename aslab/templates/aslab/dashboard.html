@@ -5,29 +5,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard ASLAB - SIMPEL-K / TATA LAB</title>
+    <title>Dashboard ASLAB - SIMPEL-K </title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts — disamakan dengan halaman login -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary-green: #10b981;
-            --dark-green: #065f46;
-            /* Gradasi Hijau Emerald Lembut & Modern */
-            --sidebar-gradient: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
-            --light-bg: #f4fbf7;
+            /* ---- Palet warna: identik dengan halaman login ---- */
+            --teal-900: #001744;
+            --teal-700: #003279;
+            --teal-600: #004b96;
+            --teal-050: #e6ebf4;
+
+            --amber-600: #b45309;
+            --amber-050: #fef9c3;
+            --amber-line: #fef08a;
+
+            --sky-600: #0369a1;
+            --sky-050: #e0f2fe;
+            --sky-line: #bae6fd;
+
+            --rose-600: #b91c1c;
+            --rose-050: #fee2e2;
+            --rose-line: #fecaca;
+
+            --ink: #16241f;
+            --ink-muted: #5b626b;
+            --line: #e1e5e8;
+
+            /* Gradasi biru tua untuk sidebar, sama arah & nuansa dengan brand-panel di login */
+            --sidebar-gradient: linear-gradient(180deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            --light-bg: #f3f6f7;
         }
 
         body {
             background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: radial-gradient(#d3e2de 1px, transparent 1px);
+            background-size: 22px 22px;
+            font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
-            color: #1e293b;
+            color: var(--ink);
         }
 
-        /* Sidebar Tema Hijau Emerald */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
+        /* ===================================================== */
+        /* ===== Sidebar — tema biru tua                    ===== */
+        /* ===================================================== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -36,13 +68,13 @@
             z-index: 1040;
             width: 260px;
             background: var(--sidebar-gradient);
-            box-shadow: 4px 0 15px rgba(4, 120, 87, 0.15);
+            box-shadow: 4px 0 15px rgba(0, 23, 68, 0.18);
             transition: transform 0.3s ease;
         }
 
         .sidebar .nav-link {
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.75);
             padding: 12px 20px;
             margin: 4px 15px;
             border-radius: 10px;
@@ -59,8 +91,8 @@
 
         .sidebar .nav-link.active {
             color: #fff;
-            background: #10b981;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            background: var(--teal-600);
+            box-shadow: 0 4px 12px rgba(0, 75, 150, 0.4);
         }
 
         /* Main Content */
@@ -74,7 +106,7 @@
         /* Header Atas */
         .top-header-bar {
             background-color: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--line);
             padding: 12px 24px;
             margin: -30px -30px 30px -30px;
         }
@@ -92,10 +124,12 @@
             .sidebar-overlay.show { display: block; }
         }
 
-        /* Card Custom */
+        /* ===================================================== */
+        /* ===== Kartu & elemen umum                        ===== */
+        /* ===================================================== */
         .card-custom {
-            border: 1px solid #d1fae5;
-            box-shadow: 0 4px 6px -1px rgba(6, 95, 70, 0.03);
+            border: 1px solid var(--line);
+            box-shadow: 0 16px 34px -18px rgba(0, 23, 68, 0.22);
             border-radius: 16px;
         }
 
@@ -103,7 +137,48 @@
         .btn-action {
             font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; font-weight: 600;
             display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+            border: none; transition: background-color .15s ease, transform .1s ease;
         }
+        .btn-action:active { transform: translateY(1px); }
+
+        /* Tombol aksi bertema biru/amber/rose, gantikan warna hijau bawaan Bootstrap */
+        .btn-action--approve { background-color: var(--teal-700); color: #fff; }
+        .btn-action--approve:hover { background-color: var(--teal-900); color: #fff; }
+
+        .btn-action--reject { background-color: var(--rose-600); color: #fff; }
+        .btn-action--reject:hover { background-color: #991b1b; color: #fff; }
+
+        .btn-action--done { background-color: var(--teal-600); color: #fff; }
+        .btn-action--done:hover { background-color: var(--teal-900); color: #fff; }
+
+        /* ---- Kartu ringkasan statistik ---- */
+        .stat-icon-box {
+            width: 54px; height: 54px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+        }
+        .stat-icon-box--pending { background: var(--amber-050); color: var(--amber-600); }
+        .stat-icon-box--approved { background: var(--teal-050); color: var(--teal-700); }
+        .stat-icon-box--rejected { background: var(--rose-050); color: var(--rose-600); }
+
+        .text-brand { color: var(--teal-700) !important; }
+
+        /* ---- Badge status ---- */
+        .badge-status {
+            font-size: .72rem;
+            font-weight: 600;
+            padding: .38rem .7rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+        }
+        .badge-status--wait-aslab { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+        .badge-status--wait-kalab { background: var(--sky-050); color: var(--sky-600); border-color: var(--sky-line); }
+        .badge-status--approved   { background: var(--teal-050); color: var(--teal-700); border-color: #b9c9e6; }
+        .badge-status--return     { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+        .badge-status--rejected   { background: var(--rose-050); color: var(--rose-600); border-color: var(--rose-line); }
+        .badge-status--done       { background: #eef1f5; color: var(--ink-muted); border-color: var(--line); }
+
+        .table-light th { color: var(--ink-muted); font-size: .78rem; }
     </style>
 </head>
 
@@ -112,18 +187,18 @@
     <!-- Overlay HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu Hijau Emerald -->
+    <!-- Sidebar Menu -->
     <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <!-- Header Logo Sidebar (KOTAK PUTIH SUDAH DIHILANGKAN FULL DENGAN BENTUK ELEGAN) -->
+            <!-- Header Logo Sidebar -->
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
-                        <i class="fa-solid fa-flask-vial fs-4 text-success"></i>
+                        <i class="fa-solid fa-flask-vial fs-4" style="color: var(--teal-700);"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">TATA LAB</h5>
-                        <small class="text-white-50" style="font-size: 0.7rem;">Portal Asisten Lab</small>
+                        <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">SIMPEL-K</h5>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab Kesehatan</small>
                     </div>
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
@@ -164,13 +239,12 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- HEADER ATAS (LOGO DIBESARKAN) -->
+        <!-- HEADER ATAS -->
         <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
                     <i class="fa-solid fa-bars fs-3 text-dark"></i>
                 </button>
-                <!-- UKURAN LOGO DIPERBESAR MENJADI 55px SANGAT JELAS -->
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 55px; width: auto; object-fit: contain;">
             </div>
 
@@ -181,7 +255,7 @@
                     <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
-                <!-- Dropdown Profil Asli -->
+                <!-- Dropdown Profil -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
@@ -224,9 +298,9 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Pengajuan Masuk</h6>
-                            <h3 class="fw-bold text-warning mb-0">{{ total_masuk|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold mb-0" style="color: var(--amber-600);">{{ total_masuk|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-warning-subtle text-warning p-3 rounded-3">
+                        <div class="stat-icon-box stat-icon-box--pending">
                             <i class="fa-solid fa-clock-rotate-left fs-4"></i>
                         </div>
                     </div>
@@ -237,9 +311,9 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Total Disetujui</h6>
-                            <h3 class="fw-bold text-success mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold text-brand mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-success-subtle text-success p-3 rounded-3">
+                        <div class="stat-icon-box stat-icon-box--approved">
                             <i class="fa-solid fa-circle-check fs-4"></i>
                         </div>
                     </div>
@@ -250,9 +324,9 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted fw-bold mb-1 small">Total Ditolak</h6>
-                            <h3 class="fw-bold text-danger mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
+                            <h3 class="fw-bold mb-0" style="color: var(--rose-600);">{{ total_ditolak|stringformat:"02d" }}</h3>
                         </div>
-                        <div class="bg-danger-subtle text-danger p-3 rounded-3">
+                        <div class="stat-icon-box stat-icon-box--rejected">
                             <i class="fa-solid fa-circle-xmark fs-4"></i>
                         </div>
                     </div>
@@ -263,7 +337,7 @@
         <!-- Tabel Data Peminjaman -->
         <div class="card card-custom bg-white overflow-hidden">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-success"></i>Daftar Riwayat & Aksi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
@@ -285,7 +359,7 @@
                                 <small class="text-muted">ID: {{ pinjam.mahasiswa.id }}</small>
                             </td>
                             <td>
-                                <div class="fw-bold text-success">{{ pinjam.ruang_lab.nama_ruang }}</div>
+                                <div class="fw-bold text-brand">{{ pinjam.ruang_lab.nama_ruang }}</div>
                                 <small class="text-muted d-block">Alat: {{ pinjam.alat_bahan.nama_alat }}</small>
                             </td>
                             <td>
@@ -300,40 +374,40 @@
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
-                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Menunggu ASLAB</span>
+                                    <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
                                 {% elif pinjam.status == 'verified' %}
-                                <span class="badge bg-info text-white px-2 py-1 rounded-pill small">Menunggu KALAB</span>
+                                    <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
                                 {% elif pinjam.status == 'disetujui' %}
-                                <span class="badge bg-success px-2 py-1 rounded-pill small">Disetujui</span>
+                                    <span class="badge-status badge-status--approved">Disetujui</span>
                                 {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                <span class="badge bg-warning text-dark px-2 py-1 rounded-pill small">Ajukan Pengembalian</span>
+                                    <span class="badge-status badge-status--return">Ajukan Pengembalian</span>
                                 {% elif pinjam.status == 'selesai' %}
-                                <span class="badge bg-primary px-2 py-1 rounded-pill small">Selesai</span>
+                                    <span class="badge-status badge-status--done">Selesai</span>
                                 {% else %}
-                                <span class="badge bg-danger px-2 py-1 rounded-pill small">Ditolak</span>
+                                    <span class="badge-status badge-status--rejected">Ditolak</span>
                                 {% endif %}
                             </td>
                             <td>
                                 <div class="btn-action-group">
                                     {% if pinjam.status == 'pending' %}
                                     <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}"
-                                        class="btn btn-success btn-action"
+                                        class="btn-action btn-action--approve"
                                         onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
                                         <i class="fa-solid fa-check"></i> Verifikasi
                                     </a>
                                     <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}"
-                                        class="btn btn-danger btn-action"
+                                        class="btn-action btn-action--reject"
                                         onclick="return confirm('Yakin ingin MENOLAK peminjaman ini?');">
                                         <i class="fa-solid fa-xmark"></i> Tolak
                                     </a>
                                     {% elif pinjam.status == 'pengembalian_diajukan' %}
                                     <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}"
-                                        class="btn btn-primary btn-action"
+                                        class="btn-action btn-action--done"
                                         onclick="return confirm('Konfirmasi bahwa alat/lab sudah selesai dikembalikan?');">
                                         <i class="fa-solid fa-box-archive"></i> Selesai
                                     </a>
                                     {% else %}
-                                    <span class="text-muted small italic">-</span>
+                                    <span class="text-muted small fst-italic">-</span>
                                     {% endif %}
                                 </div>
                             </td>

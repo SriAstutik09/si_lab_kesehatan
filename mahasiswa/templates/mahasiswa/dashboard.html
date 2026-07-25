@@ -8,27 +8,27 @@
 <!-- ===== CSS Internal — mengikuti tema halaman login (teal / Plus Jakarta Sans) ===== -->
 <style>
     .dashboard-mhs {
-        --teal-900: #00443c;
-        --teal-700: #00796b;
-        --teal-600: #009688;
-        --teal-050: #e6f4f1;
+        --teal-900: #001744;
+        --teal-700: #003279;
+        --teal-600: #004b96;
+        --teal-050: #e6ebf4;
         --amber-600: #b45309;
         --amber-050: #fef9c3;
         --amber-line: #fef08a;
         --rose-600: #b91c1c;
         --rose-050: #fee2e2;
         --rose-line: #fecaca;
-        --green-600: #15803d;
-        --green-050: #dcfce7;
-        --green-line: #bbf7d0;
-        --ink: #16241f;
-        --ink-muted: #5b6b66;
-        --line: #e1e8e5;
+        --green-600: #153380;
+        --green-050: #dce8fc;
+        --green-line: #bbc3f7;
+        --ink: #161b24;
+        --ink-muted: #5b5c6b;
+        --line: #e1e3e8;
         --paper: #ffffff;
         --radius-lg: 22px;
         --radius-md: 12px;
-        --shadow-card: 0 16px 34px -18px rgba(0, 68, 60, 0.22);
-        --shadow-card-hover: 0 22px 40px -16px rgba(0, 68, 60, 0.3);
+        --shadow-card: 0 16px 34px -18px rgba(0, 22, 68, 0.22);
+        --shadow-card-hover: 0 22px 40px -16px rgba(0, 18, 68, 0.3);
         font-family: 'Inter', system-ui, sans-serif;
         color: var(--ink);
     }
@@ -220,6 +220,7 @@
         padding: .3rem .65rem;
         border-radius: var(--radius-md);
         transition: background-color .15s ease;
+        text-decoration: none;
     }
 
     .dashboard-mhs .btn-return:hover {
@@ -383,7 +384,7 @@
                     <a href="{% url 'mahasiswa:ajukan_pengembalian' jadwal.id %}"
                         class="btn-return"
                         onclick="return confirm('Apakah Anda yakin ingin mengajukan pengembalian lab/alat ini?');">
-                        <i class="fa-solid fa-rotate-left me-1"></i> Kembalikan
+                        <i class="fa-solid fa-rotate-left me-1 "></i> Kembalikan
                     </a>
                     {% endif %}
                 </div>
