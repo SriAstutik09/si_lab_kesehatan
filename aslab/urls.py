@@ -4,11 +4,16 @@ from . import views
 app_name = 'aslab'
 
 urlpatterns = [
-    # Dashboard ASLAB
+    # 1. Dashboard ASLAB
     path('dashboard/', views.dashboard_aslab, name='dashboard'),
     
-    # Rute Aksi Verifikasi / Tolak / Selesai
+    # 2. Rute Aksi Verifikasi / Tolak / Selesai Peminjaman Lab
     path('verifikasi/<int:pinjam_id>/<str:aksi>/', views.verifikasi_peminjaman, name='verifikasi'),
-    # path LAPORAN 
+    
+    # 3. Path LAPORAN 
     path('laporan/', views.laporan_peminjaman, name='laporan'),
+
+    # RUTE BARU: VERIFIKASI AKUN MAHASISWA BARU
+    path('verifikasi-akun/', views.verifikasi_akun_mhs, name='verifikasi_akun'),
+    path('proses-akun/<int:user_id>/<str:aksi>/', views.proses_persetujuan_akun, name='proses_persetujuan_akun'),
 ]

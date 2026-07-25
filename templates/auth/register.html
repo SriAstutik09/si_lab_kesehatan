@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk ke Sistem - SIMPEL-K / TATA LAB</title>
+    <title>Daftar Akun Mahasiswa - SIMPEL-K / TATA LAB</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -17,10 +17,8 @@
 
     <style>
         :root {
-            /* Palet Warna Biru Soft / Slate Elegan */
             --navy-dark: #0f172a;
             --blue-soft: #1e293b;
-            --blue-accent: #2563eb;
             --blue-light: #eff6ff;
             --ink: #1e293b;
             --ink-muted: #64748b;
@@ -42,7 +40,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
             position: relative;
             overflow-x: hidden;
 
@@ -55,7 +53,6 @@
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
-        /* ===== Card Login Transparan (Frosted Glass) ===== */
         .auth-shell {
             position: relative;
             z-index: 10;
@@ -73,7 +70,6 @@
             overflow: hidden;
         }
 
-        /* ===== Form Panel (Kiri) ===== */
         .form-panel {
             padding: clamp(2rem, 4vw, 3rem);
             display: flex;
@@ -119,12 +115,12 @@
         .form-panel .subtitle {
             font-size: .88rem;
             color: var(--ink-muted);
-            margin-bottom: 1.6rem;
+            margin-bottom: 1.5rem;
         }
 
         .field {
             position: relative;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.1rem;
         }
 
         .field label {
@@ -149,13 +145,9 @@
             border: 1.5px solid #cbd5e1;
             border-radius: var(--radius-md);
             padding: .72rem .9rem .72rem 2.8rem;
-            font-size: .92rem;
+            font-size: .9rem;
             background: rgba(255, 255, 255, 0.95);
             transition: all .2s ease;
-        }
-
-        .form-control::placeholder {
-            color: #94a3b8;
         }
 
         .form-control:focus {
@@ -165,47 +157,6 @@
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 14px;
-            top: calc(50% + 11px);
-            transform: translateY(-50%);
-            color: #64748b;
-            cursor: pointer;
-            font-size: .95rem;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .password-toggle:hover {
-            color: var(--navy-dark);
-        }
-
-        .row-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            font-size: .82rem;
-        }
-
-        .form-check-input:checked {
-            background-color: var(--navy-dark);
-            border-color: var(--navy-dark);
-        }
-
-        .row-between a {
-            color: #2563eb;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .row-between a:hover {
-            text-decoration: underline;
-        }
-
-        /* Tombol Soft Navy */
         .btn-soft-navy {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: #fff;
@@ -221,62 +172,16 @@
             gap: .5rem;
             box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.35);
             transition: all .2s ease;
+            margin-top: .5rem;
         }
 
         .btn-soft-navy:hover {
-            background: linear-gradient(135deg, #334155 0%, #7387a6 100%);
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.45);
-        }
-
-        .btn-soft-navy:active {
-            transform: translateY(0);
-        }
-
-        .btn-biometric {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1.5px solid #cbd5e1;
-            color: var(--navy-dark);
-            border-radius: var(--radius-md);
-            padding: .72rem;
-            font-weight: 700;
-            font-size: .88rem;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .5rem;
-            transition: all .2s ease;
-        }
-
-        .btn-biometric:hover {
-            background-color: #ffffff;
-            border-color: #94a3b8;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: #64748b;
-            font-size: .78rem;
-            font-weight: 700;
-            margin: 1.25rem 0;
-            gap: .6rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1.5px solid #e2e8f0;
         }
 
         .form-footer {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
+            text-align: center;
             margin-top: 1.5rem;
             font-size: .82rem;
             color: var(--ink-muted);
@@ -292,7 +197,7 @@
             text-decoration: underline;
         }
 
-        /* ===== Panel Branding Kanan ===== */
+        /* Panel Kanan Branding */
         .brand-panel {
             position: relative;
             background: linear-gradient(160deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%);
@@ -306,31 +211,8 @@
             border-left: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .brand-panel::before,
-        .brand-panel::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .brand-panel::before {
-            width: 260px;
-            height: 260px;
-            top: -70px;
-            right: -80px;
-        }
-
-        .brand-panel::after {
-            width: 170px;
-            height: 170px;
-            bottom: -50px;
-            left: -50px;
-        }
-
         .logo-glow {
-            position: relative;
-            width: min(190px, 68%);
+            width: min(180px, 65%);
             aspect-ratio: 1;
             display: flex;
             align-items: center;
@@ -367,19 +249,8 @@
         }
 
         @media (max-width: 880px) {
-            .auth-shell {
-                grid-template-columns: 1fr;
-                max-width: 450px;
-            }
-
-            .brand-panel {
-                order: -1;
-                padding: 2rem 1.5rem;
-            }
-
-            .logo-glow {
-                width: 110px;
-            }
+            .auth-shell { grid-template-columns: 1fr; max-width: 450px; }
+            .brand-panel { order: -1; padding: 2rem 1.5rem; }
         }
     </style>
 </head>
@@ -388,15 +259,15 @@
 
     <div class="auth-shell">
 
-        <!-- Kolom Kiri: Form Login -->
+        <!-- Form Pendaftaran -->
         <div class="form-panel">
             <div class="header-brand-wrapper">
-                <span class="eyebrow"><i class="fa-solid fa-flask me-1"></i> SIMPEL-K</span>
+                <span class="eyebrow"><i class="fa-solid fa-user-plus me-1"></i> Pendaftaran MHS</span>
                 <img src="{% static 'images/unuja.png' %}" alt="Logo UNUJA" class="logo-unuja-top">
             </div>
 
-            <h1>Masuk ke Sistem</h1>
-            <p class="subtitle">Silakan masuk dengan akun Anda untuk melanjutkan.</p>
+            <h1>Buat Akun Baru</h1>
+            <p class="subtitle">Isi data Anda. Akun akan aktif setelah diverifikasi oleh ASLAB.</p>
 
             {% if messages %}
             {% for message in messages %}
@@ -407,58 +278,42 @@
             {% endfor %}
             {% endif %}
 
-            <form method="POST" novalidate>
+            <form method="POST" action="">
                 {% csrf_token %}
 
-                <!-- Input Username -->
+                <!-- Input Username / NIM -->
                 <div class="field">
-                    <label for="usernameField">Username / NIM</label>
+                    <label for="username">NIM / Username</label>
+                    <i class="fa-regular fa-id-card field-icon"></i>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Contoh: 2421400076" required>
+                </div>
+
+                <!-- Input Nama Lengkap -->
+                <div class="field">
+                    <label for="first_name">Nama Lengkap</label>
                     <i class="fa-regular fa-user field-icon"></i>
-                    <input type="text" id="usernameField" name="username" class="form-control w-100"
-                        placeholder="Masukkan NIM Anda" required>
+                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nama sesuai KTM" required>
                 </div>
 
                 <!-- Input Password -->
                 <div class="field">
-                    <label for="passwordField">Password</label>
+                    <label for="password">Password</label>
                     <i class="fa-solid fa-lock field-icon"></i>
-                    <input type="password" id="passwordField" name="password" class="form-control w-100"
-                        placeholder="••••••••" required>
-                    <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Tampilkan password">
-                        <i class="fa-regular fa-eye" id="toggleIcon"></i>
-                    </button>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Buat password aman" required>
                 </div>
 
-                <!-- Ingat Saya & Lupa Password -->
-                <div class="row-between">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label text-secondary fw-semibold" for="rememberMe">Ingat Saya</label>
-                    </div>
-                    <a href="#">Lupa Password?</a>
-                </div>
-
-                <!-- Tombol Masuk -->
+                <!-- Tombol Daftar -->
                 <button type="submit" class="btn-soft-navy">
-                    Masuk <i class="fa-solid fa-arrow-right ms-1"></i>
-                </button>
-
-                <div class="divider">ATAU</div>
-
-                <!-- Tombol Biometrik -->
-                <button type="button" class="btn-biometric">
-                    <i class="fa-solid fa-fingerprint text-primary"></i> Masuk dengan Biometrik
+                    Ajukan Pendaftaran <i class="fa-solid fa-paper-plane ms-1"></i>
                 </button>
             </form>
 
-            <!-- FOOTER: Pilihan Daftar Akun Baru -->
             <div class="form-footer">
-                <p class="mb-1">Belum punya akun? <a href="{% url 'core_auth:register' %}" class="fw-bold ms-1"><i class="fa-solid fa-user-plus me-1"></i>Daftar di sini</a></p>
-                <small class="text-muted mt-2">&copy; 2026 Universitas Nurul Jadid Paiton</small>
+                <p>Sudah punya akun? <a href="{% url 'core_auth:login' %}">Masuk di sini</a></p>
             </div>
         </div>
 
-        <!-- Kolom Kanan: Panel Branding SIMPEL-K -->
+        <!-- Panel Kanan Branding -->
         <div class="brand-panel">
             <div class="logo-glow">
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K UNUJA Lab" class="floating-logo">
@@ -469,22 +324,7 @@
 
     </div>
 
-    <!-- Script Toggle Password -->
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('passwordField');
-            const toggleIcon = document.getElementById('toggleIcon');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

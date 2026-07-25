@@ -13,7 +13,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -60,7 +62,12 @@
             font-size: 0.875rem;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
@@ -116,15 +123,39 @@
         }
 
         @media (max-width: 991.98px) {
-            .sidebar { transform: translateX(-260px); }
-            .sidebar.show { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 15px; padding-top: 15px; }
-            .top-header-bar { margin: -15px -15px 20px -15px; padding: 10px 15px; }
-            .sidebar-overlay {
-                display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0, 0, 0, 0.4); z-index: 1035;
+            .sidebar {
+                transform: translateX(-260px);
             }
-            .sidebar-overlay.show { display: block; }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+                padding-top: 15px;
+            }
+
+            .top-header-bar {
+                margin: -15px -15px 20px -15px;
+                padding: 10px 15px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1035;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
         }
 
         .card-custom {
@@ -133,37 +164,98 @@
             border-radius: 16px;
         }
 
-        .btn-action-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .btn-action {
-            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
-            border: none; transition: background-color .15s ease, transform .1s ease;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            border: none;
+            transition: background-color .15s ease, transform .1s ease;
             text-decoration: none;
         }
-        .btn-action:active { transform: translateY(1px); }
 
-        .btn-action--detail { background-color: var(--sky-600); color: #fff; }
-        .btn-action--detail:hover { background-color: #0284c7; color: #fff; }
+        .btn-action:active {
+            transform: translateY(1px);
+        }
 
-        .btn-action--approve { background-color: var(--teal-700); color: #fff; }
-        .btn-action--approve:hover { background-color: var(--teal-900); color: #fff; }
+        .btn-action--detail {
+            background-color: var(--sky-600);
+            color: #fff;
+        }
 
-        .btn-action--reject { background-color: var(--rose-600); color: #fff; }
-        .btn-action--reject:hover { background-color: #991b1b; color: #fff; }
+        .btn-action--detail:hover {
+            background-color: #0284c7;
+            color: #fff;
+        }
 
-        .btn-action--done { background-color: var(--teal-600); color: #fff; }
-        .btn-action--done:hover { background-color: var(--teal-900); color: #fff; }
+        .btn-action--approve {
+            background-color: var(--teal-700);
+            color: #fff;
+        }
+
+        .btn-action--approve:hover {
+            background-color: var(--teal-900);
+            color: #fff;
+        }
+
+        .btn-action--reject {
+            background-color: var(--rose-600);
+            color: #fff;
+        }
+
+        .btn-action--reject:hover {
+            background-color: #991b1b;
+            color: #fff;
+        }
+
+        .btn-action--done {
+            background-color: var(--teal-600);
+            color: #fff;
+        }
+
+        .btn-action--done:hover {
+            background-color: var(--teal-900);
+            color: #fff;
+        }
 
         .stat-icon-box {
-            width: 54px; height: 54px;
-            display: flex; align-items: center; justify-content: center;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 12px;
         }
-        .stat-icon-box--pending { background: var(--amber-050); color: var(--amber-600); }
-        .stat-icon-box--approved { background: var(--teal-050); color: var(--teal-700); }
-        .stat-icon-box--rejected { background: var(--rose-050); color: var(--rose-600); }
 
-        .text-brand { color: var(--teal-700) !important; }
+        .stat-icon-box--pending {
+            background: var(--amber-050);
+            color: var(--amber-600);
+        }
+
+        .stat-icon-box--approved {
+            background: var(--teal-050);
+            color: var(--teal-700);
+        }
+
+        .stat-icon-box--rejected {
+            background: var(--rose-050);
+            color: var(--rose-600);
+        }
+
+        .text-brand {
+            color: var(--teal-700) !important;
+        }
 
         /* Badge status */
         .badge-status {
@@ -176,14 +268,47 @@
             align-items: center;
             gap: .35rem;
         }
-        .badge-status--wait-aslab { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
-        .badge-status--wait-kalab { background: var(--sky-050); color: var(--sky-600); border-color: var(--sky-line); }
-        .badge-status--approved   { background: var(--teal-050); color: var(--teal-700); border-color: #b9c9e6; }
-        .badge-status--return     { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
-        .badge-status--rejected   { background: var(--rose-050); color: var(--rose-600); border-color: var(--rose-line); }
-        .badge-status--done       { background: #eef1f5; color: var(--ink-muted); border-color: var(--line); }
 
-        .table-light th { color: var(--ink-muted); font-size: .78rem; }
+        .badge-status--wait-aslab {
+            background: var(--amber-050);
+            color: var(--amber-600);
+            border-color: var(--amber-line);
+        }
+
+        .badge-status--wait-kalab {
+            background: var(--sky-050);
+            color: var(--sky-600);
+            border-color: var(--sky-line);
+        }
+
+        .badge-status--approved {
+            background: var(--teal-050);
+            color: var(--teal-700);
+            border-color: #b9c9e6;
+        }
+
+        .badge-status--return {
+            background: var(--amber-050);
+            color: var(--amber-600);
+            border-color: var(--amber-line);
+        }
+
+        .badge-status--rejected {
+            background: var(--rose-050);
+            color: var(--rose-600);
+            border-color: var(--rose-line);
+        }
+
+        .badge-status--done {
+            background: #eef1f5;
+            color: var(--ink-muted);
+            border-color: var(--line);
+        }
+
+        .table-light th {
+            color: var(--ink-muted);
+            font-size: .78rem;
+        }
     </style>
 </head>
 
@@ -196,7 +321,8 @@
         <div>
             <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
+                    <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm"
+                        style="width: 42px; height: 42px;">
                         <i class="fa-solid fa-flask-vial fs-4" style="color: var(--teal-700);"></i>
                     </div>
                     <div>
@@ -211,20 +337,29 @@
             <hr class="text-white-50 mx-3 mb-4">
 
             <!-- Navigasi Sidebar ASLAB -->
+            <!-- MENU SIDEBAR ASLAB -->
             <ul class="nav nav-pills flex-column mb-auto">
+                <!-- 1. Dashboard Peminjaman -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" id="btn-nav-dashboard">
-                        <i class="fa-solid fa-gauge fs-5"></i> Dashboard
+                    <a href="{% url 'aslab:dashboard' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-gauge fs-6"></i> Dashboard 
                     </a>
                 </li>
+
+                <!-- 2. Verifikasi Akun Mahasiswa Baru -->
                 <li class="nav-item">
-                    <a href="#tabel-validasi" class="nav-link" id="btn-nav-validasi">
-                        <i class="fa-solid fa-table-list fs-5"></i> Validasi Pinjaman
+                    <a href="{% url 'aslab:verifikasi_akun' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'verifikasi_akun' %}active{% endif %}">
+                        <i class="fa-solid fa-user-check fs-6"></i> Verifikasi Akun MHS
                     </a>
                 </li>
+
+                <!-- 3. Laporan & Rekap -->
                 <li class="nav-item">
-                    <a href="{% url 'aslab:laporan' %}" class="nav-link">
-                        <i class="fa-solid fa-file-invoice fs-5"></i> Laporan & Rekap
+                    <a href="{% url 'aslab:laporan' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'laporan' %}active{% endif %}">
+                        <i class="fa-solid fa-file-invoice fs-6"></i> Laporan & Rekap
                     </a>
                 </li>
             </ul>
@@ -232,7 +367,8 @@
 
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+            <a href="{% url 'core_auth:logout' %}"
+                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
@@ -247,20 +383,24 @@
                 <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
                     <i class="fa-solid fa-bars fs-3 text-dark"></i>
                 </button>
-                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" style="height: 55px; width: auto; object-fit: contain;">
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K"
+                    style="height: 55px; width: auto; object-fit: contain;">
             </div>
 
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
                     <i class="fa-regular fa-bell fs-5 text-secondary"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                        id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser">
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2"
+                        aria-labelledby="dropdownUser">
                         <li class="px-3 py-2 border-bottom">
                             <span class="d-block fw-bold text-dark">{{ request.user.username }}</span>
                             <small class="text-muted">Role: Asisten Lab (ASLAB)</small>
@@ -336,7 +476,8 @@
         <!-- Tabel Data Peminjaman Lengkap Milik ASLAB -->
         <div class="card card-custom bg-white overflow-hidden" id="tabel-validasi">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi Verifikasi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi
+                    Verifikasi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
@@ -368,28 +509,31 @@
                                 </small>
                             </td>
                             <td>
-                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}</div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
+                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
+                                </div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{
+                                    pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
                             </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
-                                    <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
+                                <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
                                 {% elif pinjam.status == 'verified' %}
-                                    <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
+                                <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
                                 {% elif pinjam.status == 'disetujui' %}
-                                    <span class="badge-status badge-status--approved">Disetujui</span>
+                                <span class="badge-status badge-status--approved">Disetujui</span>
                                 {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                    <span class="badge-status badge-status--return">Ajukan Pengembalian</span>
+                                <span class="badge-status badge-status--return">Ajukan Pengembalian</span>
                                 {% elif pinjam.status == 'selesai' %}
-                                    <span class="badge-status badge-status--done">Selesai</span>
+                                <span class="badge-status badge-status--done">Selesai</span>
                                 {% else %}
-                                    <span class="badge-status badge-status--rejected">Ditolak</span>
+                                <span class="badge-status badge-status--rejected">Ditolak</span>
                                 {% endif %}
                             </td>
                             <td>
                                 <div class="btn-action-group">
                                     <!-- Tombol Detail -->
-                                    <button type="button" class="btn-action btn-action--detail" data-bs-toggle="modal" data-bs-target="#modalDetail{{ pinjam.id }}">
+                                    <button type="button" class="btn-action btn-action--detail" data-bs-toggle="modal"
+                                        data-bs-target="#modalDetail{{ pinjam.id }}">
                                         <i class="fa-solid fa-eye"></i> Detail
                                     </button>
 
@@ -416,7 +560,8 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman laboratorium.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman
+                                laboratorium.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -427,7 +572,8 @@
 
     <!-- KUMPULAN MODAL DETAIL (DITARUH DI LUAR TABEL AGAR TAMPILAN PRESISI & RAPI) -->
     {% for pinjam in semua_peminjaman %}
-    <div class="modal fade" id="modalDetail{{ pinjam.id }}" tabindex="-1" aria-labelledby="modalLabel{{ pinjam.id }}" aria-hidden="true">
+    <div class="modal fade" id="modalDetail{{ pinjam.id }}" tabindex="-1" aria-labelledby="modalLabel{{ pinjam.id }}"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 rounded-4 shadow">
                 <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
@@ -438,21 +584,22 @@
                 </div>
                 <div class="modal-body p-4">
                     <!-- Status Badge & ID -->
-                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 mb-4" style="background: #f8fafc; border: 1px solid var(--line);">
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 mb-4"
+                        style="background: #f8fafc; border: 1px solid var(--line);">
                         <div>
                             <small class="text-muted d-block fw-semibold mb-1">STATUS PEMINJAMAN</small>
                             {% if pinjam.status == 'pending' %}
-                                <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
+                            <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
                             {% elif pinjam.status == 'verified' %}
-                                <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
+                            <span class="badge-status badge-status--wait-kalab">Menunggu KALAB</span>
                             {% elif pinjam.status == 'disetujui' %}
-                                <span class="badge-status badge-status--approved">Disetujui</span>
+                            <span class="badge-status badge-status--approved">Disetujui</span>
                             {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                <span class="badge-status badge-status--return">Proses Pengembalian</span>
+                            <span class="badge-status badge-status--return">Proses Pengembalian</span>
                             {% elif pinjam.status == 'selesai' %}
-                                <span class="badge-status badge-status--done">Selesai</span>
+                            <span class="badge-status badge-status--done">Selesai</span>
                             {% else %}
-                                <span class="badge-status badge-status--rejected">Ditolak</span>
+                            <span class="badge-status badge-status--rejected">Ditolak</span>
                             {% endif %}
                         </div>
                         <div class="text-end">
@@ -464,7 +611,8 @@
                     <div class="row g-3">
                         <!-- Identitas Peminjam -->
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                            <div class="p-3 rounded-3 h-100"
+                                style="background: #ffffff; border: 1px solid var(--line);">
                                 <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
                                     <i class="fa-solid fa-id-card me-2"></i>Identitas Peminjam
                                 </h6>
@@ -475,7 +623,8 @@
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Nama Lengkap</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{
+                                            pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -483,7 +632,8 @@
 
                         <!-- Akademik & Praktikum -->
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: #ffffff; border: 1px solid var(--line);">
+                            <div class="p-3 rounded-3 h-100"
+                                style="background: #ffffff; border: 1px solid var(--line);">
                                 <h6 class="fw-bold mb-3" style="color: var(--teal-700);">
                                     <i class="fa-solid fa-graduation-cap me-2"></i>Akademik & Praktikum
                                 </h6>
@@ -494,15 +644,18 @@
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Dosen Pengampu</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.dosen|default:pinjam.nama_dosen|default:"-" }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{
+                                            pinjam.dosen|default:pinjam.nama_dosen|default:"-" }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Tanggal Pinjam</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y" }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y"
+                                            }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Waktu Praktikum</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{
+                                            pinjam.wkt_akhir|time:"H:i" }} WIB</td>
                                     </tr>
                                 </table>
                             </div>
@@ -529,7 +682,8 @@
                     </div>
                 </div>
                 <div class="modal-footer border-top px-4 py-3 d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary btn-sm px-3 rounded-2 fw-semibold" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary btn-sm px-3 rounded-2 fw-semibold"
+                        data-bs-dismiss="modal">
                         Tutup
                     </button>
                     {% if pinjam.status == 'pending' %}
@@ -540,7 +694,8 @@
                             <i class="fa-solid fa-xmark me-1"></i> Tolak
                         </a>
                         <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}"
-                            class="btn btn-primary btn-sm px-3 rounded-2 fw-bold" style="background-color: var(--teal-700); border: none;"
+                            class="btn btn-primary btn-sm px-3 rounded-2 fw-bold"
+                            style="background-color: var(--teal-700); border: none;"
                             onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
                             <i class="fa-solid fa-check me-1"></i> Verifikasi ke KALAB
                         </a>
