@@ -62,12 +62,7 @@
             font-size: 0.875rem;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
@@ -336,26 +331,33 @@
             </div>
             <hr class="text-white-50 mx-3 mb-4">
 
-            <!-- Navigasi Sidebar ASLAB -->
             <!-- MENU SIDEBAR ASLAB -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <!-- 1. Dashboard Peminjaman -->
                 <li class="nav-item">
                     <a href="{% url 'aslab:dashboard' %}"
-                        class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" id="btn-nav-dashboard">
                         <i class="fa-solid fa-gauge fs-6"></i> Dashboard
                     </a>
                 </li>
 
-                <!-- 2. Verifikasi Akun Mahasiswa Baru -->
+                <!-- 2. Master Data (Ruang & Alat) -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:master_data' %}"
+                        class="nav-link {% if 'master' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fa-solid fa-boxes-stacked fs-6"></i> Kelola Master Data
+                    </a>
+                </li>
+
+                <!-- 3. Verifikasi Akun Mahasiswa Baru -->
                 <li class="nav-item">
                     <a href="{% url 'aslab:verifikasi_akun' %}"
-                        class="nav-link {% if request.resolver_match.url_name == 'verifikasi_akun' %}active{% endif %}">
+                        class="nav-link {% if request.resolver_match.url_name == 'verifikasi_akun' %}active{% endif %}" id="btn-nav-validasi">
                         <i class="fa-solid fa-user-check fs-6"></i> Verifikasi Akun MHS
                     </a>
                 </li>
 
-                <!-- 3. Laporan & Rekap -->
+                <!-- 4. Laporan & Rekap -->
                 <li class="nav-item">
                     <a href="{% url 'aslab:laporan' %}"
                         class="nav-link {% if request.resolver_match.url_name == 'laporan' %}active{% endif %}">
@@ -476,8 +478,7 @@
         <!-- Tabel Data Peminjaman Lengkap Milik ASLAB -->
         <div class="card card-custom bg-white overflow-hidden" id="tabel-validasi">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi
-                    Verifikasi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list me-2 text-brand"></i>Daftar Riwayat & Aksi Verifikasi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
@@ -509,13 +510,13 @@
                                 </small>
                             </td>
                             <td>
-    <div class="fw-bold text-dark mb-1">
-        <i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
-    </div>
-    <div class="small text-muted">
-        <i class="fa-regular fa-clock me-1"></i>{% if pinjam.wkt_mulai %}{{ pinjam.wkt_mulai|date:"H:i" }}{% else %}--:--{% endif %} - {% if pinjam.wkt_akhir %}{{ pinjam.wkt_akhir|date:"H:i" }}{% else %}--:--{% endif %} WIB
-    </div>
-</td>
+                                <div class="fw-bold text-dark mb-1">
+                                    <i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
+                                </div>
+                                <div class="small text-muted">
+                                    <i class="fa-regular fa-clock me-1"></i>{% if pinjam.wkt_mulai %}{{ pinjam.wkt_mulai|date:"H:i" }}{% else %}--:--{% endif %} - {% if pinjam.wkt_akhir %}{{ pinjam.wkt_akhir|date:"H:i" }}{% else %}--:--{% endif %} WIB
+                                </div>
+                            </td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
                                 <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
@@ -540,18 +541,18 @@
                                     </button>
 
                                     {% if pinjam.status == 'pending' %}
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}"
+                                    <a href="{% url 'aslab:verifikasi_peminjaman' pinjam.id 'verifikasi' %}"
                                         class="btn-action btn-action--approve"
                                         onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
                                         <i class="fa-solid fa-check"></i> Verifikasi
                                     </a>
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}"
+                                    <a href="{% url 'aslab:verifikasi_peminjaman' pinjam.id 'tolak' %}"
                                         class="btn-action btn-action--reject"
                                         onclick="return confirm('Yakin ingin MENOLAK peminjaman ini?');">
                                         <i class="fa-solid fa-xmark"></i> Tolak
                                     </a>
                                     {% elif pinjam.status == 'pengembalian_diajukan' %}
-                                    <a href="{% url 'aslab:verifikasi' pinjam.id 'selesai' %}"
+                                    <a href="{% url 'aslab:verifikasi_peminjaman' pinjam.id 'selesai' %}"
                                         class="btn-action btn-action--done"
                                         onclick="return confirm('Konfirmasi bahwa alat/lab sudah selesai dikembalikan?');">
                                         <i class="fa-solid fa-box-archive"></i> Selesai
@@ -562,8 +563,7 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman
-                                laboratorium.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data pengajuan peminjaman laboratorium.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -625,8 +625,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Nama Lengkap</td>
-                                        <td class="fw-semibold text-dark px-0">: {{
-                                            pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.mahasiswa.first_name|default:pinjam.mahasiswa.username }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -646,18 +645,15 @@
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Dosen Pengampu</td>
-                                        <td class="fw-semibold text-dark px-0">: {{
-                                            pinjam.dosen|default:pinjam.nama_dosen|default:"-" }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.dosen|default:pinjam.nama_dosen|default:"-" }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Tanggal Pinjam</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y"
-                                            }}</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.tanggal_pinjam|date:"d F Y" }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted px-0">Waktu Praktikum</td>
-                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{
-                                            pinjam.wkt_akhir|time:"H:i" }} WIB</td>
+                                        <td class="fw-semibold text-dark px-0">: {{ pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</td>
                                     </tr>
                                 </table>
                             </div>
@@ -690,12 +686,12 @@
                     </button>
                     {% if pinjam.status == 'pending' %}
                     <div class="d-flex gap-2">
-                        <a href="{% url 'aslab:verifikasi' pinjam.id 'tolak' %}"
+                        <a href="{% url 'aslab:verifikasi_peminjaman' pinjam.id 'tolak' %}"
                             class="btn btn-danger btn-sm px-3 rounded-2 fw-bold"
                             onclick="return confirm('Yakin ingin MENOLAK peminjaman ini?');">
                             <i class="fa-solid fa-xmark me-1"></i> Tolak
                         </a>
-                        <a href="{% url 'aslab:verifikasi' pinjam.id 'verifikasi' %}"
+                        <a href="{% url 'aslab:verifikasi_peminjaman' pinjam.id 'verifikasi' %}"
                             class="btn btn-primary btn-sm px-3 rounded-2 fw-bold"
                             style="background-color: var(--teal-700); border: none;"
                             onclick="return confirm('Verifikasi peminjaman ini ke KALAB?');">
@@ -732,17 +728,20 @@
         const btnDashboard = document.getElementById('btn-nav-dashboard');
         const btnValidasi = document.getElementById('btn-nav-validasi');
 
-        btnValidasi.addEventListener('click', function () {
-            btnDashboard.classList.remove('active');
-            btnValidasi.classList.add('active');
-        });
+        if (btnValidasi) {
+            btnValidasi.addEventListener('click', function () {
+                if (btnDashboard) btnDashboard.classList.remove('active');
+                btnValidasi.classList.add('active');
+            });
+        }
 
-        btnDashboard.addEventListener('click', function (e) {
-            e.preventDefault();
-            btnValidasi.classList.remove('active');
-            btnDashboard.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        if (btnDashboard) {
+            btnDashboard.addEventListener('click', function (e) {
+                if (btnValidasi) btnValidasi.classList.remove('active');
+                btnDashboard.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     </script>
 </body>
 

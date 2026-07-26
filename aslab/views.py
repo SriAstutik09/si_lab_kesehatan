@@ -1,11 +1,8 @@
-# ==============================================================================
-# IMPOR MODUL DAN DEPENDENSI DJANGO
-# ==============================================================================
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from core_auth.models import Peminjaman
+from core_auth.models import Peminjaman, RuangLab, AlatBahan
 
 # Ambil Custom User Model aktif (core_auth.User)
 User = get_user_model()
@@ -35,16 +32,13 @@ def dashboard_aslab(request):
     """
     Menampilkan statistik dan seluruh daftar peminjaman untuk diproses ASLAB.
     """
-    # 🛡️ KEAMANAN: Cegah Mahasiswa / KALAB menerobos ke Dashboard ASLAB
     redirect_target = cekk_role_aslab(request.user)
     if redirect_target:
         messages.error(request, "Anda tidak memiliki hak akses sebagai ASLAB!")
         return redirect(redirect_target)
 
-    # Mengambil peminjaman buatan Mahasiswa asli
     semua_peminjaman = Peminjaman.objects.exclude(mahasiswa__username__icontains='aslab').order_by('-tanggal_pinjam')
     
-    # Penghitungan Statistik Ringkasan Peminjaman
     total_masuk = semua_peminjaman.filter(status__in=['pending', 'pengembalian_diajukan']).count()
     total_disetujui = semua_peminjaman.filter(status__in=['verified', 'disetujui', 'selesai']).count()
     total_ditolak = semua_peminjaman.filter(status='ditolak').count()
@@ -124,7 +118,7 @@ def laporan_peminjaman(request):
 
 
 # ==============================================================================
-# 4. VIEW VERIFIKASI AKUN MAHASISWA BARU (SIDEBAR MENU KHUSUS)
+# 4. VIEW VERIFIKASI AKUN MAHASISWA BARU
 # ==============================================================================
 @login_required(login_url='core_auth:login')
 def verifikasi_akun_mhs(request):
@@ -137,12 +131,10 @@ def verifikasi_akun_mhs(request):
         messages.error(request, "Anda tidak memiliki hak akses ke Halaman Verifikasi Akun!")
         return redirect(redirect_target)
 
-    # Ambil pendaftaran mahasiswa yang belum aktif (menunggu ACC)
     antrean_mhs = User.objects.filter(is_active=False).order_by('-date_joined')
     if hasattr(User, 'role'):
         antrean_mhs = antrean_mhs.filter(role='mahasiswa')
-
-    # Ambil daftar mahasiswa yang sudah diaktifkan
+        
     mhs_aktif = User.objects.filter(is_active=True, is_staff=False, is_superuser=False).order_by('-date_joined')
     if hasattr(User, 'role'):
         mhs_aktif = mhs_aktif.filter(role='mahasiswa')
@@ -181,3 +173,128 @@ def proses_persetujuan_akun(request, user_id, aksi):
         messages.error(request, f'Pendaftaran akun mahasiswa {nama_display} ({mhs.username}) telah ditolak dan dihapus.')
 
     return redirect('aslab:verifikasi_akun')
+
+
+# ==============================================================================
+# 6. MASTER DATA: KELOLA RUANG LAB & ALAT BAHAN (CRUD)
+# ==============================================================================
+@login_required(login_url='core_auth:login')
+def master_data(request):
+    """
+    Halaman Utama Kelola Data Ruang Lab & Alat Bahan
+    """
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        messages.error(request, "Anda tidak memiliki hak akses ke Master Data!")
+        return redirect(redirect_target)
+
+    ruang_list = RuangLab.objects.all().order_by('nama_ruang')
+    alat_list = AlatBahan.objects.all().order_by('nama_alat')
+    
+    context = {
+        'ruang_list': ruang_list,
+        'alat_list': alat_list,
+        'total_ruang': ruang_list.count(),
+        'total_alat': alat_list.count(),
+    }
+    return render(request, 'aslab/master_data.html', context)
+
+
+# --- CRUD RUANG LAB ---
+@login_required(login_url='core_auth:login')
+def tambah_ruang(request):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    if request.method == 'POST':
+        nama_ruang = request.POST.get('nama_ruang')
+        kapasitas = request.POST.get('kapasitas')
+        deskripsi = request.POST.get('deskripsi')
+
+        RuangLab.objects.create(
+            nama_ruang=nama_ruang,
+            kapasitas=kapasitas or 0,
+            deskripsi=deskripsi
+        )
+        messages.success(request, f"Ruang Lab '{nama_ruang}' berhasil ditambahkan!")
+    return redirect('/aslab/master-data/?tab=ruang')
+
+
+@login_required(login_url='core_auth:login')
+def edit_ruang(request, id):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    ruang = get_object_or_404(RuangLab, id=id)
+    if request.method == 'POST':
+        ruang.nama_ruang = request.POST.get('nama_ruang')
+        ruang.kapasitas = request.POST.get('kapasitas') or 0
+        ruang.deskripsi = request.POST.get('deskripsi')
+        ruang.save()
+        messages.success(request, f"Data Ruang '{ruang.nama_ruang}' berhasil diperbarui!")
+    return redirect('/aslab/master-data/?tab=ruang')
+
+
+@login_required(login_url='core_auth:login')
+def hapus_ruang(request, id):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    ruang = get_object_or_404(RuangLab, id=id)
+    nama = ruang.nama_ruang
+    ruang.delete()
+    messages.success(request, f"Ruang Lab '{nama}' berhasil dihapus!")
+    return redirect('/aslab/master-data/?tab=ruang')
+
+
+# --- CRUD ALAT & BAHAN ---
+@login_required(login_url='core_auth:login')
+def tambah_alat(request):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    if request.method == 'POST':
+        nama_alat = request.POST.get('nama_alat')
+        stok_tersedia = request.POST.get('stok_tersedia')
+        satuan = request.POST.get('satuan', 'Pcs')
+
+        AlatBahan.objects.create(
+            nama_alat=nama_alat,
+            stok_tersedia=stok_tersedia or 0,
+            satuan=satuan
+        )
+        messages.success(request, f"Alat/Bahan '{nama_alat}' berhasil ditambahkan!")
+    return redirect('/aslab/master-data/?tab=alat')
+
+
+@login_required(login_url='core_auth:login')
+def edit_alat(request, id):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    alat = get_object_or_404(AlatBahan, id=id)
+    if request.method == 'POST':
+        alat.nama_alat = request.POST.get('nama_alat')
+        alat.stok_tersedia = request.POST.get('stok_tersedia') or 0
+        alat.satuan = request.POST.get('satuan')
+        alat.save()
+        messages.success(request, f"Data Alat/Bahan '{alat.nama_alat}' berhasil diperbarui!")
+    return redirect('/aslab/master-data/?tab=alat')
+
+
+@login_required(login_url='core_auth:login')
+def hapus_alat(request, id):
+    redirect_target = cekk_role_aslab(request.user)
+    if redirect_target:
+        return redirect(redirect_target)
+
+    alat = get_object_or_404(AlatBahan, id=id)
+    nama = alat.nama_alat
+    alat.delete()
+    messages.success(request, f"Alat/Bahan '{nama}' berhasil dihapus!")
+    return redirect('/aslab/master-data/?tab=alat')
