@@ -242,6 +242,29 @@
             background-color: #0284c7;
             color: #ffffff;
         }
+        
+        .btn-logout {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #fff;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: .55rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            width: 100%;
+            transition: background-color .18s ease, border-color .18s ease;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+            color: #fff;
+        }
 
         @media (max-width: 991.98px) {
             .sidebar { transform: translateX(-260px); }
@@ -282,7 +305,7 @@
 
         <div class="px-3">
             <hr class="text-white-50 mb-3">
-            <a href="{% url 'core_auth:logout' %}" class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm" style="font-size: 0.85rem;">
+            <a href="{% url 'core_auth:logout' %}" class="btn-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
             </a>
         </div>
