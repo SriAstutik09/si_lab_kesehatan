@@ -343,7 +343,7 @@
                 <li class="nav-item">
                     <a href="{% url 'aslab:dashboard' %}"
                         class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                        <i class="fa-solid fa-gauge fs-6"></i> Dashboard 
+                        <i class="fa-solid fa-gauge fs-6"></i> Dashboard
                     </a>
                 </li>
 
@@ -509,11 +509,13 @@
                                 </small>
                             </td>
                             <td>
-                                <div><i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
-                                </div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{
-                                    pinjam.wkt_mulai|time:"H:i" }} - {{ pinjam.wkt_akhir|time:"H:i" }} WIB</small>
-                            </td>
+    <div class="fw-bold text-dark mb-1">
+        <i class="fa-regular fa-calendar me-1"></i>{{ pinjam.tanggal_pinjam|date:"d M Y" }}
+    </div>
+    <div class="small text-muted">
+        <i class="fa-regular fa-clock me-1"></i>{% if pinjam.wkt_mulai %}{{ pinjam.wkt_mulai|date:"H:i" }}{% else %}--:--{% endif %} - {% if pinjam.wkt_akhir %}{{ pinjam.wkt_akhir|date:"H:i" }}{% else %}--:--{% endif %} WIB
+    </div>
+</td>
                             <td>
                                 {% if pinjam.status == 'pending' %}
                                 <span class="badge-status badge-status--wait-aslab">Menunggu ASLAB</span>
