@@ -36,6 +36,11 @@
             --info-600:  #0369a1; --info-050:  #e0f2fe; --info-line:  #bae6fd;
             --success-600: #15803d; --success-050: #dcfce7; --success-line: #bbf7d0;
             --danger-600: #b91c1c; --danger-050: #fee2e2; --danger-line: #fecaca;
+            --rose-600: #b91c1c; --rose-050: #fee2e2;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -43,6 +48,7 @@
             font-family: 'Inter', system-ui, sans-serif;
             color: var(--ink);
             font-size: 0.875rem;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6, .brand-title {
@@ -59,6 +65,7 @@
             width: 260px;
             background: linear-gradient(180deg, var(--teal-900) 0%, #060d21 100%);
             box-shadow: 4px 0 18px rgba(0, 23, 68, 0.25);
+            transition: transform 0.3s ease;
         }
 
         .sidebar .nav-link {
@@ -92,21 +99,96 @@
             min-height: 100vh;
             background-image: radial-gradient(#d3e2de 1px, transparent 1px);
             background-size: 22px 22px;
+            transition: margin-left 0.3s ease;
         }
 
+        /* ===== STICKY TOP HEADER BAR ===== */
         .top-header-bar {
             background-color: var(--paper);
             border: 1px solid var(--line);
             border-radius: var(--radius-lg);
             padding: 12px 24px;
             margin-bottom: 24px;
-            box-shadow: var(--shadow-card);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            box-shadow: 0 4px 18px rgba(0, 23, 68, 0.06) !important;
         }
 
         .brand-logo {
             height: 52px;
             width: auto;
             object-fit: contain;
+        }
+
+        /* ===== DROPDOWN PROFIL MODERN ===== */
+        .user-dropdown-menu {
+            min-width: 250px;
+            border: 1px solid var(--line);
+            border-radius: 16px !important;
+            box-shadow: 0 16px 34px -10px rgba(0, 23, 68, 0.25) !important;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 10px !important;
+        }
+
+        .user-dropdown-header {
+            background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            padding: 16px;
+            color: #ffffff;
+        }
+
+        .avatar-circle {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.18);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .role-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #e0f2fe;
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .dropdown-item-logout {
+            color: var(--rose-600);
+            font-weight: 600;
+            padding: 10px 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 10px;
+        }
+
+        .dropdown-item-logout:hover {
+            background-color: var(--rose-050);
+            color: #991b1b;
         }
 
         /* Welcome Panel */
@@ -243,26 +325,65 @@
             color: #ffffff;
         }
 
+        /* Responsive Mobile Styling */
         @media (max-width: 991.98px) {
-            .sidebar { transform: translateX(-260px); }
-            .main-content { margin-left: 0; padding: 15px; }
+            .sidebar {
+                transform: translateX(-260px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .top-header-bar {
+                padding: 10px 15px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1035;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- Overlay Layar HP -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar Menu KALAB -->
-    <div class="sidebar d-flex flex-column justify-content-between py-4">
+    <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
         <div>
-            <div class="px-4 mb-3 text-white d-flex align-items-center gap-3">
-                <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
-                    <i class="fa-solid fa-user-tie fs-4" style="color: var(--teal-700);"></i>
+            <div class="px-4 mb-3 text-white d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;">
+                        <i class="fa-solid fa-user-tie fs-4" style="color: var(--teal-700);"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0 text-white brand-title">TATA LAB</h6>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Kepala Laboratorium</small>
+                    </div>
                 </div>
-                <div>
-                    <h6 class="fw-bold mb-0 text-white brand-title">TATA LAB</h6>
-                    <small class="text-white-50" style="font-size: 0.7rem;">Kepala Laboratorium</small>
-                </div>
+                <!-- Tombol Close Sidebar HP -->
+                <button class="btn text-white d-lg-none p-0" type="button" id="closeSidebarBtn">
+                    <i class="fa-solid fa-xmark fs-4"></i>
+                </button>
             </div>
             <hr class="text-white-50 mx-3 mb-4">
 
@@ -291,27 +412,53 @@
     <!-- Main Content Area -->
     <div class="main-content">
 
-        <!-- Top Header Bar -->
+        <!-- Sticky Top Header Bar dengan Hamburger Button -->
         <div class="top-header-bar d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
+                <!-- Tombol Hamburger untuk Layar HP/Kecil -->
+                <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars fs-3 text-dark"></i>
+                </button>
                 <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K" class="brand-logo">
             </div>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none text-dark dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="fw-semibold me-1" style="font-size: 0.88rem;">{{ request.user.username }} (KALAB)</span>
-                    <i class="fa-regular fa-circle-user fs-4" style="color: var(--teal-700);"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="dropdownUser" style="font-size: 0.85rem;">
-                    <li class="px-3 py-2 border-bottom">
-                        <div class="fw-bold text-dark">{{ request.user.username }}</div>
-                        <small class="text-muted d-block">Kepala Laboratorium</small>
-                    </li>
-                    <li>
-                        <a class="dropdown-item py-2 text-danger fw-semibold d-flex align-items-center gap-2" href="{% url 'core_auth:logout' %}">
-                            <i class="fa-solid fa-right-from-bracket"></i> Keluar / Logout
-                        </a>
-                    </li>
-                </ul>
+
+            <!-- Header Kanan: Lonceng Notifikasi & Dropdown Profil KALAB Modern -->
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
+                    <i class="fa-regular fa-bell fs-5 text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </button>
+
+                <!-- DROPDOWN PROFIL KHUSUS KALAB (VERSI MODERN) -->
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle p-1 rounded-circle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="bg-white rounded-circle p-2 d-flex align-items-center justify-content-center border shadow-sm" style="width: 42px; height: 42px;">
+                            <i class="fa-solid fa-user-tie text-dark fs-5"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="dropdownUser">
+                        <li class="user-dropdown-header">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar-circle">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span class="status-indicator"></span>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.3px;">{{ request.user.username }}</h6>
+                                    <span class="role-badge mt-1"><i class="fa-solid fa-user-tie me-1"></i>KALAB</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="p-2 bg-white">
+                            <a class="dropdown-item dropdown-item-logout" href="{% url 'core_auth:logout' %}">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background: var(--rose-050);">
+                                    <i class="fa-solid fa-right-from-bracket fs-6" style="color: var(--rose-600);"></i>
+                                </div>
+                                <span>Keluar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -633,7 +780,7 @@
     </div>
     {% endfor %}
 
-    <!-- MODAL DETAIL RIWAYAT PERSETUJUAN KALAB (ID KHUSUS modalDetailKalabRiw) -->
+    <!-- MODAL DETAIL RIWAYAT PERSETUJUAN KALAB -->
     {% for pinjam in riwayat_peminjaman %}
     <div class="modal fade" id="modalDetailKalabRiw{{ pinjam.id }}" tabindex="-1" aria-labelledby="labelModalKalabRiw{{ pinjam.id }}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -746,8 +893,25 @@
     </div>
     {% endfor %}
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Sidebar Mobile Toggle -->
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebarMenu.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+    </script>
 </body>
 
 </html>
