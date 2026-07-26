@@ -7,374 +7,627 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Master Data Ruang & Alat - SIMPEL-K</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
-            --primary-navy: #0a2540;
-            --accent-blue: #0066cc;
-            --bg-light: #f4f6f9;
+            /* Palet warna identik dengan Dashboard SIMPEL-K */
+            --teal-900: #001744;
+            --teal-700: #003279;
+            --teal-600: #004b96;
+            --teal-050: #e6ebf4;
+
+            --amber-600: #b45309;
+            --amber-050: #fef9c3;
+            --amber-line: #fef08a;
+
+            --sky-600: #0369a1;
+            --sky-050: #e0f2fe;
+
+            --rose-600: #b91c1c;
+            --rose-050: #fee2e2;
+
+            --ink: #16241f;
+            --ink-muted: #5b626b;
+            --line: #e1e5e8;
+
+            --sidebar-gradient: linear-gradient(180deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            --light-bg: #f3f6f7;
+            --shadow-card: 0 16px 34px -18px rgba(0, 23, 68, 0.22);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-light);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            background-image: radial-gradient(#d3e2de 1px, transparent 1px);
+            background-size: 22px 22px;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+            color: var(--ink);
+            font-size: 0.875rem;
         }
 
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
+        /* Sidebar Styling */
         .sidebar {
-            min-height: 100vh;
-            background-color: var(--primary-navy);
-            color: white;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1040;
+            width: 260px;
+            background: var(--sidebar-gradient);
+            box-shadow: 4px 0 15px rgba(0, 23, 68, 0.18);
+            transition: transform 0.3s ease;
         }
 
         .sidebar .nav-link {
+            font-weight: 500;
             color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 5px;
-            border-radius: 8px;
-            padding: 10px 15px;
+            padding: 12px 20px;
+            margin: 4px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
         }
 
-        .sidebar .nav-link:hover,
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+
         .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            background: var(--teal-600);
+            box-shadow: 0 4px 12px rgba(0, 75, 150, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .top-header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 24px;
+            margin: -30px -30px 30px -30px;
         }
 
         .card-custom {
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-card);
+            border-radius: 16px;
+        }
+
+        .text-brand {
+            color: var(--teal-700) !important;
+        }
+
+        /* Custom Styling Nav Tab */
+        .nav-tabs-custom {
+            border-bottom: 2px solid var(--line);
+        }
+
+        .nav-tabs-custom .nav-link {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-tabs .nav-link {
-            color: #495057;
+            color: var(--ink-muted);
             font-weight: 600;
+            padding: 12px 20px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
         }
 
-        .nav-tabs .nav-link.active {
-            color: var(--primary-navy);
-            border-bottom: 3px solid var(--primary-navy);
+        .nav-tabs-custom .nav-link:hover {
+            color: var(--teal-700);
+        }
+
+        .nav-tabs-custom .nav-link.active {
+            color: var(--teal-700);
+            background: transparent;
+            border-bottom: 3px solid var(--teal-700);
+        }
+
+        /* ===== STYLE DROPDOWN PROFIL MODERN ===== */
+        .user-dropdown-menu {
+            min-width: 250px;
+            border: 1px solid var(--line);
+            border-radius: 16px !important;
+            box-shadow: 0 16px 34px -10px rgba(0, 23, 68, 0.25) !important;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 10px !important;
+        }
+
+        .user-dropdown-header {
+            background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            padding: 16px;
+            color: #ffffff;
+        }
+
+        .avatar-circle {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.18);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .role-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #e0f2fe;
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .dropdown-item-logout {
+            color: var(--rose-600);
+            font-weight: 600;
+            padding: 10px 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 10px;
+        }
+
+        .dropdown-item-logout:hover {
+            background-color: var(--rose-050);
+            color: #991b1b;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-260px);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+                padding-top: 15px;
+            }
+
+            .top-header-bar {
+                margin: -15px -15px 20px -15px;
+                padding: 10px 15px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 1035;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- SIDEBAR -->
-            <div class="col-md-3 col-lg-2 d-md-block sidebar p-3 collapse">
-                <div class="d-flex align-items-center mb-4 text-white text-decoration-none">
-                    <i class="fa-solid fa-vial-circle-check fs-3 me-2"></i>
-                    <span class="fs-4 fw-bold">SIMPEL-K</span>
+    <!-- Overlay HP -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR MENU -->
+    <div class="sidebar d-flex flex-column justify-content-between py-4" id="sidebarMenu">
+        <div>
+            <!-- Header Logo Sidebar -->
+            <div class="px-4 mb-4 text-white d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow-sm"
+                        style="width: 42px; height: 42px;">
+                        <i class="fa-solid fa-flask-vial fs-4" style="color: var(--teal-700);"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">SIMPEL-K</h5>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab</small>
+                    </div>
                 </div>
-                <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="{% url 'aslab:dashboard' %}" class="nav-link">
-                            <i class="fa-solid fa-gauge me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'aslab:master_data' %}" class="nav-link active">
-                            <i class="fa-solid fa-boxes-stacked me-2"></i> Master Data
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'aslab:verifikasi_akun' %}" class="nav-link">
-                            <i class="fa-solid fa-user-check me-2"></i> Verifikasi MHS
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'aslab:laporan' %}" class="nav-link">
-                            <i class="fa-solid fa-file-invoice me-2"></i> Laporan & Rekap
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <a href="{% url 'core_auth:logout' %}" class="btn btn-outline-light w-100 btn-sm">
-                    <i class="fa-solid fa-right-from-bracket me-1"></i> Keluar
-                </a>
+                <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
+                    <i class="fa-solid fa-xmark fs-4"></i>
+                </button>
+            </div>
+            <hr class="text-white-50 mx-3 mb-4">
+
+            <!-- MENU SIDEBAR ASLAB -->
+            <ul class="nav nav-pills flex-column mb-auto">
+                <!-- 1. Dashboard Peminjaman -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:dashboard' %}" class="nav-link">
+                        <i class="fa-solid fa-gauge fs-6"></i> Dashboard
+                    </a>
+                </li>
+
+                <!-- 2. Master Data (Ruang & Alat) -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:master_data' %}" class="nav-link active">
+                        <i class="fa-solid fa-boxes-stacked fs-6"></i> Kelola Master Data
+                    </a>
+                </li>
+
+                <!-- 3. Verifikasi Akun Mahasiswa Baru -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:verifikasi_akun' %}" class="nav-link">
+                        <i class="fa-solid fa-user-check fs-6"></i> Verifikasi Akun MHS
+                    </a>
+                </li>
+
+                <!-- 4. Laporan & Rekap -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:laporan' %}" class="nav-link">
+                        <i class="fa-solid fa-file-invoice fs-6"></i> Laporan & Rekap
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tombol Logout -->
+        <div class="px-3">
+            <hr class="text-white-50 mb-3">
+            <a href="{% url 'core_auth:logout' %}"
+                class="btn btn-danger w-100 py-2 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-content">
+
+        <!-- TOP HEADER BAR -->
+        <div class="top-header-bar d-flex align-items-center justify-content-between shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light border-0 p-1 d-lg-none" type="button" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars fs-3 text-dark"></i>
+                </button>
+                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K"
+                    style="height: 55px; width: auto; object-fit: contain;">
             </div>
 
-            <!-- MAIN CONTENT -->
-            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <!-- Ikon Lonceng Notifikasi & Dropdown Profil -->
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle border-0 p-2 position-relative" type="button">
+                    <i class="fa-regular fa-bell fs-5 text-secondary"></i>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </button>
 
-                <!-- HEADER -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h3 class="fw-bold mb-1">Pengelolaan Master Data</h3>
-                        <p class="text-muted mb-0">Kelola inventaris Ruang Lab dan Alat/Bahan Laboratorium</p>
+                <!-- DROPDOWN PROFIL KHUSUS ASLAB (VERSI MODERN) -->
+                <div class="dropdown">
+                    <a href="#"
+                        class="d-flex align-items-center text-decoration-none dropdown-toggle p-1 rounded-circle"
+                        id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="bg-white rounded-circle p-2 d-flex align-items-center justify-content-center border shadow-sm"
+                            style="width: 42px; height: 42px;">
+                            <i class="fa-solid fa-user-gear text-dark fs-5"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="dropdownUser">
+                        <li class="user-dropdown-header">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar-circle">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span class="status-indicator"></span>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.3px;">{{ request.user.username }}</h6>
+                                    <span class="role-badge mt-1"><i class="fa-solid fa-flask me-1"></i>ASLAB</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="p-2 bg-white">
+                            <a class="dropdown-item dropdown-item-logout" href="{% url 'core_auth:logout' %}">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 28px; height: 28px; background: var(--rose-050);">
+                                    <i class="fa-solid fa-right-from-bracket fs-6" style="color: var(--rose-600);"></i>
+                                </div>
+                                <span>Keluar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEADLINE HEADER -->
+        <div class="mb-4">
+            <h3 class="fw-bold text-dark mb-1">Pengelolaan Master Data 📦</h3>
+            <p class="text-muted small mb-0">Kelola inventaris Ruang Lab dan Alat/Bahan Laboratorium Kesehatan.</p>
+        </div>
+
+        <!-- MESSAGES ALERT -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-4" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- KARTU UTAMA TAB DAFTAR RUANG & ALAT -->
+        <div class="card card-custom bg-white p-4">
+            <ul class="nav nav-tabs nav-tabs-custom" id="masterTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="ruang-tab" data-bs-toggle="tab"
+                        data-bs-target="#ruang-content" type="button" role="tab">
+                        <i class="fa-solid fa-door-open me-2"></i>Data Ruang Lab ({{ total_ruang }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="alat-tab" data-bs-toggle="tab" data-bs-target="#alat-content"
+                        type="button" role="tab">
+                        <i class="fa-solid fa-microscope me-2"></i>Data Alat & Bahan ({{ total_alat }})
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content pt-4" id="masterTabContent">
+
+                <!-- TAB 1: DATA RUANG LAB -->
+                <div class="tab-pane fade show active" id="ruang-content" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark mb-0">Daftar Ruangan</h5>
+                        <button class="btn btn-primary btn-sm fw-bold px-3 py-2 rounded-3"
+                            style="background-color: var(--teal-700); border:none;" data-bs-toggle="modal"
+                            data-bs-target="#modalTambahRuang">
+                            <i class="fa-solid fa-plus me-1"></i> Tambah Ruang Lab
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 8%;">No</th>
+                                    <th style="width: 25%;">Nama Ruangan</th>
+                                    <th style="width: 20%;">Kapasitas</th>
+                                    <th style="width: 27%;">Deskripsi</th>
+                                    <th style="width: 20%;" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in ruang_list %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td class="fw-bold text-brand">{{ r.nama_ruang }}</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark fw-bold px-2 py-1">{{ r.kapasitas }} Orang</span>
+                                    </td>
+                                    <td class="text-muted">{{ r.deskripsi|default:"-" }}</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <button class="btn btn-warning btn-sm text-white fw-bold px-2 py-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalEditRuang{{ r.id }}">
+                                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger btn-sm fw-bold px-2 py-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalHapusRuang{{ r.id }}">
+                                                <i class="fa-solid fa-trash"></i> Hapus
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- MODAL EDIT RUANG -->
+                                <div class="modal fade" id="modalEditRuang{{ r.id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 rounded-4 shadow">
+                                            <form action="{% url 'aslab:edit_ruang' r.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                                                    <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-pen-to-square me-2 text-brand"></i>Edit Ruang Lab</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body p-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Nama Ruangan</label>
+                                                        <input type="text" name="nama_ruang" class="form-control" value="{{ r.nama_ruang }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Kapasitas (Orang)</label>
+                                                        <input type="number" name="kapasitas" class="form-control" value="{{ r.kapasitas }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Deskripsi</label>
+                                                        <textarea name="deskripsi" class="form-control" rows="3">{{ r.deskripsi }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-top px-4 py-3">
+                                                    <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm rounded-2 fw-bold" style="background-color: var(--teal-700); border:none;">Simpan Perubahan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- MODAL HAPUS RUANG -->
+                                <div class="modal fade" id="modalHapusRuang{{ r.id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 rounded-4 shadow">
+                                            <div class="modal-header bg-danger text-white px-4 py-3">
+                                                <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Konfirmasi Hapus</h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                Apakah Anda yakin ingin menghapus ruang <strong>{{ r.nama_ruang }}</strong>?
+                                            </div>
+                                            <div class="modal-footer border-top px-4 py-3">
+                                                <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                                                <a href="{% url 'aslab:hapus_ruang' r.id %}" class="btn btn-danger btn-sm rounded-2 fw-bold">Hapus Ruangan</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data ruang laboratorium.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- MESSAGES ALERT -->
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-                {% endif %}
+                <!-- TAB 2: DATA ALAT & BAHAN -->
+                <div class="tab-pane fade" id="alat-content" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark mb-0">Daftar Alat & Bahan</h5>
+                        <button class="btn btn-success btn-sm fw-bold px-3 py-2 rounded-3" data-bs-toggle="modal"
+                            data-bs-target="#modalTambahAlat">
+                            <i class="fa-solid fa-plus me-1"></i> Tambah Alat/Bahan
+                        </button>
+                    </div>
 
-                <!-- TABS DAFTAR RUANG & ALAT -->
-                <div class="card card-custom bg-white p-3">
-                    <ul class="nav nav-tabs id=" masterTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="ruang-tab" data-bs-toggle="tab"
-                                data-bs-target="#ruang-content" type="button" role="tab">
-                                <i class="fa-solid fa-door-open me-2"></i>Data Ruang Lab ({{ total_ruang }})
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="alat-tab" data-bs-toggle="tab" data-bs-target="#alat-content"
-                                type="button" role="tab">
-                                <i class="fa-solid fa-microscope me-2"></i>Data Alat & Bahan ({{ total_alat }})
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content pt-4" id="masterTabContent">
-
-                        <!-- TAB 1: DATA RUANG LAB -->
-                        <div class="tab-pane fade show active" id="ruang-content" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold text-dark mb-0">Daftar Ruangan</h5>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#modalTambahRuang">
-                                    <i class="fa-solid fa-plus me-1"></i> Tambah Ruang Lab
-                                </button>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Ruangan</th>
-                                            <th>Kapasitas</th>
-                                            <th>Deskripsi</th>
-                                            <th class="text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for r in ruang_list %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td class="fw-bold text-primary">{{ r.nama_ruang }}</td>
-                                            <td><span class="badge bg-info text-dark">{{ r.kapasitas }} Orang</span>
-                                            </td>
-                                            <td>{{ r.deskripsi|default:"-" }}</td>
-                                            <td class="text-center">
-                                                <button class="btn btn-warning btn-sm text-white me-1"
-                                                    data-bs-toggle="modal" data-bs-target="#modalEditRuang{{ r.id }}">
-                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
-                                                </button>
-                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#modalHapusRuang{{ r.id }}">
-                                                    <i class="fa-solid fa-trash"></i> Hapus
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <!-- MODAL EDIT RUANG -->
-                                        <div class="modal fade" id="modalEditRuang{{ r.id }}" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form action="{% url 'aslab:edit_ruang' r.id %}" method="POST">
-                                                        {% csrf_token %}
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Edit Ruang Lab</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Nama Ruangan</label>
-                                                                <input type="text" name="nama_ruang"
-                                                                    class="form-control" value="{{ r.nama_ruang }}"
-                                                                    required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Kapasitas
-                                                                    (Orang)</label>
-                                                                <input type="number" name="kapasitas"
-                                                                    class="form-control" value="{{ r.kapasitas }}"
-                                                                    required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Deskripsi</label>
-                                                                <textarea name="deskripsi" class="form-control"
-                                                                    rows="3">{{ r.deskripsi }}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-primary">Simpan
-                                                                Perubahan</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 8%;">No</th>
+                                    <th style="width: 35%;">Nama Alat / Bahan</th>
+                                    <th style="width: 20%;">Stok Tersedia</th>
+                                    <th style="width: 17%;">Satuan</th>
+                                    <th style="width: 20%;" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in alat_list %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td class="fw-bold text-dark">{{ a.nama_alat }}</td>
+                                    <td>
+                                        <span class="badge {% if a.stok_tersedia > 0 %}bg-success{% else %}bg-danger{% endif %} px-2 py-1">
+                                            {{ a.stok_tersedia }}
+                                        </span>
+                                    </td>
+                                    <td class="text-muted">{{ a.satuan }}</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <button class="btn btn-warning btn-sm text-white fw-bold px-2 py-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalEditAlat{{ a.id }}">
+                                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger btn-sm fw-bold px-2 py-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalHapusAlat{{ a.id }}">
+                                                <i class="fa-solid fa-trash"></i> Hapus
+                                            </button>
                                         </div>
+                                    </td>
+                                </tr>
 
-                                        <!-- MODAL HAPUS RUANG -->
-                                        <div class="modal fade" id="modalHapusRuang{{ r.id }}" tabindex="-1">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-danger text-white">
-                                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                                        <button type="button" class="btn-close btn-close-white"
-                                                            data-bs-dismiss="modal"></button>
+                                <!-- MODAL EDIT ALAT -->
+                                <div class="modal fade" id="modalEditAlat{{ a.id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 rounded-4 shadow">
+                                            <form action="{% url 'aslab:edit_alat' a.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                                                    <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-pen-to-square me-2 text-brand"></i>Edit Alat / Bahan</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body p-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Nama Alat / Bahan</label>
+                                                        <input type="text" name="nama_alat" class="form-control" value="{{ a.nama_alat }}" required>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        Apakah Anda yakin ingin menghapus ruang <strong>{{ r.nama_ruang
-                                                            }}</strong>?
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Stok Tersedia</label>
+                                                        <input type="number" name="stok_tersedia" class="form-control" value="{{ a.stok_tersedia }}" required>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <a href="{% url 'aslab:hapus_ruang' r.id %}"
-                                                            class="btn btn-danger">Hapus</a>
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small">Satuan</label>
+                                                        <input type="text" name="satuan" class="form-control" value="{{ a.satuan }}" required>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        {% empty %}
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">Belum ada data ruang
-                                                laboratorium.</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- TAB 2: DATA ALAT & BAHAN -->
-                        <div class="tab-pane fade" id="alat-content" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold text-dark mb-0">Daftar Alat & Bahan</h5>
-                                <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#modalTambahAlat">
-                                    <i class="fa-solid fa-plus me-1"></i> Tambah Alat/Bahan
-                                </button>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Alat / Bahan</th>
-                                            <th>Stok Tersedia</th>
-                                            <th>Satuan</th>
-                                            <th class="text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for a in alat_list %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td class="fw-bold text-dark">{{ a.nama_alat }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge {% if a.stok_tersedia > 0 %}bg-success{% else %}bg-danger{% endif %}">
-                                                    {{ a.stok_tersedia }}
-                                                </span>
-                                            </td>
-                                            <td>{{ a.satuan }}</td>
-                                            <td class="text-center">
-                                                <button class="btn btn-warning btn-sm text-white me-1"
-                                                    data-bs-toggle="modal" data-bs-target="#modalEditAlat{{ a.id }}">
-                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
-                                                </button>
-                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#modalHapusAlat{{ a.id }}">
-                                                    <i class="fa-solid fa-trash"></i> Hapus
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <!-- MODAL EDIT ALAT -->
-                                        <div class="modal fade" id="modalEditAlat{{ a.id }}" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form action="{% url 'aslab:edit_alat' a.id %}" method="POST">
-                                                        {% csrf_token %}
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Edit Alat / Bahan</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Nama Alat /
-                                                                    Bahan</label>
-                                                                <input type="text" name="nama_alat" class="form-control"
-                                                                    value="{{ a.nama_alat }}" required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Stok Tersedia</label>
-                                                                <input type="number" name="stok_tersedia"
-                                                                    class="form-control" value="{{ a.stok_tersedia }}"
-                                                                    required>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Satuan</label>
-                                                                <input type="text" name="satuan" class="form-control"
-                                                                    value="{{ a.satuan }}" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-success">Simpan
-                                                                Perubahan</button>
-                                                        </div>
-                                                    </form>
+                                                <div class="modal-footer border-top px-4 py-3">
+                                                    <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-success btn-sm rounded-2 fw-bold">Simpan Perubahan</button>
                                                 </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- MODAL HAPUS ALAT -->
+                                <div class="modal fade" id="modalHapusAlat{{ a.id }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 rounded-4 shadow">
+                                            <div class="modal-header bg-danger text-white px-4 py-3">
+                                                <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Konfirmasi Hapus</h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                Apakah Anda yakin ingin menghapus alat <strong>{{ a.nama_alat }}</strong>?
+                                            </div>
+                                            <div class="modal-footer border-top px-4 py-3">
+                                                <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                                                <a href="{% url 'aslab:hapus_alat' a.id %}" class="btn btn-danger btn-sm rounded-2 fw-bold">Hapus Alat</a>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <!-- MODAL HAPUS ALAT -->
-                                        <div class="modal fade" id="modalHapusAlat{{ a.id }}" tabindex="-1">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-danger text-white">
-                                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                                        <button type="button" class="btn-close btn-close-white"
-                                                            data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Apakah Anda yakin ingin menghapus alat <strong>{{ a.nama_alat
-                                                            }}</strong>?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <a href="{% url 'aslab:hapus_alat' a.id %}"
-                                                            class="btn btn-danger">Hapus</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {% empty %}
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">Belum ada data alat atau
-                                                bahan.</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data alat atau bahan.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -383,34 +636,32 @@
     </div>
 
     <!-- MODAL TAMBAH RUANG -->
-    <div class="modal fade" id="modalTambahRuang" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal fade" id="modalTambahRuang" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
                 <form action="{% url 'aslab:tambah_ruang' %}" method="POST">
                     {% csrf_token %}
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Tambah Ruang Lab</h5>
+                    <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-plus me-2 text-brand"></i>Tambah Ruang Lab</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nama Ruangan</label>
-                            <input type="text" name="nama_ruang" class="form-control"
-                                placeholder="Contoh: Lab Atas / Lab Komputer" required>
+                            <label class="form-label fw-bold small">Nama Ruangan</label>
+                            <input type="text" name="nama_ruang" class="form-control" placeholder="Contoh: Lab Atas / Lab Komputer" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Kapasitas (Orang)</label>
+                            <label class="form-label fw-bold small">Kapasitas (Orang)</label>
                             <input type="number" name="kapasitas" class="form-control" placeholder="30" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Deskripsi</label>
-                            <textarea name="deskripsi" class="form-control" rows="3"
-                                placeholder="Fasilitas / catatan ruangan..."></textarea>
+                            <label class="form-label fw-bold small">Deskripsi</label>
+                            <textarea name="deskripsi" class="form-control" rows="3" placeholder="Fasilitas / catatan ruangan..."></textarea>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    <div class="modal-footer border-top px-4 py-3">
+                        <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary btn-sm rounded-2 fw-bold" style="background-color: var(--teal-700); border:none;">Simpan Data</button>
                     </div>
                 </form>
             </div>
@@ -418,34 +669,32 @@
     </div>
 
     <!-- MODAL TAMBAH ALAT -->
-    <div class="modal fade" id="modalTambahAlat" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal fade" id="modalTambahAlat" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
                 <form action="{% url 'aslab:tambah_alat' %}" method="POST">
                     {% csrf_token %}
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Tambah Alat / Bahan</h5>
+                    <div class="modal-header border-bottom px-4 py-3" style="background: var(--teal-050);">
+                        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-plus me-2 text-brand"></i>Tambah Alat / Bahan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nama Alat / Bahan</label>
-                            <input type="text" name="nama_alat" class="form-control"
-                                placeholder="Contoh: Manekin Anatomi / Mikroskop" required>
+                            <label class="form-label fw-bold small">Nama Alat / Bahan</label>
+                            <input type="text" name="nama_alat" class="form-control" placeholder="Contoh: Manekin Anatomi / Mikroskop" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Stok Tersedia</label>
+                            <label class="form-label fw-bold small">Stok Tersedia</label>
                             <input type="number" name="stok_tersedia" class="form-control" placeholder="10" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Satuan</label>
-                            <input type="text" name="satuan" class="form-control" value="Pcs"
-                                placeholder="Pcs / Unit / Set" required>
+                            <label class="form-label fw-bold small">Satuan</label>
+                            <input type="text" name="satuan" class="form-control" value="Pcs" placeholder="Pcs / Unit / Set" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Simpan Data</button>
+                    <div class="modal-footer border-top px-4 py-3">
+                        <button type="button" class="btn btn-secondary btn-sm rounded-2" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success btn-sm rounded-2 fw-bold">Simpan Data</button>
                     </div>
                 </form>
             </div>
@@ -453,9 +702,25 @@
     </div>
 
     <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Script Sidebar Mobile & Tab Persistence -->
     <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebarMenu.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Auto Switch Active Tab dari parameter URL ?tab=alat atau ?tab=ruang
         document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const activeTab = urlParams.get('tab');
