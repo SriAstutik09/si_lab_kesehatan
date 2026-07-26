@@ -5,47 +5,47 @@
 
 {% block content %}
 
-<!-- ===== CSS Internal — konsisten dengan tema halaman login (navy/teal, Plus Jakarta Sans + Inter) ===== -->
+<!-- ===== CSS Internal — Selaras 100% dengan UI ASLAB SIMPEL-K ===== -->
 <style>
     .dashboard-mhs {
-        /* ---- Token warna dasar: disamakan persis dengan halaman login ---- */
+        /* Token Warna Identik ASLAB SIMPEL-K */
         --teal-900: #001744;
         --teal-700: #003279;
         --teal-600: #004b96;
         --teal-050: #e6ebf4;
+
+        --amber-600: #b45309;
+        --amber-050: #fef9c3;
+        --amber-line: #fef08a;
+
+        --sky-600: #0369a1;
+        --sky-050: #e0f2fe;
+        --sky-line: #bae6fd;
+
+        --rose-600: #b91c1c;
+        --rose-050: #fee2e2;
+        --rose-line: #fecaca;
+
         --ink: #16241f;
         --ink-muted: #5b626b;
         --line: #e1e5e8;
         --paper: #ffffff;
         --bg: #f3f6f7;
-        --radius-lg: 22px;
+        
+        --radius-lg: 16px;
         --radius-md: 12px;
-        --shadow-card: 0 16px 34px -18px rgba(0, 68, 60, 0.22);
-        --shadow-card-hover: 0 22px 40px -16px rgba(0, 24, 68, 0.28);
-
-        /* ---- Token warna status: satu keluarga warna per makna, tidak tumpang tindih ----
-             pending  -> amber   (menunggu tindakan pertama)
-             info     -> biru    (menunggu tindakan kedua)
-             success  -> hijau   (disetujui / berhasil)
-             process  -> ungu    (proses aktif lanjutan, mis. pengembalian)
-             danger   -> merah   (ditolak)
-             done     -> navy brand (selesai, netral) */
-        --amber-600: #b45309;   --amber-050: #fef9c3;  --amber-line: #fde68a;
-        --info-600:  #0369a1;   --info-050:  #e0f2fe;  --info-line:  #bae6fd;
-        --success-600: #15803d; --success-050: #dcfce7; --success-line: #bbf7d0;
-        --process-600: #6d28d9; --process-050: #ede9fe; --process-line: #ddd6fe;
-        --danger-600: #b91c1c; --danger-050: #fee2e2;  --danger-line: #fecaca;
+        --shadow-card: 0 16px 34px -18px rgba(0, 23, 68, 0.22);
+        --shadow-card-hover: 0 20px 38px -14px rgba(0, 23, 68, 0.28);
 
         font-family: 'Inter', system-ui, sans-serif;
         color: var(--ink);
 
-        /* ---- "Shell" halaman: mengulang tekstur titik-titik dari background login ---- */
+        /* Motif Titik (Dot Pattern) Khas SIMPEL-K */
         background-color: var(--bg);
         background-image: radial-gradient(#d3e2de 1px, transparent 1px);
         background-size: 22px 22px;
         border-radius: var(--radius-lg);
         padding: clamp(1rem, 3vw, 1.75rem);
-        margin: -0.25rem;
     }
 
     .dashboard-mhs h1,
@@ -57,9 +57,7 @@
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     }
 
-    /* ===================================================== */
-    /* ===== Header sambutan ===== */
-    /* ===================================================== */
+    /* ===== Welcome Panel ===== */
     .dashboard-mhs .welcome-panel {
         background: var(--paper);
         border: 1px solid var(--line);
@@ -79,20 +77,21 @@
         align-items: center;
         gap: .4rem;
         font-size: .7rem;
-        font-weight: 600;
+        font-weight: 700;
         letter-spacing: .08em;
         text-transform: uppercase;
         color: var(--teal-700);
         background: var(--teal-050);
-        padding: .3rem .65rem;
+        padding: .3rem .75rem;
         border-radius: 999px;
-        margin-bottom: .6rem;
+        margin-bottom: .5rem;
+        border: 1px solid #cce0f5;
     }
 
     .dashboard-mhs .welcome-title {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--ink);
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--teal-900);
         margin-bottom: .2rem;
     }
 
@@ -106,32 +105,30 @@
         width: 52px;
         height: 52px;
         border-radius: 50%;
-        background: linear-gradient(160deg, var(--teal-700) 0%, var(--teal-900) 100%);
+        background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         flex-shrink: 0;
-        box-shadow: 0 10px 18px -8px rgba(0, 23, 68, 0.45);
+        box-shadow: 0 8px 18px -4px rgba(0, 23, 68, 0.4);
+        border: 2px solid #ffffff;
     }
 
-    /* ===================================================== */
-    /* ===== Kartu statistik ===== */
-    /* ===================================================== */
+    /* ===== Kartu Ringkasan Statistik ===== */
     .dashboard-mhs .stat-card {
         background: var(--paper);
         border: 1px solid var(--line);
-        border-left: 3px solid transparent;
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-card);
-        padding: 1.1rem 1rem;
+        padding: 1.2rem 1.25rem;
         display: flex;
         align-items: center;
-        gap: .85rem;
+        justify-content: space-between;
         height: 100%;
-        transition: transform .18s ease, box-shadow .18s ease;
+        transition: transform .2s ease, box-shadow .2s ease;
     }
 
     .dashboard-mhs .stat-card:hover {
@@ -139,49 +136,44 @@
         box-shadow: var(--shadow-card-hover);
     }
 
-    .dashboard-mhs .stat-icon {
-        width: 46px;
-        height: 46px;
-        flex-shrink: 0;
-        display: inline-flex;
+    .dashboard-mhs .stat-icon-box {
+        width: 52px;
+        height: 52px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 14px;
-        font-size: 1.05rem;
+        border-radius: 12px;
+        font-size: 1.25rem;
+        flex-shrink: 0;
     }
 
-    .dashboard-mhs .stat-card--pending { border-left-color: var(--amber-600); }
-    .dashboard-mhs .stat-card--pending .stat-icon { background: var(--amber-050); color: var(--amber-600); }
+    .dashboard-mhs .stat-card--pending .stat-icon-box { background: var(--amber-050); color: var(--amber-600); }
     .dashboard-mhs .stat-card--pending .stat-number { color: var(--amber-600); }
 
-    .dashboard-mhs .stat-card--approved { border-left-color: var(--success-600); }
-    .dashboard-mhs .stat-card--approved .stat-icon { background: var(--success-050); color: var(--success-600); }
-    .dashboard-mhs .stat-card--approved .stat-number { color: var(--success-600); }
+    .dashboard-mhs .stat-card--approved .stat-icon-box { background: var(--teal-050); color: var(--teal-700); }
+    .dashboard-mhs .stat-card--approved .stat-number { color: var(--teal-700); }
 
-    .dashboard-mhs .stat-card--rejected { border-left-color: var(--danger-600); }
-    .dashboard-mhs .stat-card--rejected .stat-icon { background: var(--danger-050); color: var(--danger-600); }
-    .dashboard-mhs .stat-card--rejected .stat-number { color: var(--danger-600); }
+    .dashboard-mhs .stat-card--rejected .stat-icon-box { background: var(--rose-050); color: var(--rose-600); }
+    .dashboard-mhs .stat-card--rejected .stat-number { color: var(--rose-600); }
 
     .dashboard-mhs .stat-number {
-        font-weight: 700;
-        font-size: 1.5rem;
+        font-weight: 800;
+        font-size: 1.65rem;
         line-height: 1.1;
-        margin-bottom: .1rem;
+        margin-bottom: .2rem;
     }
 
     .dashboard-mhs .stat-label {
         color: var(--ink-muted);
-        font-size: .74rem;
-        font-weight: 600;
+        font-size: .78rem;
+        font-weight: 700;
     }
 
-    /* ===================================================== */
-    /* ===== Seksi jadwal ===== */
-    /* ===================================================== */
+    /* ===== Section Jadwal ===== */
     .dashboard-mhs .section-heading {
-        font-weight: 700;
-        color: var(--ink);
-        font-size: 1.02rem;
+        font-weight: 800;
+        color: var(--teal-900);
+        font-size: 1.05rem;
         display: flex;
         align-items: center;
         gap: .5rem;
@@ -203,95 +195,86 @@
         border: 1px solid var(--line);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-card);
-        padding: 1rem;
+        padding: 1.1rem;
         transition: transform .18s ease, box-shadow .18s ease;
-        animation: fadeSlideIn .45s ease both;
+        animation: fadeSlideIn .4s ease both;
     }
 
     .dashboard-mhs .jadwal-card:hover {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         box-shadow: var(--shadow-card-hover);
     }
 
-    /* jeda kemunculan yang halus per kartu saat pertama kali dimuat, tanpa membuatnya
-       terus bergoyang selamanya (lebih tenang & tidak mengganggu fokus baca) */
-    .dashboard-mhs .jadwal-card:nth-child(2) { animation-delay: .05s; }
-    .dashboard-mhs .jadwal-card:nth-child(3) { animation-delay: .1s; }
-    .dashboard-mhs .jadwal-card:nth-child(4) { animation-delay: .15s; }
-    .dashboard-mhs .jadwal-card:nth-child(n+5) { animation-delay: .2s; }
-
     @keyframes fadeSlideIn {
-        from { opacity: 0; transform: translateY(10px); }
+        from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .dashboard-mhs .jadwal-card { animation: none; }
     }
 
     .dashboard-mhs .jam-widget {
         background-color: var(--teal-050);
         color: var(--teal-900);
         border-radius: var(--radius-md);
-        min-width: 78px;
-        padding: .5rem;
+        min-width: 82px;
+        padding: .55rem .4rem;
         text-align: center;
         flex-shrink: 0;
+        border: 1px solid #d2e0f2;
     }
 
     .dashboard-mhs .jam-widget .divider-line {
-        border-top: 1px solid rgba(0, 50, 121, 0.18);
-        margin: .25rem 0;
+        border-top: 1px solid rgba(0, 50, 121, 0.2);
+        margin: .3rem 0;
     }
 
     .dashboard-mhs .mk-title {
-        color: var(--ink);
+        color: var(--teal-900);
         font-weight: 700;
+        font-size: .95rem;
         margin-bottom: .25rem;
     }
 
     .dashboard-mhs .ruang-info {
         color: var(--ink-muted);
-        font-size: .82rem;
+        font-size: .83rem;
         margin-bottom: .6rem;
     }
 
     .dashboard-mhs .ruang-info strong {
-        color: var(--ink);
+        color: var(--teal-700);
     }
 
     .dashboard-mhs .ruang-info i {
         color: var(--teal-600);
     }
 
-    /* ---- Badge status: satu token warna per makna, konsisten di seluruh dashboard ---- */
+    /* ===== Status Badges Identik ASLAB ===== */
     .dashboard-mhs .badge-status {
-        font-size: .68rem;
+        font-size: .72rem;
         font-weight: 600;
-        padding: .32rem .65rem;
+        padding: .38rem .7rem;
         border-radius: 999px;
         border: 1px solid transparent;
         display: inline-flex;
         align-items: center;
-        gap: .3rem;
+        gap: .35rem;
     }
 
     .dashboard-mhs .badge-status--wait-aslab { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
-    .dashboard-mhs .badge-status--wait-kalab { background: var(--info-050); color: var(--info-600); border-color: var(--info-line); }
-    .dashboard-mhs .badge-status--approved   { background: var(--success-050); color: var(--success-600); border-color: var(--success-line); }
-    .dashboard-mhs .badge-status--return     { background: var(--process-050); color: var(--process-600); border-color: var(--process-line); }
-    .dashboard-mhs .badge-status--rejected   { background: var(--danger-050); color: var(--danger-600); border-color: var(--danger-line); }
-    .dashboard-mhs .badge-status--done       { background: var(--teal-050); color: var(--teal-700); border-color: #c3d6ec; }
+    .dashboard-mhs .badge-status--wait-kalab { background: var(--sky-050); color: var(--sky-600); border-color: var(--sky-line); }
+    .dashboard-mhs .badge-status--approved   { background: var(--teal-050); color: var(--teal-700); border-color: #b9c9e6; }
+    .dashboard-mhs .badge-status--return     { background: var(--amber-050); color: var(--amber-600); border-color: var(--amber-line); }
+    .dashboard-mhs .badge-status--rejected   { background: var(--rose-050); color: var(--rose-600); border-color: var(--rose-line); }
+    .dashboard-mhs .badge-status--done       { background: #eef1f5; color: var(--ink-muted); border-color: var(--line); }
 
     .dashboard-mhs .btn-return {
         background-color: var(--teal-700);
         border: none;
         color: #fff;
-        font-size: .72rem;
+        font-size: .75rem;
         font-weight: 600;
-        padding: .35rem .7rem;
+        padding: .38rem .8rem;
         border-radius: var(--radius-md);
-        transition: background-color .15s ease, transform .1s ease;
+        transition: all .15s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -300,16 +283,13 @@
     .dashboard-mhs .btn-return:hover {
         background-color: var(--teal-900);
         color: #fff;
+        transform: translateY(-1px);
     }
 
-    .dashboard-mhs .btn-return:active {
-        transform: translateY(1px);
-    }
-
-    /* ---- Empty state ---- */
+    /* ===== Empty State ===== */
     .dashboard-mhs .empty-jadwal {
         background: var(--paper);
-        border: 1px dashed #c7d1cd;
+        border: 1px dashed #cbd5e1;
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-card);
         padding: 2.75rem 1.25rem;
@@ -319,26 +299,18 @@
     }
 
     .dashboard-mhs .empty-jadwal i {
-        color: var(--teal-600);
-        opacity: .55;
+        color: var(--teal-700);
+        opacity: .6;
     }
 
-    .dashboard-mhs .empty-jadwal p {
-        max-width: 320px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    /* ===================================================== */
-    /* ===== Banner CTA pinjam alat ===== */
-    /* ===================================================== */
+    /* ===== Banner CTA Pinjam Alat ===== */
     .dashboard-mhs .cta-banner {
         position: relative;
         overflow: hidden;
         border-radius: var(--radius-lg);
         padding: 1.75rem;
         color: #fff;
-        background: linear-gradient(160deg, var(--teal-700) 0%, var(--teal-900) 100%);
+        background: linear-gradient(180deg, var(--teal-700) 0%, var(--teal-900) 100%);
         box-shadow: var(--shadow-card);
     }
 
@@ -365,18 +337,19 @@
     }
 
     .dashboard-mhs .cta-icon {
-        width: 42px;
-        height: 42px;
+        width: 44px;
+        height: 44px;
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.16);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         margin-bottom: .85rem;
+        font-size: 1.2rem;
     }
 
     .dashboard-mhs .cta-banner .cta-desc {
-        color: rgba(255, 255, 255, 0.75);
+        color: rgba(255, 255, 255, 0.8);
         font-size: .85rem;
         max-width: 75%;
         margin-bottom: 1.4rem;
@@ -387,19 +360,21 @@
         color: var(--teal-700);
         font-weight: 700;
         font-size: .85rem;
-        padding: .55rem .95rem;
+        padding: .6rem 1.1rem;
         border-radius: var(--radius-md);
         display: inline-flex;
         align-items: center;
         gap: .5rem;
-        transition: transform .12s ease, box-shadow .12s ease;
+        transition: all .15s ease;
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .dashboard-mhs .cta-banner .btn-cta:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         color: var(--teal-900);
+        background: #ffffff;
     }
 
     @media (max-width: 480px) {
@@ -414,7 +389,7 @@
     <!-- Ucapan Selamat Datang Dinamis -->
     <div class="welcome-panel">
         <div>
-            <span class="welcome-eyebrow"><i class="fa-solid fa-flask"></i> Simpel-K</span>
+            <span class="welcome-eyebrow"><i class="fa-solid fa-flask"></i> SIMPEL-K</span>
             <h3 class="welcome-title">Halo, {{ request.user.first_name|default:request.user.username }} 👋</h3>
             <p class="welcome-subtitle">Selamat datang kembali di portal laboratorium kesehatan.</p>
         </div>
@@ -428,36 +403,36 @@
         <!-- Menunggu (Kombinasi pending + verified) -->
         <div class="col-12 col-sm-4">
             <div class="stat-card stat-card--pending">
-                <div class="stat-icon">
-                    <i class="fa-regular fa-comment-dots"></i>
-                </div>
                 <div>
-                    <h3 class="stat-number">{{ total_menunggu|stringformat:"02d" }}</h3>
-                    <span class="stat-label">Menunggu</span>
+                    <span class="stat-label d-block mb-1">Pengajuan Menunggu</span>
+                    <h3 class="stat-number mb-0">{{ total_menunggu|stringformat:"02d" }}</h3>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
             </div>
         </div>
         <!-- Disetujui -->
         <div class="col-12 col-sm-4">
             <div class="stat-card stat-card--approved">
-                <div class="stat-icon">
-                    <i class="fa-regular fa-circle-check"></i>
-                </div>
                 <div>
-                    <h3 class="stat-number">{{ total_disetujui|stringformat:"02d" }}</h3>
-                    <span class="stat-label">Disetujui</span>
+                    <span class="stat-label d-block mb-1">Total Disetujui</span>
+                    <h3 class="stat-number mb-0">{{ total_disetujui|stringformat:"02d" }}</h3>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
             </div>
         </div>
         <!-- Ditolak -->
         <div class="col-12 col-sm-4">
             <div class="stat-card stat-card--rejected">
-                <div class="stat-icon">
-                    <i class="fa-regular fa-circle-xmark"></i>
-                </div>
                 <div>
-                    <h3 class="stat-number">{{ total_ditolak|stringformat:"02d" }}</h3>
-                    <span class="stat-label">Ditolak</span>
+                    <span class="stat-label d-block mb-1">Total Ditolak</span>
+                    <h3 class="stat-number mb-0">{{ total_ditolak|stringformat:"02d" }}</h3>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="fa-solid fa-circle-xmark"></i>
                 </div>
             </div>
         </div>
@@ -530,7 +505,7 @@
             <div class="cta-icon"><i class="fa-solid fa-flask-vial"></i></div>
             <h5 class="fw-bold mb-1">Pinjam Alat Sekarang</h5>
             <p class="cta-desc mb-0">Proses cepat, verifikasi real-time langsung dari asisten lab.</p>
-            <a href="{% url 'mahasiswa:pinjam_lab' %}" class="btn-cta">
+            <a href="{% url 'mahasiswa:pinjam_lab' %}" class="btn-cta mt-3">
                 Mulai Peminjaman <i class="fa-solid fa-arrow-right"></i>
             </a>
         </div>
