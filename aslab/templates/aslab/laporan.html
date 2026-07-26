@@ -54,12 +54,7 @@
             color: var(--ink);
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         }
 
@@ -99,7 +94,6 @@
             box-shadow: 0 4px 12px rgba(0, 75, 150, 0.4);
         }
 
-        /* Main Content Area */
         .main-content {
             margin-left: 260px;
             padding: 30px;
@@ -291,8 +285,7 @@
                 margin: 1.2cm 1cm 1.2cm 1cm;
             }
 
-            html,
-            body {
+            html, body {
                 background: #ffffff !important;
                 background-image: none !important;
                 color: #000000 !important;
@@ -399,7 +392,6 @@
                 text-transform: uppercase;
             }
 
-            /* PERBAIKAN UTAMA: Penataan Tabel Agar Tidak Terpotong di A4 */
             .table-responsive {
                 overflow: visible !important;
                 width: 100% !important;
@@ -408,10 +400,8 @@
             table.table-cetak {
                 width: 100% !important;
                 min-width: 0 !important;
-                /* Membatalkan min-width: 800px web */
                 max-width: 100% !important;
                 table-layout: fixed !important;
-                /* Mengunci lebar kolom sesuai persentase */
                 border-collapse: collapse !important;
                 font-size: 9.5pt !important;
             }
@@ -472,8 +462,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold mb-0 text-white" style="letter-spacing: 0.5px;">SIMPEL-K</h5>
-                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab
-                            Kesehatan</small>
+                        <small class="text-white-50" style="font-size: 0.7rem;">Sistem Informasi Peminjaman Lab Kesehatan</small>
                     </div>
                 </div>
                 <button class="btn text-white d-lg-none" type="button" id="closeSidebarBtn">
@@ -482,7 +471,6 @@
             </div>
             <hr class="text-white-50 mx-3 mb-4">
 
-            <!-- NAVIGASI SIDEBAR -->
             <!-- MENU SIDEBAR ASLAB -->
             <ul class="nav nav-pills flex-column mb-auto">
                 <!-- 1. Dashboard Peminjaman -->
@@ -493,7 +481,15 @@
                     </a>
                 </li>
 
-                <!-- 2. Verifikasi Akun Mahasiswa Baru -->
+                <!-- 2. Master Data (Ruang & Alat) -->
+                <li class="nav-item">
+                    <a href="{% url 'aslab:master_data' %}"
+                        class="nav-link {% if 'master' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fa-solid fa-boxes-stacked fs-6"></i> Kelola Master Data
+                    </a>
+                </li>
+
+                <!-- 3. Verifikasi Akun Mahasiswa Baru -->
                 <li class="nav-item">
                     <a href="{% url 'aslab:verifikasi_akun' %}"
                         class="nav-link {% if request.resolver_match.url_name == 'verifikasi_akun' %}active{% endif %}">
@@ -501,7 +497,7 @@
                     </a>
                 </li>
 
-                <!-- 3. Laporan & Rekap -->
+                <!-- 4. Laporan & Rekap -->
                 <li class="nav-item">
                     <a href="{% url 'aslab:laporan' %}"
                         class="nav-link {% if request.resolver_match.url_name == 'laporan' %}active{% endif %}">
@@ -573,20 +569,17 @@
                 <h4>UNIVERSITAS NURUL JADID</h4>
                 <h3>FAKULTAS KESEHATAN</h3>
                 <h5>LABORATORIUM KESEHATAN</h5>
-                <p>Jl. KH. Zaini Mun'im Paiton Probolinggo Jawa Timur 67291 Telp. 088400000 | Email:
-                    lab.kesehatan@unuja.ac.id</p>
+                <p>Jl. KH. Zaini Mun'im Paiton Probolinggo Jawa Timur 67291 Telp. 088400000 | Email: lab.kesehatan@unuja.ac.id</p>
             </div>
         </div>
 
         <div class="judul-dokumen-cetak d-none d-print-block">LAPORAN REKAPITULASI PEMINJAMAN LABORATORIUM & ALAT</div>
 
         <!-- Judul Halaman Web -->
-        <div
-            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 web-title-section">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 web-title-section">
             <div>
                 <h3 class="fw-bold text-dark mb-1">Laporan & Rekapitulasi</h3>
-                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.
-                </p>
+                <p class="text-muted mb-0 small">Rekap data transaksi peminjaman ruang laboratorium dan alat kesehatan.</p>
             </div>
             <button onclick="window.print()"
                 class="btn btn-brand fw-bold px-4 py-2 rounded-3 btn-print w-100 w-md-auto">
@@ -666,8 +659,7 @@
         <!-- Tabel Rekapitulasi -->
         <div class="card card-custom overflow-hidden bg-white">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list-check me-2 text-brand"></i>Detail
-                    Rekapitulasi</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-list-check me-2 text-brand"></i>Detail Rekapitulasi</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0 table-cetak" style="min-width: 800px;">
@@ -694,39 +686,30 @@
                             </td>
                             <td>
                                 <div class="fw-medium">{{ item.mata_kuliah }}</div>
-                                <small class="text-muted">Dsn: {{ item.dosen|default:item.nama_dosen|default:"-"
-                                    }}</small>
+                                <small class="text-muted">Dsn: {{ item.dosen|default:item.nama_dosen|default:"-" }}</small>
                             </td>
                             <td class="text-center">
-                                <div class="fw-medium"><i class="fa-regular fa-calendar me-1"></i>{{
-                                    item.tanggal_pinjam|date:"d/m/Y" }}</div>
-                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{
-                                    item.wkt_mulai|time:"H:i" }} - {{ item.wkt_akhir|time:"H:i" }} WIB</small>
+                                <div class="fw-medium"><i class="fa-regular fa-calendar me-1"></i>{{ item.tanggal_pinjam|date:"d/m/Y" }}</div>
+                                <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>{{ item.wkt_mulai|time:"H:i" }} - {{ item.wkt_akhir|time:"H:i" }} WIB</small>
                             </td>
                             <td class="text-center fw-bold">
                                 {% if item.status == 'selesai' %}
-                                <span class="badge-status badge-status--done"><i
-                                        class="fa-solid fa-check-double me-1"></i>Selesai</span>
+                                <span class="badge-status badge-status--done"><i class="fa-solid fa-check-double me-1"></i>Selesai</span>
                                 <span class="d-none d-print-inline">Selesai</span>
                                 {% elif item.status == 'ditolak' %}
-                                <span class="badge-status badge-status--rejected"><i
-                                        class="fa-solid fa-xmark me-1"></i>Ditolak</span>
+                                <span class="badge-status badge-status--rejected"><i class="fa-solid fa-xmark me-1"></i>Ditolak</span>
                                 <span class="d-none d-print-inline">Ditolak</span>
                                 {% elif item.status == 'pending' %}
-                                <span class="badge-status badge-status--wait-aslab"><i
-                                        class="fa-solid fa-clock me-1"></i>Menunggu ASLAB</span>
+                                <span class="badge-status badge-status--wait-aslab"><i class="fa-solid fa-clock me-1"></i>Menunggu ASLAB</span>
                                 <span class="d-none d-print-inline">Menunggu ASLAB</span>
                                 {% elif item.status == 'verified' %}
-                                <span class="badge-status badge-status--wait-kalab"><i
-                                        class="fa-solid fa-clock me-1"></i>Menunggu KALAB</span>
+                                <span class="badge-status badge-status--wait-kalab"><i class="fa-solid fa-clock me-1"></i>Menunggu KALAB</span>
                                 <span class="d-none d-print-inline">Menunggu KALAB</span>
                                 {% elif item.status == 'disetujui' %}
-                                <span class="badge-status badge-status--approved"><i
-                                        class="fa-solid fa-thumbs-up me-1"></i>Disetujui</span>
+                                <span class="badge-status badge-status--approved"><i class="fa-solid fa-thumbs-up me-1"></i>Disetujui</span>
                                 <span class="d-none d-print-inline">Disetujui</span>
                                 {% elif item.status == 'pengembalian_diajukan' %}
-                                <span class="badge-status badge-status--return"><i
-                                        class="fa-solid fa-box me-1"></i>Proses Pengembalian</span>
+                                <span class="badge-status badge-status--return"><i class="fa-solid fa-box me-1"></i>Proses Pengembalian</span>
                                 <span class="d-none d-print-inline">Proses Pengembalian</span>
                                 {% else %}
                                 <span class="badge-status badge-status--other">{{ item.status }}</span>
@@ -737,8 +720,7 @@
                         {% empty %}
                         <tr>
                             <td colspan="6" class="text-center py-5 text-muted">
-                                <i class="fa-solid fa-folder-open fs-2 mb-2 d-block opacity-50"
-                                    style="color: var(--teal-700);"></i>
+                                <i class="fa-solid fa-folder-open fs-2 mb-2 d-block opacity-50" style="color: var(--teal-700);"></i>
                                 Tidak ada data rekapitulasi peminjaman untuk periode ini.
                             </td>
                         </tr>
