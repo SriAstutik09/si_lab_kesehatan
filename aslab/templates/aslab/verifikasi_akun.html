@@ -135,6 +135,76 @@
             color: white;
         }
 
+        /* ===== STYLE DROPDOWN PROFIL MODERN ===== */
+        .user-dropdown-menu {
+            min-width: 250px;
+            border: 1px solid var(--line);
+            border-radius: 16px !important;
+            box-shadow: 0 16px 34px -10px rgba(0, 23, 68, 0.25) !important;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 10px !important;
+        }
+
+        .user-dropdown-header {
+            background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-900) 100%);
+            padding: 16px;
+            color: #ffffff;
+        }
+
+        .avatar-circle {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.18);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .role-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #e0f2fe;
+            font-size: 0.68rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .dropdown-item-logout {
+            color: var(--rose-600);
+            font-weight: 600;
+            padding: 10px 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 10px;
+        }
+
+        .dropdown-item-logout:hover {
+            background-color: var(--rose-050);
+            color: #991b1b;
+        }
+
         @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-260px);
@@ -262,21 +332,36 @@
                         class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </button>
 
-                <!-- Dropdown Profil User Login -->
+                <!-- DROPDOWN PROFIL KHUSUS ASLAB (VERSI MODERN) -->
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                    <a href="#"
+                        class="d-flex align-items-center text-decoration-none dropdown-toggle p-1 rounded-circle"
                         id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-regular fa-circle-user fs-2 text-dark"></i>
+                        <div class="bg-white rounded-circle p-2 d-flex align-items-center justify-content-center border shadow-sm"
+                            style="width: 42px; height: 42px;">
+                            <i class="fa-solid fa-user-gear text-dark fs-5"></i>
+                        </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2"
-                        aria-labelledby="dropdownUser">
-                        <li class="px-3 py-2 border-bottom">
-                            <span class="d-block fw-bold text-dark">{{ request.user.username }}</span>
-                            <small class="text-muted">Role: Asisten Lab (ASLAB)</small>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="dropdownUser">
+                        <li class="user-dropdown-header">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar-circle">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span class="status-indicator"></span>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-white" style="letter-spacing: 0.3px;">{{ request.user.username }}</h6>
+                                    <span class="role-badge mt-1"><i class="fa-solid fa-flask me-1"></i>ASLAB</span>
+                                </div>
+                            </div>
                         </li>
-                        <li>
-                            <a class="dropdown-item py-2 text-danger fw-semibold" href="{% url 'core_auth:logout' %}">
-                                <i class="fa-solid fa-right-from-bracket me-2"></i> Keluar
+                        <li class="p-2 bg-white">
+                            <a class="dropdown-item dropdown-item-logout" href="{% url 'core_auth:logout' %}">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 28px; height: 28px; background: var(--rose-050);">
+                                    <i class="fa-solid fa-right-from-bracket fs-6" style="color: var(--rose-600);"></i>
+                                </div>
+                                <span>Keluar</span>
                             </a>
                         </li>
                     </ul>
