@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
+from django.utils import timezone
 
 from core_auth.models import (
     Peminjaman,
@@ -56,7 +57,8 @@ class PeminjamanForm(forms.ModelForm):
             'tanggal_pinjam': forms.DateInput(
                 attrs={
                     'class': 'form-control',
-                    'type': 'date'
+                    'type': 'date',
+                    'min': timezone.localdate().isoformat()
                 }
             ),
 
@@ -74,6 +76,15 @@ class PeminjamanForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean_tanggal_pinjam(self):
+        tanggal = self.cleaned_data['tanggal_pinjam']
+
+        if tanggal < timezone.localdate():
+            raise forms.ValidationError(
+                'Tanggal peminjaman kadaluwarsa'
+            )
+        return tanggal
 
 
 class DetailPeminjamanForm(forms.ModelForm):
