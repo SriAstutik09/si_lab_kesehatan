@@ -337,6 +337,65 @@
         transform: scale(0.9);
     }
 
+/* ==========================================
+   MULTI ALAT & BAHAN
+========================================== */
+
+.alat-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px 42px;
+    gap: .65rem;
+    align-items: start;
+    margin-bottom: .75rem;
+}
+
+.alat-row select,
+.alat-row input {
+    width: 100%;
+}
+
+.alat-row .alat-select-wrapper,
+.alat-row .alat-quantity-wrapper {
+    min-width: 0;
+}
+
+.btn-remove-alat {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #fecaca;
+    background: #fff;
+    color: #b91c1c;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.btn-remove-alat:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.btn-add-alat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    margin-top: .25rem;
+    padding: .65rem .9rem;
+    border: 1px dashed var(--teal-600);
+    background: var(--teal-050);
+    color: var(--teal-700);
+    border-radius: 10px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.btn-add-alat:hover {
+    background: #dce6f4;
+}
+
     /* ===== Responsif ===== */
     @media (max-width: 576px) {
         .pinjam-lab .field-row {
@@ -402,22 +461,86 @@
             {% endif %}
 
             <div class="form-section">
-                <span class="form-section-label"><i class="fa-solid fa-flask"></i> Ruang &amp; Peralatan</span>
+                <span class="form-section-label">
+                    <i class="fa-solid fa-flask"></i>
+                    Ruang &amp; Peralatan
+                </span>
 
                 <div class="field-group {% if form.ruang_lab.errors %}has-error{% endif %}">
-                    <label for="{{ form.ruang_lab.id_for_label }}">Pilih Ruang Lab</label>
+                    <label for="{{ form.ruang_lab.id_for_label }}">
+                        Pilih Ruang Lab
+                    </label>
+
                     {{ form.ruang_lab }}
+
                     {% if form.ruang_lab.errors %}
-                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.ruang_lab.errors.0 }}</p>
+                    <p class="field-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        {{ form.ruang_lab.errors.0 }}
+                    </p>
+            
                     {% endif %}
                 </div>
 
-                <div class="field-group {% if form.alat_bahan.errors %}has-error{% endif %}">
-                    <label for="{{ form.alat_bahan.id_for_label }}">Alat &amp; Bahan Kesehatan</label>
-                    {{ form.alat_bahan }}
-                    {% if form.alat_bahan.errors %}
-                    <p class="field-error"><i class="fa-solid fa-circle-exclamation"></i> {{ form.alat_bahan.errors.0 }}</p>
-                    {% endif %}
+                 <div class="field-group">
+
+                    <label>
+                        Alat &amp; Bahan Kesehatan
+                    </label>
+
+                    <div id="alat-container">
+
+                        {% for detail_form in formset %}
+
+                        <div class="alat-row">
+
+                            <div class="alat-select-wrapper">
+                                {{ detail_form.alat_bahan }}
+
+                                {% if detail_form.alat_bahan.errors %}
+                                <div class="field-error">
+                                    {{ detail_form.alat_bahan.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="alat-quantity-wrapper">
+                                {{ detail_form.jumlah }}
+
+                                {% if detail_form.jumlah.errors %}
+                                <div class="field-error">
+                                    {{ detail_form.jumlah.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn-remove-alat"
+                                title="Hapus alat"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                            <div class="delete-field" style="display:none;">
+                                {{ detail_form.DELETE }}
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="btn-tambah-alat"
+                        class="btn-add-alat"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Tambah Barang
+                    </button>
+
                 </div>
             </div>
 
@@ -497,4 +620,129 @@
     </div>
 
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const container = document.getElementById('alat-container');
+    const addButton = document.getElementById('btn-tambah-alat');
+
+    const totalForms = document.getElementById(
+        'id_detailpeminjaman_set-TOTAL_FORMS'
+    );
+
+    function updateDeleteState(row, shouldDelete) {
+
+        const deleteInput = row.querySelector(
+            'input[name$="-DELETE"]'
+        );
+
+        if (deleteInput) {
+            deleteInput.checked = shouldDelete;
+        }
+    }
+
+
+    function attachRemoveButton(row) {
+
+        const removeButton = row.querySelector(
+            '.btn-remove-alat'
+        );
+
+        removeButton.addEventListener('click', function () {
+
+            const rows = container.querySelectorAll(
+                '.alat-row'
+            );
+
+            // Minimal satu baris harus tetap ada
+            if (rows.length === 1) {
+
+                const select = row.querySelector('select');
+                const quantity = row.querySelector('input[type="number"]');
+
+                if (select) {
+                    select.selectedIndex = 0;
+                }
+
+                if (quantity) {
+                    quantity.value = 1;
+                }
+
+                return;
+            }
+
+            updateDeleteState(row, true);
+
+            row.style.display = 'none';
+        });
+    }
+
+
+    // Pasang tombol hapus untuk row pertama
+    container.querySelectorAll('.alat-row').forEach(
+        attachRemoveButton
+    );
+
+
+    addButton.addEventListener('click', function () {
+
+        const formIndex = parseInt(
+            totalForms.value
+        );
+
+        const rows = container.querySelectorAll(
+            '.alat-row'
+        );
+
+        const firstRow = rows[0];
+
+        const newRow = firstRow.cloneNode(true);
+
+        // Ganti __prefix__ / index form
+        newRow.innerHTML = newRow.innerHTML.replace(
+            /-\d+-/g,
+            '-' + formIndex + '-'
+        );
+
+        newRow.innerHTML = newRow.innerHTML.replace(
+            /_\d+_/g,
+            '_' + formIndex + '_'
+        );
+
+        // Reset pilihan alat
+        const select = newRow.querySelector('select');
+
+        if (select) {
+            select.selectedIndex = 0;
+        }
+
+        // Reset jumlah
+        const quantity = newRow.querySelector(
+            'input[type="number"]'
+        );
+
+        if (quantity) {
+            quantity.value = 1;
+        }
+
+        // Reset checkbox DELETE
+        const deleteInput = newRow.querySelector(
+            'input[name$="-DELETE"]'
+        );
+
+        if (deleteInput) {
+            deleteInput.checked = false;
+        }
+
+        newRow.style.display = '';
+
+        container.appendChild(newRow);
+
+        totalForms.value = formIndex + 1;
+
+        attachRemoveButton(newRow);
+    });
+
+});
+</script>
 {% endblock %}

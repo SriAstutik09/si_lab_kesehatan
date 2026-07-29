@@ -9,7 +9,10 @@ from django.contrib import messages
 from core_auth.models import Peminjaman, RuangLab, AlatBahan
 
 # Impor form HTML bawaan Django
-from .forms import PeminjamanForm
+from .forms import (
+    PeminjamanForm,
+    DetailPeminjamanFormSet
+)
 
 
 # ==============================================================================
@@ -70,38 +73,168 @@ def dashboard_view(request):
 @login_required(login_url='core_auth:login')
 def pinjam_lab_view(request):
     """
-    Fungsi untuk menampilkan form pengajuan pinjam lab/alat
-    serta menyimpan data pengajuan baru dari mahasiswa.
+    Form pengajuan peminjaman lab dan banyak alat/bahan.
     """
-    # 🛡️ KEAMANAN AUTOMATIS: Cegah ASLAB / KALAB membuat pengajuan pinjaman
+
     redirect_target = cekk_role_mahasiswa(request.user)
+
     if redirect_target:
         return redirect(redirect_target)
 
-    # [OTOMATISASI] Memastikan data awal dummy di database RuangLab dan AlatBahan terisi jika masih kosong
+    # Data dummy hanya dibuat jika database masih kosong
     if not RuangLab.objects.exists():
-        RuangLab.objects.create(nama_ruang="Lab Atas", kapasitas=30)
-        RuangLab.objects.create(nama_ruang="Lab Bawah", kapasitas=30)
-        
+        RuangLab.objects.create(
+            nama_ruang="Lab Atas",
+            kapasitas=30
+        )
+
+        RuangLab.objects.create(
+            nama_ruang="Lab Bawah",
+            kapasitas=30
+        )
+
     if not AlatBahan.objects.exists():
-        AlatBahan.objects.create(nama_alat="Stetoskop & Tensimeter")
-        AlatBahan.objects.create(nama_alat="Manekin Anatomi Kesehatan")
-        AlatBahan.objects.create(nama_alat="Set Bedah Minor / Hecting Kit")
+        AlatBahan.objects.create(
+            nama_alat="LCD Projector",
+            stok_tersedia=5,
+            satuan="Pcs"
+        )
+
+        AlatBahan.objects.create(
+            nama_alat="Manekin Anatomi Kesehatan",
+            stok_tersedia=10,
+            satuan="Pcs"
+        )
+
+        AlatBahan.objects.create(
+            nama_alat="Stetoskop",
+            stok_tersedia=10,
+            satuan="Pcs"
+        )
+
+        AlatBahan.objects.create(
+            nama_alat="Tensimeter",
+            stok_tersedia=10,
+            satuan="Pcs"
+        )
+
+        AlatBahan.objects.create(
+            nama_alat="Set Bedah Minor / Hecting Kit",
+            stok_tersedia=5,
+            satuan="Set"
+        )
 
     if request.method == 'POST':
+
         form = PeminjamanForm(request.POST)
-        if form.is_valid():
-            peminjaman = form.save(commit=False)
-            peminjaman.mahasiswa = request.user  # Mengisi peminjam dengan user yang sedang login
-            peminjaman.status = 'pending'        # Status awal otomatis 'pending' (menunggu verifikasi ASLAB)
-            peminjaman.save()
-            
-            messages.success(request, 'Pengajuan peminjaman berhasil dikirim! Menunggu validasi ASLAB.')
-            return redirect('mahasiswa:dashboard')
+
+        formset = DetailPeminjamanFormSet(
+            request.POST
+        )
+
+        if form.is_valid() and formset.is_valid():
+
+            detail_forms = [
+                detail_form
+                for detail_form in formset
+                if detail_form.cleaned_data
+                and not detail_form.cleaned_data.get('DELETE', False)
+            ]
+
+            if not detail_forms:
+                messages.error(
+                    request,
+                    'Minimal pilih satu alat atau bahan.'
+                )
+
+            else:
+                # ==========================================
+                # VALIDASI STOK
+                # ==========================================
+
+                stok_error = False
+
+                for detail_form in detail_forms:
+
+                    alat = detail_form.cleaned_data['alat_bahan']
+                    jumlah = detail_form.cleaned_data['jumlah']
+
+                    if jumlah > alat.stok_tersedia:
+
+                        messages.error(
+                            request,
+                            f'Stok {alat.nama_alat} tidak mencukupi. '
+                            f'Tersedia {alat.stok_tersedia} {alat.satuan}, '
+                            f'tetapi Anda meminta {jumlah}.'
+                        )
+
+                        stok_error = True
+                        break
+
+                if not stok_error:
+
+                    # ==========================================
+                    # SIMPAN PEMINJAMAN UTAMA
+                    # ==========================================
+
+                    peminjaman = form.save(
+                        commit=False
+                    )
+
+                    peminjaman.mahasiswa = request.user
+                    peminjaman.status = 'pending'
+
+                    # Kompatibilitas dengan sistem lama:
+                    # field alat_bahan diisi dengan item pertama.
+                    first_detail = detail_forms[0]
+
+                    peminjaman.alat_bahan = (
+                        first_detail.cleaned_data['alat_bahan']
+                    )
+
+                    peminjaman.save()
+
+                    # ==========================================
+                    # SIMPAN DETAIL ALAT
+                    # ==========================================
+
+                    instances = formset.save(
+                        commit=False
+                    )
+
+                    for instance in instances:
+
+                        if instance.alat_bahan:
+                            instance.peminjaman = peminjaman
+                            instance.save()
+
+                    # Hapus detail yang ditandai DELETE
+                    formset.save_m2m()
+
+                    messages.success(
+                        request,
+                        'Pengajuan peminjaman berhasil dikirim! '
+                        'Menunggu validasi ASLAB.'
+                    )
+
+                    return redirect(
+                        'mahasiswa:dashboard'
+                    )
+
     else:
+
         form = PeminjamanForm()
-    
-    return render(request, 'mahasiswa/form_pinjam.html', {'form': form})
+
+        formset = DetailPeminjamanFormSet()
+
+    return render(
+        request,
+        'mahasiswa/form_pinjam.html',
+        {
+            'form': form,
+            'formset': formset
+        }
+    )
 
 
 # ==============================================================================

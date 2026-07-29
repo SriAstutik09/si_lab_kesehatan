@@ -57,6 +57,17 @@ class Peminjaman(models.Model):
         ('selesai', 'Selesai / Sudah Dikembalikan'),
     ]
 
+    mahasiswa = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='peminjaman_mahasiswa'
+    )
+
+    ruang_lab = models.ForeignKey(
+        RuangLab,
+        on_delete=models.CASCADE
+    )
+
     # Aktor & Logistik
     mahasiswa = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='peminjaman_mahasiswa')
     ruang_lab = models.ForeignKey(RuangLab, on_delete=models.CASCADE)
@@ -87,6 +98,22 @@ class Peminjaman(models.Model):
     def __str__(self):
         return f"{self.mahasiswa.username} - {self.ruang_lab.nama_ruang} ({self.tanggal_pinjam})"
 
+class DetailPeminjaman(models.Model):
+    peminjaman = models.ForeignKey(
+        Peminjaman,
+        on_delete=models.CASCADE,
+        related_name='detail_alat'
+    )
+
+    alat_bahan = models.ForeignKey(
+        AlatBahan,
+        on_delete=models.PROTECT
+    )
+
+    jumlah = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.alat_bahan.nama_alat} - {self.jumlah} {self.alat_bahan.satuan}"
 
 # ==========================================
 # 5. MODEL REKAPITULASI LAPORAN
