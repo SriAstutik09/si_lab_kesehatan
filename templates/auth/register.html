@@ -302,6 +302,13 @@
                     <input type="password" id="password" name="password" class="form-control" placeholder="Buat password aman" required>
                 </div>
 
+                <!-- Input Ulangi Password -->
+                <div class="field">
+                    <label for="confirm_password">Ulangi Password</label>
+                    <i class="fa-solid fa-lock field-icon"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Ulangi password Anda" required>
+                </div>
+
                 <!-- Tombol Daftar -->
                 <button type="submit" class="btn-soft-navy">
                     Ajukan Pendaftaran <i class="fa-solid fa-paper-plane ms-1"></i>
@@ -325,6 +332,18 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validasi sederhana: password dan ulangi password harus sama sebelum submit
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Password dan ulangi password tidak sama. Silakan periksa kembali.');
+            }
+        });
+    </script>
 </body>
 
 </html>
