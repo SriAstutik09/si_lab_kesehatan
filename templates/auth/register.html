@@ -5,326 +5,607 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun Mahasiswa - SIMPEL-K / TATA LAB</title>
-    <!-- Bootstrap 5 CSS -->
+
+    <title>Daftar Akun - SIMPEL-K UNUJA</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --navy-dark: #0f172a;
-            --blue-soft: #1e293b;
-            --blue-light: #eff6ff;
-            --ink: #1e293b;
-            --ink-muted: #64748b;
-            --line: rgba(226, 232, 240, 0.8);
-            --radius-lg: 28px;
-            --radius-md: 14px;
-        }
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            color: var(--ink);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 2rem 1.5rem;
-            position: relative;
-            overflow-x: hidden;
-
-            /* Latar Gedung Kampus + Dark Soft Overlay */
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.78) 0%, rgba(30, 41, 59, 0.82) 100%),
-                        url("{% static 'images/background.jpg' %}") center/cover no-repeat fixed;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-        }
-
-        .auth-shell {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 920px;
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            align-items: stretch;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.45);
-            overflow: hidden;
-        }
-
-        .form-panel {
-            padding: clamp(2rem, 4vw, 3rem);
-            display: flex;
-            flex-direction: column;
             justify-content: center;
+            padding: 30px 15px;
+
+            font-family: 'Inter', sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 23, 42, .82),
+                    rgba(30, 41, 59, .88)
+                ),
+                url("{% static 'images/background.jpg' %}")
+                center / cover no-repeat fixed;
         }
 
-        .header-brand-wrapper {
+        .register-card {
+            width: 100%;
+            max-width: 850px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            overflow: hidden;
+
+            border-radius: 28px;
+
+            background: rgba(255, 255, 255, .94);
+
+            box-shadow:
+                0 30px 70px rgba(0, 0, 0, .35);
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .register-form {
+            padding: 45px;
+        }
+
+        .top-area {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.25rem;
+
+            margin-bottom: 25px;
         }
 
-        .eyebrow {
+        .badge-register {
             display: inline-flex;
             align-items: center;
-            gap: .4rem;
-            font-size: .75rem;
-            font-weight: 700;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: #1d4ed8;
-            background: var(--blue-light);
-            padding: .35rem .75rem;
+            gap: 7px;
+
+            padding: 7px 12px;
+
             border-radius: 999px;
+
+            background: #eff6ff;
             border: 1px solid #dbeafe;
+
+            color: #1d4ed8;
+
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .logo-unuja-top {
-            height: 46px;
-            width: auto;
-            object-fit: contain;
+        .logo-unuja {
+            height: 42px;
         }
 
-        .form-panel h1 {
-            font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+        .register-form h1 {
+            margin-bottom: 7px;
+
+            font-family: 'Plus Jakarta Sans', sans-serif;
+
+            font-size: 27px;
             font-weight: 800;
-            color: var(--navy-dark);
-            margin-bottom: .35rem;
+
+            color: #0f172a;
         }
 
-        .form-panel .subtitle {
-            font-size: .88rem;
-            color: var(--ink-muted);
-            margin-bottom: 1.5rem;
+        .subtitle {
+            margin-bottom: 25px;
+
+            color: #64748b;
+
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .field {
-            position: relative;
-            margin-bottom: 1.1rem;
+            margin-bottom: 18px;
         }
 
         .field label {
             display: block;
-            font-size: .8rem;
+
+            margin-bottom: 7px;
+
+            color: #0f172a;
+
+            font-size: 13px;
             font-weight: 700;
-            color: var(--navy-dark);
-            margin-bottom: .45rem;
         }
 
-        .field-icon {
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
             position: absolute;
-            left: 16px;
-            top: calc(50% + 11px);
+
+            left: 15px;
+            top: 50%;
+
             transform: translateY(-50%);
+
             color: #64748b;
-            font-size: .95rem;
+
             pointer-events: none;
         }
 
         .form-control {
+            width: 100%;
+
+            height: 52px;
+
+            padding: 0 45px 0 45px;
+
             border: 1.5px solid #cbd5e1;
-            border-radius: var(--radius-md);
-            padding: .72rem .9rem .72rem 2.8rem;
-            font-size: .9rem;
-            background: rgba(255, 255, 255, 0.95);
-            transition: all .2s ease;
+
+            border-radius: 14px;
+
+            background: #f8fafc;
+
+            font-size: 14px;
+
+            transition: .2s ease;
         }
 
         .form-control:focus {
-            outline: none;
             border-color: #3b82f6;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+
+            background: #fff;
+
+            box-shadow:
+                0 0 0 4px rgba(59, 130, 246, .13);
+
+            outline: none;
         }
 
-        .btn-soft-navy {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: #fff;
-            font-weight: 700;
-            font-size: .95rem;
+        .password-toggle {
+            position: absolute;
+
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
             border: none;
-            border-radius: var(--radius-md);
-            padding: .8rem;
+            background: transparent;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            padding: 5px;
+        }
+
+        .password-toggle:hover {
+            color: #0f172a;
+        }
+
+        .error-message {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #dc2626;
+
+            font-size: 12px;
+        }
+
+        .btn-register {
             width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .5rem;
-            box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.35);
-            transition: all .2s ease;
-            margin-top: .5rem;
-        }
 
-        .btn-soft-navy:hover {
-            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-            transform: translateY(-2px);
-        }
+            height: 52px;
 
-        .form-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: .82rem;
-            color: var(--ink-muted);
-        }
+            margin-top: 8px;
 
-        .form-footer a {
-            color: #2563eb;
+            border: none;
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #0f172a
+                );
+
+            color: white;
+
+            font-size: 14px;
             font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(15, 23, 42, .25);
+        }
+
+        .footer-text {
+            margin-top: 22px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        .footer-text a {
+            color: #2563eb;
+
+            font-weight: 700;
+
             text-decoration: none;
         }
 
-        .form-footer a:hover {
-            text-decoration: underline;
-        }
+        /* =========================
+           BRANDING
+        ========================= */
 
-        /* Panel Kanan Branding */
         .brand-panel {
             position: relative;
-            background: linear-gradient(160deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%);
+
             display: flex;
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
-            padding: 2.5rem 2rem;
-            overflow: hidden;
+
+            padding: 40px;
+
             text-align: center;
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+            background:
+                linear-gradient(
+                    160deg,
+                    #1e293b,
+                    #0f172a
+                );
         }
 
-        .logo-glow {
-            width: min(180px, 65%);
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: float 4.5s ease-in-out infinite;
-        }
+        .brand-logo {
+            width: 170px;
+            height: 170px;
 
-        .floating-logo {
-            width: 100%;
-            height: auto;
             object-fit: contain;
-            filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4));
+
+            margin-bottom: 20px;
+
+            filter:
+                drop-shadow(
+                    0 15px 25px rgba(0, 0, 0, .4)
+                );
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
+        .brand-title {
+            color: white;
 
-        .brand-panel .brand-title {
-            margin-top: 1.5rem;
-            color: #ffffff;
-            font-size: 1.3rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+
+            font-size: 25px;
             font-weight: 800;
-            letter-spacing: 0.5px;
+
+            margin-bottom: 8px;
         }
 
-        .brand-panel .brand-subtitle {
-            margin-top: .4rem;
+        .brand-subtitle {
+            max-width: 240px;
+
             color: #94a3b8;
-            font-size: .82rem;
-            line-height: 1.45;
-            max-width: 230px;
+
+            font-size: 13px;
+
+            line-height: 1.6;
         }
 
-        @media (max-width: 880px) {
-            .auth-shell { grid-template-columns: 1fr; max-width: 450px; }
-            .brand-panel { order: -1; padding: 2rem 1.5rem; }
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .register-card {
+                grid-template-columns: 1fr;
+
+                max-width: 470px;
+            }
+
+            .brand-panel {
+                order: -1;
+
+                padding: 30px 20px;
+            }
+
+            .brand-logo {
+                width: 110px;
+                height: 110px;
+            }
+
+            .brand-title {
+                font-size: 21px;
+            }
+
+            .register-form {
+                padding: 30px 25px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="auth-shell">
+<div class="register-card">
 
-        <!-- Form Pendaftaran -->
-        <div class="form-panel">
-            <div class="header-brand-wrapper">
-                <span class="eyebrow"><i class="fa-solid fa-user-plus me-1"></i> Pendaftaran MHS</span>
-                <img src="{% static 'images/unuja.png' %}" alt="Logo UNUJA" class="logo-unuja-top">
-            </div>
+    <!-- =========================
+         FORM PENDAFTARAN
+    ========================== -->
 
-            <h1>Buat Akun Baru</h1>
-            <p class="subtitle">Isi data Anda. Akun akan aktif setelah diverifikasi oleh ASLAB.</p>
+    <div class="register-form">
 
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 mb-3 small" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
+        <div class="top-area">
 
-            <form method="POST" action="">
-                {% csrf_token %}
+            <span class="badge-register">
+                <i class="fa-solid fa-user-plus"></i>
+                Pendaftaran Mahasiswa
+            </span>
 
-                <!-- Input Username / NIM -->
-                <div class="field">
-                    <label for="username">NIM / Username</label>
-                    <i class="fa-regular fa-id-card field-icon"></i>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Contoh: 2421400076" required>
-                </div>
+            <img
+                src="{% static 'images/unuja.png' %}"
+                alt="Logo UNUJA"
+                class="logo-unuja"
+            >
 
-                <!-- Input Nama Lengkap -->
-                <div class="field">
-                    <label for="first_name">Nama Lengkap</label>
-                    <i class="fa-regular fa-user field-icon"></i>
-                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nama sesuai KTM" required>
-                </div>
-
-                <!-- Input Password -->
-                <div class="field">
-                    <label for="password">Password</label>
-                    <i class="fa-solid fa-lock field-icon"></i>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Buat password aman" required>
-                </div>
-
-                <!-- Tombol Daftar -->
-                <button type="submit" class="btn-soft-navy">
-                    Ajukan Pendaftaran <i class="fa-solid fa-paper-plane ms-1"></i>
-                </button>
-            </form>
-
-            <div class="form-footer">
-                <p>Sudah punya akun? <a href="{% url 'core_auth:login' %}">Masuk di sini</a></p>
-            </div>
         </div>
 
-        <!-- Panel Kanan Branding -->
-        <div class="brand-panel">
-            <div class="logo-glow">
-                <img src="{% static 'images/logo.png' %}" alt="SIMPEL-K UNUJA Lab" class="floating-logo">
+
+        <h1>Buat Akun Baru</h1>
+
+        <p class="subtitle">
+            Daftarkan akun mahasiswa untuk menggunakan sistem laboratorium.
+        </p>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="alert alert-{{ message.tags }} small">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- NIM -->
+
+            <div class="field">
+
+                <label for="id_username">
+                    NIM / Username
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-id-card input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="id_username"
+                        name="username"
+                        class="form-control"
+                        placeholder="Contoh: 2421400076"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+                {% if form.username.errors %}
+
+                    <small class="error-message">
+                        {{ form.username.errors.0 }}
+                    </small>
+
+                {% endif %}
+
             </div>
-            <p class="brand-title">SIMPEL-K</p>
-            <p class="brand-subtitle">Sistem Manajemen Pelaporan &amp; Kedisiplinan Laboratorium Kesehatan</p>
+
+
+            <!-- PASSWORD -->
+
+            <div class="field">
+
+                <label for="id_password1">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-lock input-icon"></i>
+
+                    <input
+                        type="password"
+                        id="id_password1"
+                        name="password1"
+                        class="form-control"
+                        placeholder="Buat password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('id_password1', this)"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+
+                </div>
+
+                {% if form.password1.errors %}
+
+                    <small class="error-message">
+                        {{ form.password1.errors.0 }}
+                    </small>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ULANGI PASSWORD -->
+
+            <div class="field">
+                <label for="id_password2">
+                    Ulangi Password
+                </label>
+
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input
+                        type="password"
+                        id="id_password2"
+                        name="password2"
+                        class="form-control"
+                        placeholder="Masukkan password lagi"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('id_password2', this)"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+
+                </div>
+
+                {% if form.password2.errors %}
+
+                    <small class="error-message">
+                        {{ form.password2.errors.0 }}
+                    </small>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="btn-register"
+            >
+                Ajukan Pendaftaran
+                <i class="fa-solid fa-paper-plane ms-1"></i>
+            </button>
+
+        </form>
+
+
+        <div class="footer-text">
+
+            Sudah punya akun?
+
+            <a href="{% url 'core_auth:login' %}">
+                Masuk di sini
+            </a>
+
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- =========================
+         BRANDING
+    ========================== -->
+
+    <div class="brand-panel">
+
+        <img
+            src="{% static 'images/logo.png' %}"
+            alt="SIMPEL-K UNUJA Lab"
+            class="brand-logo"
+        >
+
+        <div class="brand-title">
+            SIMPEL-K
+        </div>
+
+        <div class="brand-subtitle">
+            Sistem Manajemen Pelaporan &amp;
+            Kedisiplinan Laboratorium Kesehatan
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+
+    const icon = button.querySelector('i');
+
+
+    if (input.type === 'password') {
+
+        input.type = 'text';
+
+        icon.classList.remove('fa-eye');
+
+        icon.classList.add('fa-eye-slash');
+
+    } else {
+
+        input.type = 'password';
+
+        icon.classList.remove('fa-eye-slash');
+
+        icon.classList.add('fa-eye');
+
+    }
+
+}
+
+</script>
+
 </body>
 
 </html>
